@@ -288,22 +288,16 @@ export default function Innovate() {
     };
   }, [progress, enabled]);
 
-  const headingOpacity = useTransform(progress, [0, 0.16], [0, 1]);
-  const headingScale = useTransform(progress, [0, 0.16], [0.96, 1]);
-
   if (!enabled) return <StaticInnovate />;
 
   return (
     <section ref={sectionRef} className="relative h-[175vh] w-full">
       <div className="sticky top-0 flex h-screen items-center overflow-hidden">
         <div className="relative mx-auto h-full w-full max-w-[1200px] px-6 lg:px-10">
-          {/* Centred heading */}
-          <motion.div
-            style={{ opacity: headingOpacity, scale: headingScale }}
-            className="absolute left-1/2 top-1/2 z-20 w-full max-w-[520px] -translate-x-1/2 -translate-y-1/2 px-6"
-          >
+          {/* Centred heading — always visible so the screen is never blank */}
+          <div className="absolute left-1/2 top-1/2 z-20 w-full max-w-[520px] -translate-x-1/2 -translate-y-1/2 px-6">
             <HeadingBlock centered />
-          </motion.div>
+          </div>
 
           {/* Tiles open out from the centre as you scroll in, hold, and reverse on scroll-up */}
           {TILES.map((tile) => (
