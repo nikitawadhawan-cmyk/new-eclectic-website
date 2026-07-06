@@ -11,6 +11,7 @@ import Testimonials from "@/components/sections/Testimonials";
 import Faq from "@/components/sections/Faq";
 import Footer from "@/components/sections/Footer";
 import Reveal from "@/components/Reveal";
+import FlipReveal from "@/components/FlipReveal";
 
 export default function Home() {
   return (
@@ -24,16 +25,16 @@ export default function Home() {
           <ClientLogos />
         </Reveal>
         <Innovate />
-        <Reveal>
+        <FlipReveal>
           <BigQuote />
-        </Reveal>
-        <Reveal>
+        </FlipReveal>
+        <FlipReveal>
           <Services />
-        </Reveal>
+        </FlipReveal>
         <WorkProcess />
-        <Reveal>
+        <FlipReveal>
           <AboutCaseStudy />
-        </Reveal>
+        </FlipReveal>
         <Reveal>
           <Pricing />
         </Reveal>
