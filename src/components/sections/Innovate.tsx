@@ -3,7 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { PenTool, Palette, LayoutPanelTop } from "lucide-react";
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  useReducedMotion,
+  type MotionValue,
+} from "framer-motion";
 
 /* ── Designed Figma icons ─────────────────────────────────────────────── */
 
@@ -205,17 +211,18 @@ const TILES: Tile[] = [
 ];
 
 const PILE = 0.16; // how close to centre the tiles start before they open out
+const CONVERGE_END = 0.6; // progress at which the tiles reach their arranged spots (then hold)
 
-function ScatterTile({ tile, open, index }: { tile: Tile; open: boolean; index: number }) {
+function ScatterTile({ tile, progress }: { tile: Tile; progress: MotionValue<number> }) {
+  // piled at centre → arranged spot, then clamped (holds — never flies away)
+  const x = useTransform(progress, [0, CONVERGE_END], [tile.ax * PILE, tile.ax]);
+  const y = useTransform(progress, [0, CONVERGE_END], [tile.ay * PILE, tile.ay]);
+  const scale = useTransform(progress, [0, CONVERGE_END], [0.82, 1]);
+  const opacity = useTransform(progress, [0, 0.16], [0, 1]);
+
   return (
     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" style={{ width: tile.width }}>
-      <motion.div
-        initial={{ x: tile.ax * PILE, y: tile.ay * PILE, scale: 0.8, opacity: 0, rotate: tile.rot }}
-        animate={open ? { x: tile.ax, y: tile.ay, scale: 1, opacity: 1, rotate: tile.rot } : undefined}
-        transition={{ type: "spring", duration: 0.7, bounce: 0.18, delay: index * 0.06 }}
-      >
-        {tile.node}
-      </motion.div>
+      <motion.div style={{ x, y, scale, rotate: tile.rot, opacity }}>{tile.node}</motion.div>
     </div>
   );
 }
@@ -243,7 +250,7 @@ function StaticInnovate() {
 }
 
 export default function Innovate() {
-  const ref = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
   const [enabled, setEnabled] = useState(true);
 
@@ -255,29 +262,54 @@ export default function Innovate() {
     return () => mq.removeEventListener("change", update);
   }, [reduced]);
 
-  // One-shot: the tiles open out from the centre when the section arrives,
-  // then stay put — the whole section scrolls normally to the next one.
-  const inView = useInView(ref, { once: true, amount: 0.3 });
+  // Scroll-scrubbed progress over the pinned section — reversible on scroll-up.
+  const progress = useMotionValue(0);
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    let raf = 0;
+    const measure = () => {
+      const rect = el.getBoundingClientRect();
+      const total = rect.height - window.innerHeight;
+      const p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
+      progress.set(p);
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(measure);
+    };
+    measure();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, [progress, enabled]);
+
+  const headingOpacity = useTransform(progress, [0, 0.16], [0, 1]);
+  const headingScale = useTransform(progress, [0, 0.16], [0.96, 1]);
 
   if (!enabled) return <StaticInnovate />;
 
   return (
-    <section className="relative w-full py-16 lg:py-20">
-      <div ref={ref} className="relative mx-auto h-[860px] w-full max-w-[1200px] px-6 lg:px-10">
-        {/* Centred heading */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={inView ? { opacity: 1, scale: 1 } : undefined}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="absolute left-1/2 top-1/2 z-20 w-full max-w-[520px] -translate-x-1/2 -translate-y-1/2 px-6"
-        >
-          <HeadingBlock centered />
-        </motion.div>
+    <section ref={sectionRef} className="relative h-[175vh] w-full">
+      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+        <div className="relative mx-auto h-full w-full max-w-[1200px] px-6 lg:px-10">
+          {/* Centred heading */}
+          <motion.div
+            style={{ opacity: headingOpacity, scale: headingScale }}
+            className="absolute left-1/2 top-1/2 z-20 w-full max-w-[520px] -translate-x-1/2 -translate-y-1/2 px-6"
+          >
+            <HeadingBlock centered />
+          </motion.div>
 
-        {/* Tiles open out from the centre, then stay put */}
-        {TILES.map((tile, i) => (
-          <ScatterTile key={tile.key} tile={tile} open={inView} index={i} />
-        ))}
+          {/* Tiles open out from the centre as you scroll in, hold, and reverse on scroll-up */}
+          {TILES.map((tile) => (
+            <ScatterTile key={tile.key} tile={tile} progress={progress} />
+          ))}
+        </div>
       </div>
     </section>
   );
