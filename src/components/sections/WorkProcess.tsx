@@ -1,14 +1,7 @@
 "use client";
 
 import Image from "@/components/Img";
-import { useEffect, useRef } from "react";
-import {
-  motion,
-  useMotionValue,
-  useTransform,
-  useReducedMotion,
-  type MotionValue,
-} from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 type Step = {
   number: string;
@@ -87,120 +80,69 @@ function CardInner({ step }: { step: Step }) {
   );
 }
 
-/** One card that flips/reveals in as the section scrolls into view (staggered). */
-function RevealCard({ step, index, progress }: { step: Step; index: number; progress: MotionValue<number> }) {
-  // Stay closed briefly as the section settles in, then reveal on scroll (reverses on scroll-up).
-  const delay = 0.16 + index * 0.12;
-  const rotateY = useTransform(progress, [delay, delay + 0.3], [78, 0]);
-  const opacity = useTransform(progress, [delay, delay + 0.18], [0, 1]);
-  const y = useTransform(progress, [delay, delay + 0.3], [46, 0]);
-
+/**
+ * One card: flips in (3D) as it scrolls into view, then idly hovers + bounces.
+ * No pin / no scroll math, so it behaves the same at any viewport height and
+ * never shows a blank "closed" state.
+ */
+function RevealCard({ step, index }: { step: Step; index: number }) {
   return (
     <div className={step.offset ? "lg:pt-[60px]" : "lg:pb-[60px]"} style={{ perspective: 1400 }}>
-      <motion.div style={{ rotateY, opacity, y, transformOrigin: "bottom center" }} className="h-full">
-        {/* Once revealed, the card idly hovers + bounces (each card offset, so they bob independently). */}
-        <motion.div
-          className="h-full"
-          animate={{ y: [0, -12, 0], rotate: [0, -1.1, 0] }}
-          transition={{ duration: 2.8 + index * 0.25, repeat: Infinity, ease: "easeInOut", delay: index * 0.3 }}
+      <motion.div
+        className="h-full"
+        style={{ transformOrigin: "bottom center" }}
+        initial={{ opacity: 0, rotateY: 70, y: 44 }}
+        whileInView={{ opacity: 1, rotateY: 0, y: 0 }}
+        viewport={{ once: true, amount: 0.25 }}
+        transition={{ duration: 0.7, ease: [0.23, 1, 0.32, 1], delay: index * 0.11 }}
+      >
+        {/* Idle hover/bounce once revealed — plain CSS so it doesn't interfere
+            with the whileInView flip on the parent (each card offset to bob independently). */}
+        <div
+          className="bob h-full"
+          style={{ animation: `bob ${2.8 + index * 0.25}s ease-in-out ${index * 0.3}s infinite` }}
         >
           <CardInner step={step} />
-        </motion.div>
+        </div>
       </motion.div>
     </div>
   );
 }
 
-function Blob() {
-  return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-      {/* Decorative blurred gold/navy gradient blob behind the cards (Figma node 17:806 background) */}
-      <Image src="/figma/work-process-bg.png" alt="" fill sizes="100vw" className="object-cover" />
-    </div>
-  );
-}
-
-function Heading() {
-  return (
-    <div className="flex flex-col items-center gap-4 text-center">
-      <p className="text-[14px] leading-[21px] text-[#e8c700]">
-        {"//"}
-        <span className="text-[#666]"> WORKING PROCESS</span>
-      </p>
-      <h2 className="text-[40px] font-medium leading-[1.1] tracking-[-1.5px] text-black lg:text-[60px] lg:leading-[72px]">
-        Let&rsquo;s See Our Work Process
-      </h2>
-    </div>
-  );
-}
-
 export default function WorkProcess() {
-  const sectionRef = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
   const animate = !reduced;
 
-  // Scroll-scrubbed over the pinned section, so the reveal plays out over ~2
-  // screens of scroll while the section is fully on-screen (and reverses).
-  const progress = useMotionValue(0);
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    let raf = 0;
-    const measure = () => {
-      const rect = el.getBoundingClientRect();
-      const total = rect.height - window.innerHeight;
-      const p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
-      progress.set(p);
-    };
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(measure);
-    };
-    measure();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      cancelAnimationFrame(raf);
-    };
-  }, [progress]);
+  return (
+    <section className="relative w-full overflow-hidden bg-[#f3f3f5] py-16 lg:py-24">
+      {/* Decorative blurred gold/navy gradient blob behind the cards (Figma node 17:806 background) */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <Image src="/figma/work-process-bg.png" alt="" fill sizes="100vw" className="object-cover" />
+      </div>
 
-  // Reduced-motion: original static section, no pin.
-  if (!animate) {
-    return (
-      <section className="relative w-full overflow-hidden bg-[#f3f3f5] py-16 lg:py-24">
-        <Blob />
-        <div className="relative mx-auto w-full max-w-[1200px] px-6 lg:px-10">
-          <Heading />
-          <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4 lg:items-start">
-            {steps.map((step) => (
+      <div className="relative mx-auto w-full max-w-[1200px] px-6 lg:px-10">
+        {/* Heading */}
+        <div className="flex flex-col items-center gap-4 text-center">
+          <p className="text-[14px] leading-[21px] text-[#e8c700]">
+            {"//"}
+            <span className="text-[#666]"> WORKING PROCESS</span>
+          </p>
+          <h2 className="text-[40px] font-medium leading-[1.1] tracking-[-1.5px] text-black lg:text-[60px] lg:leading-[72px]">
+            Let&rsquo;s See Our Work Process
+          </h2>
+        </div>
+
+        {/* Steps — original staggered design; each card flips in on scroll. */}
+        <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4 lg:items-start">
+          {steps.map((step, i) =>
+            animate ? (
+              <RevealCard key={step.number} step={step} index={i} />
+            ) : (
               <div key={step.number} className={step.offset ? "lg:pt-[60px]" : "lg:pb-[60px]"}>
                 <CardInner step={step} />
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  return (
-    <section ref={sectionRef} className="relative h-[150vh] w-full bg-[#f3f3f5]">
-      <div className="sticky top-0 h-screen overflow-hidden">
-        <Blob />
-        <div className="relative flex h-full items-center">
-          <div className="mx-auto w-full max-w-[1200px] px-6 lg:px-10">
-            {/* Heading — always visible */}
-            <Heading />
-
-            {/* Steps — same staggered design, revealed on scroll */}
-            <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4 lg:items-start">
-              {steps.map((step, i) => (
-                <RevealCard key={step.number} step={step} index={i} progress={progress} />
-              ))}
-            </div>
-          </div>
+            ),
+          )}
         </div>
       </div>
     </section>

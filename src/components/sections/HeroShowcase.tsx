@@ -285,8 +285,9 @@ export default function HeroShowcase() {
   const copyOpacity = useTransform(scrollYProgress, [0.24, 0.34], [1, 0]);
   const copyPointer = useTransform(scrollYProgress, (v) => (v > 0.22 ? "none" : "auto"));
 
-  // Left-aligned "Latest Projects" heading rises in as the grid forms.
-  const headingY = useTransform(scrollYProgress, [MORPH_END - 0.28, MORPH_END], ["44vh", "0vh"]);
+  // Left-aligned "Latest Projects" heading fades in near its final spot (small
+  // rise only) so it never sweeps up THROUGH the cards mid-morph.
+  const headingY = useTransform(scrollYProgress, [MORPH_END - 0.24, MORPH_END], ["7vh", "0vh"]);
   const headingOpacity = useTransform(scrollYProgress, [MORPH_END - 0.24, MORPH_END - 0.05], [0, 1]);
 
   // Phase 2: the whole formed grid scrolls up so the bottom row comes into view.
@@ -311,7 +312,7 @@ export default function HeroShowcase() {
           <motion.div style={{ y: galleryY }} className="absolute inset-0">
             <motion.h2
               style={{ y: headingY, opacity: headingOpacity }}
-              className="absolute left-6 top-[13vh] z-30 text-left text-[40px] font-medium leading-[1.05] tracking-[-1.2px] lg:left-10 lg:text-[60px] lg:tracking-[-1.8px]"
+              className="absolute left-6 top-[11vh] z-30 text-left text-[40px] font-medium leading-[1.05] tracking-[-1.2px] lg:left-10 lg:text-[60px] lg:tracking-[-1.8px]"
             >
               <span className="text-ink">Latest </span>
               <span className="text-navy">Projects</span>

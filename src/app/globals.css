@@ -27,3 +27,21 @@ body {
   color: var(--color-foreground);
   font-family: var(--font-sans);
 }
+
+/* Idle hover/bounce for the Work Process cards (CSS so it doesn't interfere
+   with the framer-motion whileInView flip on the parent). */
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(-1.1deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bob {
+    animation: none;
+  }
+}
