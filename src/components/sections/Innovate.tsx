@@ -3,13 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { PenTool, Palette, LayoutPanelTop } from "lucide-react";
-import {
-  motion,
-  useMotionValue,
-  useTransform,
-  useReducedMotion,
-  type MotionValue,
-} from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 
 /* ── Designed Figma icons ─────────────────────────────────────────────── */
 
@@ -210,20 +204,18 @@ const TILES: Tile[] = [
   { key: "trusted", node: <TrustedCard />, width: 280, ax: 450, ay: 205, rot: 5 },
 ];
 
-// piled (near centre) → arranged (readable hold) → scattered (flung out)
-const SCATTER_KEYS = [0, 0.3, 0.55, 1] as const;
-const PILE = 0.28;
-const FLING = 2.6;
+const PILE = 0.16; // how close to centre the tiles start before they open out
 
-function ScatterTile({ tile, progress }: { tile: Tile; progress: MotionValue<number> }) {
-  const x = useTransform(progress, [...SCATTER_KEYS], [tile.ax * PILE, tile.ax, tile.ax, tile.ax * FLING]);
-  const y = useTransform(progress, [...SCATTER_KEYS], [tile.ay * PILE, tile.ay, tile.ay, tile.ay * FLING]);
-  const scale = useTransform(progress, [0, 0.3, 0.6, 1], [0.82, 1, 1, 0.86]);
-  const opacity = useTransform(progress, [0, 0.12, 0.82, 0.98], [0, 1, 1, 0]);
-
+function ScatterTile({ tile, open, index }: { tile: Tile; open: boolean; index: number }) {
   return (
     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" style={{ width: tile.width }}>
-      <motion.div style={{ x, y, scale, rotate: tile.rot, opacity }}>{tile.node}</motion.div>
+      <motion.div
+        initial={{ x: tile.ax * PILE, y: tile.ay * PILE, scale: 0.8, opacity: 0, rotate: tile.rot }}
+        animate={open ? { x: tile.ax, y: tile.ay, scale: 1, opacity: 1, rotate: tile.rot } : undefined}
+        transition={{ type: "spring", duration: 0.7, bounce: 0.18, delay: index * 0.06 }}
+      >
+        {tile.node}
+      </motion.div>
     </div>
   );
 }
@@ -251,7 +243,7 @@ function StaticInnovate() {
 }
 
 export default function Innovate() {
-  const sectionRef = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const [enabled, setEnabled] = useState(true);
 
@@ -263,54 +255,29 @@ export default function Innovate() {
     return () => mq.removeEventListener("change", update);
   }, [reduced]);
 
-  const progress = useMotionValue(0);
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    let raf = 0;
-    const measure = () => {
-      const rect = el.getBoundingClientRect();
-      const total = rect.height - window.innerHeight;
-      const p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
-      progress.set(p);
-    };
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(measure);
-    };
-    measure();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      cancelAnimationFrame(raf);
-    };
-  }, [progress, enabled]);
-
-  // The centred heading fades up as tiles converge, then holds.
-  const headingOpacity = useTransform(progress, [0, 0.12, 0.9, 1], [0, 1, 1, 0.4]);
-  const headingScale = useTransform(progress, [0, 0.12], [0.96, 1]);
+  // One-shot: the tiles open out from the centre when the section arrives,
+  // then stay put — the whole section scrolls normally to the next one.
+  const inView = useInView(ref, { once: true, amount: 0.3 });
 
   if (!enabled) return <StaticInnovate />;
 
   return (
-    <section ref={sectionRef} className="relative h-[230vh] w-full">
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-        <div className="relative mx-auto h-full w-full max-w-[1200px] px-6 lg:px-10">
-          {/* Centred heading */}
-          <motion.div
-            style={{ opacity: headingOpacity, scale: headingScale }}
-            className="absolute left-1/2 top-1/2 z-20 w-full max-w-[520px] -translate-x-1/2 -translate-y-1/2 px-6"
-          >
-            <HeadingBlock centered />
-          </motion.div>
+    <section className="relative w-full py-16 lg:py-20">
+      <div ref={ref} className="relative mx-auto h-[860px] w-full max-w-[1200px] px-6 lg:px-10">
+        {/* Centred heading */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={inView ? { opacity: 1, scale: 1 } : undefined}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="absolute left-1/2 top-1/2 z-20 w-full max-w-[520px] -translate-x-1/2 -translate-y-1/2 px-6"
+        >
+          <HeadingBlock centered />
+        </motion.div>
 
-          {/* Scattering tiles */}
-          {TILES.map((tile) => (
-            <ScatterTile key={tile.key} tile={tile} progress={progress} />
-          ))}
-        </div>
+        {/* Tiles open out from the centre, then stay put */}
+        {TILES.map((tile, i) => (
+          <ScatterTile key={tile.key} tile={tile} open={inView} index={i} />
+        ))}
       </div>
     </section>
   );
