@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/Img";
 
 /**
  * Pricing — Figma node 4:7536 ("Section - Pricing").

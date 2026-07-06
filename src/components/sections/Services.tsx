@@ -8,6 +8,8 @@
  * exported to /public/figma/service-*.svg (gold fill/stroke baked in).
  */
 
+import { assetPath } from "@/components/Img";
+
 const services = [
   { title: "Shopify Development", icon: "/figma/service-shopify.svg" },
   { title: "Wordpress Development", icon: "/figma/service-wordpress.svg" },
@@ -38,7 +40,7 @@ export default function Services() {
                 <span className="relative flex size-10 shrink-0 items-center justify-center rounded-3xl border border-navy bg-navy p-2 shadow-[0px_0.741px_0.741px_-0.75px_rgba(0,0,0,0.33),0px_2.018px_2.018px_-1.5px_rgba(0,0,0,0.32),0px_4.431px_4.431px_-2.25px_rgba(0,0,0,0.3),0px_9.835px_9.835px_-3px_rgba(0,0,0,0.25),0px_25px_25px_-3.75px_rgba(0,0,0,0.11),0px_0px_0px_1px_#828282]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={service.icon}
+                    src={assetPath(service.icon)}
                     alt=""
                     aria-hidden="true"
                     width={24}

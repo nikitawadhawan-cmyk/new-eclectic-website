@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import Image from "@/components/Img";
 import { PenTool, Palette, LayoutPanelTop } from "lucide-react";
 import {
   motion,

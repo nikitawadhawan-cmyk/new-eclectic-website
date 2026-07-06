@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/Img";
 
 /* ── Social icons (designed marks from Figma, node 4:7415 overlay) ── */
 

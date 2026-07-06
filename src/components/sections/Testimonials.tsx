@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/Img";
 
 /* -------------------------------------------------------------------------- */
 /*  Client-logos strip (Figma node 4:7787)                                    */
