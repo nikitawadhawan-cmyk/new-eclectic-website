@@ -1,26 +1,29 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Typography */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Brand palette (extracted from Figma "Web Page Design") */
+  --color-navy: #2a315f; /* primary brand / buttons */
+  --color-navy-deep: #1f2450;
+  --color-ink: #171717; /* near-black headings/body */
+  --color-muted: #545454; /* secondary body text */
+  --color-muted-2: #828282; /* faded heading / captions */
+  --color-line: #e6e6e6; /* hairline borders */
+  --color-surface: #f5f5f7; /* light section background */
+  --color-gold: #e8c700; /* accent (process numbers, highlights) */
+
+  --color-background: #ffffff;
+  --color-foreground: var(--color-ink);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
 }
