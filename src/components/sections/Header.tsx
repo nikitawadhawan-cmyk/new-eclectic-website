@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
@@ -21,24 +20,35 @@ export default function Header() {
           aria-label="Primary"
           className="flex items-center justify-between gap-8 rounded-[32px] border border-[#dedede] bg-white/50 p-3 backdrop-blur-md"
         >
-          {/* Brand: headshot + name */}
+          {/* Brand: eclectic digital logo */}
           <a
             href="#top"
             className="flex shrink-0 items-center gap-2"
-            aria-label="Joseph Alexander — home"
+            aria-label="eclectic digital — home"
           >
-            <span className="relative size-8 overflow-hidden rounded-full">
-              <Image
-                src="/figma/headshot-joseph.png"
-                alt="Joseph Alexander"
-                fill
-                sizes="32px"
-                className="object-cover"
-                priority
+            <svg
+              viewBox="0 0 40 40"
+              className="size-8 shrink-0"
+              role="img"
+              aria-hidden="true"
+            >
+              {/* speech bubble */}
+              <path
+                d="M7 3h26a5 5 0 0 1 5 5v13a5 5 0 0 1-5 5H14l-5.5 6.5V26H7a5 5 0 0 1-5-5V8a5 5 0 0 1 5-5Z"
+                fill="none"
+                stroke="#2a315f"
+                strokeWidth="3"
+                strokeLinejoin="round"
               />
-            </span>
-            <span className="whitespace-nowrap text-[14px] font-semibold tracking-[-0.14px] text-black">
-              Joseph Alexander
+              {/* hashtag: navy verticals, gold horizontals */}
+              <rect x="14.6" y="7.5" width="2.8" height="14.5" rx="1.4" fill="#2a315f" />
+              <rect x="21.6" y="7.5" width="2.8" height="14.5" rx="1.4" fill="#2a315f" />
+              <rect x="9.5" y="11.6" width="20" height="2.8" rx="1.4" fill="#e8c700" />
+              <rect x="9.5" y="16.6" width="20" height="2.8" rx="1.4" fill="#e8c700" />
+            </svg>
+            <span className="whitespace-nowrap text-[19px] font-extrabold lowercase tracking-[-0.5px] leading-none">
+              <span className="text-navy">eclectic</span>
+              <span className="text-gold">digital</span>
             </span>
           </a>
 

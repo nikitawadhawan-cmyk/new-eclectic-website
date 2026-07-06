@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { PenTool, Palette, LayoutPanelTop } from "lucide-react";
 
 /* Quote mark — designed Figma icon (node 17:522), gold */
 function QuoteIcon({ className }: { className?: string }) {
@@ -57,19 +58,10 @@ function ArrowUpRight({ className }: { className?: string }) {
   );
 }
 
-const avatars = [
-  {
-    src: "/figma/innovate-avatar1.png",
-    alt: "Portrait of a young man with glasses and a beard",
-  },
-  {
-    src: "/figma/innovate-avatar2.png",
-    alt: "Portrait of a smiling man with glasses and a watch",
-  },
-  {
-    src: "/figma/innovate-avatar3.png",
-    alt: "Portrait of a man with glasses and a beard",
-  },
+const designIcons = [
+  { Icon: Palette, label: "UI design" },
+  { Icon: PenTool, label: "Brand design" },
+  { Icon: LayoutPanelTop, label: "Web design" },
 ];
 
 const cardBase =
@@ -117,18 +109,13 @@ export default function Innovate() {
             {/* Avatars + brands */}
             <div className={`${cardBase} flex items-center justify-between gap-4 px-5 py-4`}>
               <div className="flex items-center -space-x-3">
-                {avatars.map((a) => (
+                {designIcons.map(({ Icon, label }) => (
                   <span
-                    key={a.src}
-                    className="relative size-11 overflow-hidden rounded-full ring-2 ring-white"
+                    key={label}
+                    className="flex size-11 items-center justify-center rounded-full bg-navy ring-2 ring-white"
+                    title={label}
                   >
-                    <Image
-                      src={a.src}
-                      alt={a.alt}
-                      fill
-                      sizes="44px"
-                      className="object-cover"
-                    />
+                    <Icon className="size-5 text-gold" aria-label={label} />
                   </span>
                 ))}
               </div>

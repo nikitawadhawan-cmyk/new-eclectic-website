@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 /**
  * Big Quote Testimonial — Figma node 4:7136.
  *
@@ -18,28 +16,25 @@ export default function BigQuote() {
             &ldquo;Working with Eclectic felt like having a seasoned design
             partner{" "}
             <span className="font-semibold">
-              who truly understood our vision for KYMA
+              who truly understood our vision for Spiritude
             </span>{" "}
             and brought it to life in ways we hadn&rsquo;t even imagined.&rdquo;
           </blockquote>
 
           {/* Attribution */}
           <div className="flex items-center justify-center gap-3">
-            <span className="relative size-[38px] shrink-0 overflow-hidden rounded-full">
-              <Image
-                src="/figma/quote-avatar-thomas-weber.png"
-                alt="Portrait of Thomas Weber, Co-founder of KYMA"
-                fill
-                sizes="38px"
-                className="object-cover"
-              />
+            <span
+              className="flex size-[38px] shrink-0 items-center justify-center rounded-full bg-navy text-[16px] font-bold text-gold"
+              aria-hidden="true"
+            >
+              S
             </span>
             <div className="flex flex-col gap-[5px]">
               <p className="text-[13.8px] font-semibold leading-[15.68px] tracking-[-0.14px] text-black">
-                Thomas Weber
+                Soela
               </p>
               <p className="text-[11.1px] font-semibold leading-[13.44px] tracking-[-0.12px] text-[#545454]">
-                Co-founder of KYMA
+                Founder of Spiritude
               </p>
             </div>
           </div>

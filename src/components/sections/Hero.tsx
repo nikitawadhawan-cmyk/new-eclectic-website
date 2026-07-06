@@ -113,25 +113,8 @@ export default function Hero() {
             <div>
               <a
                 href="#contact"
-                className="inline-flex items-center gap-[10px] rounded-[24px] border border-navy bg-navy py-2 pl-2 pr-4 shadow-[0px_0.741px_0.741px_-0.75px_rgba(0,0,0,0.33),0px_2.018px_2.018px_-1.5px_rgba(0,0,0,0.32),0px_4.431px_4.431px_-2.25px_rgba(0,0,0,0.3),0px_9.835px_9.835px_-3px_rgba(0,0,0,0.25),0px_25px_25px_-3.75px_rgba(0,0,0,0.11),0px_0px_0px_1px_#545454] transition-transform duration-200 hover:-translate-y-0.5"
+                className="inline-flex items-center gap-[10px] rounded-[24px] border border-navy bg-navy px-6 py-3 shadow-[0px_0.741px_0.741px_-0.75px_rgba(0,0,0,0.33),0px_2.018px_2.018px_-1.5px_rgba(0,0,0,0.32),0px_4.431px_4.431px_-2.25px_rgba(0,0,0,0.3),0px_9.835px_9.835px_-3px_rgba(0,0,0,0.25),0px_25px_25px_-3.75px_rgba(0,0,0,0.11),0px_0px_0px_1px_#545454] transition-transform duration-200 hover:-translate-y-0.5"
               >
-                {/* avatar cluster: designer headshot + "You" chip */}
-                <span className="relative flex h-[28px] items-center">
-                  <span className="relative z-[1] flex h-[28px] w-[28px] items-center justify-center overflow-hidden rounded-full bg-white ring-2 ring-navy">
-                    <span className="text-[12px] font-semibold leading-[13.44px] tracking-[-0.12px] text-navy">
-                      You
-                    </span>
-                  </span>
-                  <span className="relative -ml-2 z-[2] h-[28px] w-[28px] overflow-hidden rounded-full ring-2 ring-navy">
-                    <Image
-                      src="/figma/hero-avatar.png"
-                      alt=""
-                      width={28}
-                      height={28}
-                      className="h-full w-full object-cover"
-                    />
-                  </span>
-                </span>
                 <span className="text-[13.3px] font-semibold leading-[15.68px] tracking-[-0.14px] text-white">
                   Book a call with us
                 </span>
