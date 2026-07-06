@@ -55,7 +55,7 @@ const CARDS: Card[] = [
     rotStart: 6,
     scaleStart: 0.9,
     xEnd: "-54%",
-    yEnd: "6%",
+    yEnd: "-4%",
   },
   {
     title: "Trippy Tour",
@@ -70,7 +70,7 @@ const CARDS: Card[] = [
     rotStart: -6,
     scaleStart: 0.87,
     xEnd: "54%",
-    yEnd: "6%",
+    yEnd: "-4%",
   },
   {
     title: "IVVYLISTIC",
@@ -85,7 +85,7 @@ const CARDS: Card[] = [
     rotStart: 13,
     scaleStart: 0.85,
     xEnd: "-54%",
-    yEnd: "122%",
+    yEnd: "116%",
   },
   {
     title: "amorada",
@@ -101,7 +101,7 @@ const CARDS: Card[] = [
     rotStart: 18,
     scaleStart: 0.84,
     xEnd: "54%",
-    yEnd: "122%",
+    yEnd: "116%",
   },
 ];
 
@@ -290,7 +290,8 @@ export default function HeroShowcase() {
   const headingOpacity = useTransform(scrollYProgress, [MORPH_END - 0.24, MORPH_END - 0.05], [0, 1]);
 
   // Phase 2: the whole formed grid scrolls up so the bottom row comes into view.
-  const galleryY = useTransform(scrollYProgress, [MORPH_END, 1], ["0vh", "-56vh"]);
+  // Hold the formed grid briefly so it's clearly visible, then scroll it up (phase 2).
+  const galleryY = useTransform(scrollYProgress, [MORPH_END + 0.12, 1], ["0vh", "-58vh"]);
 
   if (!enabled) return <StaticFallback />;
 
@@ -310,7 +311,7 @@ export default function HeroShowcase() {
           <motion.div style={{ y: galleryY }} className="absolute inset-0">
             <motion.h2
               style={{ y: headingY, opacity: headingOpacity }}
-              className="absolute left-6 top-[3vh] z-30 text-left text-[40px] font-medium leading-[1.05] tracking-[-1.2px] lg:left-10 lg:text-[60px] lg:tracking-[-1.8px]"
+              className="absolute left-6 top-[13vh] z-30 text-left text-[40px] font-medium leading-[1.05] tracking-[-1.2px] lg:left-10 lg:text-[60px] lg:tracking-[-1.8px]"
             >
               <span className="text-ink">Latest </span>
               <span className="text-navy">Projects</span>

@@ -89,10 +89,11 @@ function CardInner({ step }: { step: Step }) {
 
 /** One card that flips/reveals in as the section scrolls into view (staggered). */
 function RevealCard({ step, index, progress }: { step: Step; index: number; progress: MotionValue<number> }) {
-  const delay = index * 0.13;
-  const rotateY = useTransform(progress, [delay, delay + 0.4], [78, 0]);
-  const opacity = useTransform(progress, [delay, delay + 0.24], [0, 1]);
-  const y = useTransform(progress, [delay, delay + 0.4], [46, 0]);
+  // Stay closed until we've scrolled ~a third into the pinned section, then reveal.
+  const delay = 0.3 + index * 0.12;
+  const rotateY = useTransform(progress, [delay, delay + 0.32], [78, 0]);
+  const opacity = useTransform(progress, [delay, delay + 0.2], [0, 1]);
+  const y = useTransform(progress, [delay, delay + 0.32], [46, 0]);
 
   return (
     <div className={step.offset ? "lg:pt-[60px]" : "lg:pb-[60px]"} style={{ perspective: 1400 }}>
