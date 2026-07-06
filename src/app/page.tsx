@@ -1,7 +1,6 @@
 import Header from "@/components/sections/Header";
-import Hero from "@/components/sections/Hero";
+import HeroShowcase from "@/components/sections/HeroShowcase";
 import ClientLogos from "@/components/sections/ClientLogos";
-import LatestProjects from "@/components/sections/LatestProjects";
 import Innovate from "@/components/sections/Innovate";
 import BigQuote from "@/components/sections/BigQuote";
 import Services from "@/components/sections/Services";
@@ -17,9 +16,8 @@ export default function Home() {
     <>
       <Header />
       <main>
-        <Hero />
+        <HeroShowcase />
         <ClientLogos />
-        <LatestProjects />
         <Innovate />
         <BigQuote />
         <Services />
