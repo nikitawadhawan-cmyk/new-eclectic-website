@@ -11,18 +11,18 @@ import {
 } from "framer-motion";
 
 /**
- * HeroShowcase — the hero + Latest Projects, fused into one scroll-scrubbed
- * sequence (replicating the LaunchFolio reference animation):
+ * HeroShowcase — hero + Latest Projects fused into one scroll-scrubbed sequence
+ * (replicating the LaunchFolio reference):
  *
- *   scroll 0 ............................. scroll 1
- *   fanned stack of cards on the right  →  cards spread, un-tilt, scale,
- *   hero headline visible                  and resolve into the 2×2 grid;
- *                                          "Latest Projects" heading + card
- *                                          captions fade in.
+ *   scroll 0 .................................. scroll 1
+ *   LARGE fanned card stack on the right    →   cards spread + settle into the
+ *   hero headline on the left                   2×2 grid; the hero copy SCROLLS
+ *                                               UP and past the (sticky) cards;
+ *                                               "Latest Projects" rises in.
  *
- * The whole thing is pinned (sticky) while the transform is scrubbed by scroll.
- * On touch / small screens and for `prefers-reduced-motion`, it degrades to a
- * plain hero followed by a static grid (no pin, no scrub).
+ * The card layer is sticky (pinned) on a consistent light background — the copy
+ * slides up past it, so nothing "fades on a white box". Degrades to a static
+ * hero + grid on small screens / reduced-motion.
  */
 
 type Card = {
@@ -34,15 +34,15 @@ type Card = {
   screen: string;
   alt: string;
   z: number;
-  // fanned-stack start transform (right side, tilted, small)
   xStart: string;
   yStart: string;
   rotStart: number;
   scaleStart: number;
-  // resolved grid-cell end transform (centered 2×2)
   xEnd: string;
   yEnd: string;
 };
+
+const SCALE_END = 0.74; // grid card scale (keeps the 2×2 within one viewport)
 
 const CARDS: Card[] = [
   {
@@ -53,12 +53,12 @@ const CARDS: Card[] = [
     screen: "/figma/lp-screen-1.jpg",
     alt: "BVC Logistics website — Secure Global Logistics for Gems & Jewellery",
     z: 40,
-    xStart: "26%",
-    yStart: "4%",
-    rotStart: 8,
-    scaleStart: 0.66,
-    xEnd: "-54%",
-    yEnd: "-46%",
+    xStart: "30%",
+    yStart: "2%",
+    rotStart: 7,
+    scaleStart: 1.04,
+    xEnd: "-53%",
+    yEnd: "-40%",
   },
   {
     title: "Trippy Tour",
@@ -68,12 +68,12 @@ const CARDS: Card[] = [
     screen: "/figma/lp-screen-2.jpg",
     alt: "Trippy Tour website — Explore the World at Your Own Pace",
     z: 30,
-    xStart: "12%",
-    yStart: "10%",
+    xStart: "18%",
+    yStart: "9%",
     rotStart: -7,
-    scaleStart: 0.62,
-    xEnd: "54%",
-    yEnd: "-46%",
+    scaleStart: 0.99,
+    xEnd: "53%",
+    yEnd: "-40%",
   },
   {
     title: "IVVYLISTIC",
@@ -83,12 +83,12 @@ const CARDS: Card[] = [
     screen: "/figma/lp-screen-3.jpg",
     alt: "IVVYLISTIC website — Get into the world's top MBA program",
     z: 20,
-    xStart: "40%",
+    xStart: "42%",
     yStart: "-6%",
     rotStart: 15,
-    scaleStart: 0.6,
-    xEnd: "-54%",
-    yEnd: "60%",
+    scaleStart: 0.96,
+    xEnd: "-53%",
+    yEnd: "64%",
   },
   {
     title: "amorada",
@@ -99,16 +99,16 @@ const CARDS: Card[] = [
     screen: "/figma/lp-screen-4.jpg",
     alt: "Amorada website — Where Comfort Meets Craft",
     z: 10,
-    xStart: "50%",
+    xStart: "51%",
     yStart: "-12%",
     rotStart: 20,
-    scaleStart: 0.58,
-    xEnd: "54%",
-    yEnd: "60%",
+    scaleStart: 0.93,
+    xEnd: "53%",
+    yEnd: "64%",
   },
 ];
 
-const MORPH_END = 0.7; // scroll progress at which the grid is fully formed
+const MORPH_END = 0.78; // scroll progress at which the grid is fully formed
 
 function ArrowUpRight({ className }: { className?: string }) {
   return (
@@ -124,16 +124,15 @@ function ArrowUpRight({ className }: { className?: string }) {
   );
 }
 
-/** The card body: decorative panel + laptop mockup + screenshot. */
 function CardVisual({ card }: { card: Card }) {
   return (
     <div className="relative aspect-[497/363] w-full overflow-hidden rounded-2xl shadow-[0px_24px_60px_-12px_rgba(0,0,0,0.35)]">
-      <Image src={card.bg} alt="" fill sizes="500px" className="object-cover" priority={card.z === 40} />
+      <Image src={card.bg} alt="" fill sizes="560px" className="object-cover" priority={card.z === 40} />
       <div className="absolute inset-x-[3%] bottom-[9%] top-[9.5%]">
         <div className="relative h-[93%] overflow-hidden rounded-[16px] bg-[#cfcfcf] p-[9px] shadow-[0px_28px_56px_0px_rgba(0,0,0,0.5)]">
           <span className="absolute left-1/2 top-[6px] size-[5px] -translate-x-1/2 rounded-full bg-[#8a8a8a]" />
           <div className="relative mt-[4px] h-[calc(100%-4px)] overflow-hidden rounded-[11px] bg-white">
-            <Image src={card.screen} alt={card.alt} fill sizes="460px" className="object-cover object-top" />
+            <Image src={card.screen} alt={card.alt} fill sizes="520px" className="object-cover object-top" />
           </div>
         </div>
         <div className="mx-auto mt-[1.5%] h-[3%] w-[96%] rounded-b-[16px] rounded-t-[4px] border border-[rgba(168,168,168,0.25)] bg-[#595959]" />
@@ -163,20 +162,20 @@ function CardCaption({ card }: { card: Card }) {
   );
 }
 
-/** One scroll-morphing card. Interpolates stack → grid over [0, MORPH_END]. */
+/** One scroll-morphing card: fanned stack → grid cell over [0, MORPH_END]. */
 function MorphCard({ card, progress }: { card: Card; progress: MotionValue<number> }) {
   const x = useTransform(progress, [0, MORPH_END], [card.xStart, card.xEnd]);
   const y = useTransform(progress, [0, MORPH_END], [card.yStart, card.yEnd]);
   const rotate = useTransform(progress, [0, MORPH_END], [card.rotStart, 0]);
-  const scale = useTransform(progress, [0, MORPH_END], [card.scaleStart, 0.9]);
-  const captionOpacity = useTransform(progress, [MORPH_END - 0.08, MORPH_END + 0.06], [0, 1]);
+  const scale = useTransform(progress, [0, MORPH_END], [card.scaleStart, SCALE_END]);
+  const captionOpacity = useTransform(progress, [MORPH_END - 0.12, MORPH_END], [0, 1]);
 
   return (
     <div
-      className="absolute left-1/2 top-1/2 w-[62vw] max-w-[400px] -translate-x-1/2 -translate-y-1/2 sm:w-[46vw]"
+      className="pointer-events-none absolute left-1/2 top-1/2 w-[68vw] max-w-[520px] -translate-x-1/2 -translate-y-1/2 sm:w-[46vw]"
       style={{ zIndex: card.z }}
     >
-      <motion.a href={card.href} className="group block" style={{ x, y, rotate, scale }}>
+      <motion.a href={card.href} className="group pointer-events-auto block" style={{ x, y, rotate, scale }}>
         <CardVisual card={card} />
         <motion.div style={{ opacity: captionOpacity }}>
           <CardCaption card={card} />
@@ -220,8 +219,8 @@ function StaticFallback() {
       <div className="mx-auto w-full max-w-[1200px] px-6 lg:px-10">
         <div className="grid grid-cols-1 items-center gap-12 py-16 lg:grid-cols-2 lg:gap-8 lg:py-20">
           <HeroCopy />
-          <div className="relative aspect-[497/363] w-full max-w-[440px] justify-self-center">
-            <div className="absolute inset-0 rotate-[8deg]">
+          <div className="relative aspect-[497/363] w-full max-w-[460px] justify-self-center">
+            <div className="absolute inset-0 rotate-[7deg]">
               <CardVisual card={CARDS[0]} />
             </div>
           </div>
@@ -258,7 +257,6 @@ export default function HeroShowcase() {
     return () => mq.removeEventListener("change", update);
   }, [reduced]);
 
-  // Manual scroll progress over the pinned section [0 = top pinned, 1 = released].
   const scrollYProgress = useMotionValue(0);
   useEffect(() => {
     const el = sectionRef.current;
@@ -284,39 +282,39 @@ export default function HeroShowcase() {
     };
   }, [scrollYProgress, enabled]);
 
-  // Hero copy fades/slides out as the morph begins.
-  const copyOpacity = useTransform(scrollYProgress, [0, 0.22], [1, 0]);
-  const copyY = useTransform(scrollYProgress, [0, 0.22], [0, -40]);
-  const copyPointer = useTransform(scrollYProgress, (v) => (v > 0.25 ? "none" : "auto"));
+  // Hero copy SCROLLS UP and past the sticky cards (translate, not a fade-in-place).
+  const copyY = useTransform(scrollYProgress, [0, 0.42], ["0vh", "-78vh"]);
+  const copyOpacity = useTransform(scrollYProgress, [0.32, 0.44], [1, 0]);
+  const copyPointer = useTransform(scrollYProgress, (v) => (v > 0.3 ? "none" : "auto"));
 
-  // "Latest Projects" heading fades in as the grid forms.
-  const headingOpacity = useTransform(scrollYProgress, [MORPH_END - 0.15, MORPH_END], [0, 1]);
-  const headingY = useTransform(scrollYProgress, [MORPH_END - 0.15, MORPH_END], [24, 0]);
+  // "Latest Projects" heading rises up from below as the grid forms.
+  const headingY = useTransform(scrollYProgress, [MORPH_END - 0.32, MORPH_END], ["44vh", "0vh"]);
+  const headingOpacity = useTransform(scrollYProgress, [MORPH_END - 0.28, MORPH_END - 0.05], [0, 1]);
 
   if (!enabled) return <StaticFallback />;
 
   return (
-    <section ref={sectionRef} className="relative h-[240vh] w-full bg-white">
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+    <section ref={sectionRef} className="relative h-[260vh] w-full">
+      <div className="sticky top-0 h-screen overflow-hidden">
         <div className="relative mx-auto h-full w-full max-w-[1200px] px-6 lg:px-10">
-          {/* Hero copy — pinned upper-left, fades out */}
+          {/* Hero copy — scrolls up and past the cards */}
           <motion.div
-            style={{ opacity: copyOpacity, y: copyY, pointerEvents: copyPointer }}
-            className="absolute left-6 top-1/2 z-50 -translate-y-1/2 lg:left-10"
+            style={{ y: copyY, opacity: copyOpacity, pointerEvents: copyPointer }}
+            className="absolute left-6 top-1/2 z-40 -translate-y-1/2 lg:left-10"
           >
             <HeroCopy />
           </motion.div>
 
-          {/* "Latest Projects" heading — fades in near the top as grid forms */}
+          {/* "Latest Projects" heading — rises up from below */}
           <motion.h2
-            style={{ opacity: headingOpacity, y: headingY }}
-            className="absolute left-1/2 top-[6vh] z-50 w-full -translate-x-1/2 text-center text-[40px] font-medium leading-[1.05] tracking-[-1.2px] lg:text-[56px] lg:tracking-[-1.68px]"
+            style={{ y: headingY, opacity: headingOpacity }}
+            className="absolute left-1/2 top-[7vh] z-40 w-full -translate-x-1/2 text-center text-[40px] font-medium leading-[1.05] tracking-[-1.2px] lg:text-[56px] lg:tracking-[-1.68px]"
           >
             <span className="text-ink">Latest </span>
             <span className="text-navy">Projects</span>
           </motion.h2>
 
-          {/* Morphing cards */}
+          {/* Morphing card layer */}
           {CARDS.map((card) => (
             <MorphCard key={card.title} card={card} progress={scrollYProgress} />
           ))}
