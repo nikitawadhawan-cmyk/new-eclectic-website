@@ -10,24 +10,43 @@ import Pricing from "@/components/sections/Pricing";
 import Testimonials from "@/components/sections/Testimonials";
 import Faq from "@/components/sections/Faq";
 import Footer from "@/components/sections/Footer";
+import Reveal from "@/components/Reveal";
 
 export default function Home() {
   return (
     <>
       <Header />
       <main>
+        {/* HeroShowcase, Innovate, WorkProcess have their own scroll animation.
+            Every other section gets a subtle fade/slide-up reveal on scroll. */}
         <HeroShowcase />
-        <ClientLogos />
+        <Reveal>
+          <ClientLogos />
+        </Reveal>
         <Innovate />
-        <BigQuote />
-        <Services />
+        <Reveal>
+          <BigQuote />
+        </Reveal>
+        <Reveal>
+          <Services />
+        </Reveal>
         <WorkProcess />
-        <AboutCaseStudy />
-        <Pricing />
-        <Testimonials />
-        <Faq />
+        <Reveal>
+          <AboutCaseStudy />
+        </Reveal>
+        <Reveal>
+          <Pricing />
+        </Reveal>
+        <Reveal>
+          <Testimonials />
+        </Reveal>
+        <Reveal>
+          <Faq />
+        </Reveal>
       </main>
-      <Footer />
+      <Reveal>
+        <Footer />
+      </Reveal>
     </>
   );
 }

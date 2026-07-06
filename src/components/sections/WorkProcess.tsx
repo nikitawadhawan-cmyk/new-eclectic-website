@@ -89,11 +89,11 @@ function CardInner({ step }: { step: Step }) {
 
 /** One card that flips/reveals in as the section scrolls into view (staggered). */
 function RevealCard({ step, index, progress }: { step: Step; index: number; progress: MotionValue<number> }) {
-  // Stay closed until we've scrolled ~a third into the pinned section, then reveal.
-  const delay = 0.3 + index * 0.12;
-  const rotateY = useTransform(progress, [delay, delay + 0.32], [78, 0]);
-  const opacity = useTransform(progress, [delay, delay + 0.2], [0, 1]);
-  const y = useTransform(progress, [delay, delay + 0.32], [46, 0]);
+  // Stay closed briefly as the section settles in, then reveal on scroll.
+  const delay = 0.18 + index * 0.12;
+  const rotateY = useTransform(progress, [delay, delay + 0.3], [78, 0]);
+  const opacity = useTransform(progress, [delay, delay + 0.18], [0, 1]);
+  const y = useTransform(progress, [delay, delay + 0.3], [46, 0]);
 
   return (
     <div className={step.offset ? "lg:pt-[60px]" : "lg:pb-[60px]"} style={{ perspective: 1400 }}>
@@ -179,7 +179,7 @@ export default function WorkProcess() {
   }
 
   return (
-    <section ref={sectionRef} className="relative h-[240vh] w-full overflow-hidden bg-[#f3f3f5]">
+    <section ref={sectionRef} className="relative h-[170vh] w-full overflow-hidden bg-[#f3f3f5]">
       <div className="sticky top-0 h-screen overflow-hidden">
         <Blob />
         <div className="relative flex h-full items-center">
