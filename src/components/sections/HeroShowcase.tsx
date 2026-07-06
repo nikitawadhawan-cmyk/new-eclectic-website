@@ -105,7 +105,8 @@ const CARDS: Card[] = [
   },
 ];
 
-const MORPH_END = 0.6; // grid fully formed; phase 2 scrolls the grid through
+const MORPH_END = 0.5; // grid fully formed; then it HOLDS stationary (wide,
+// reliably-clickable window for the project cards) before phase 2 pans it up.
 
 function ArrowUpRight({ className }: { className?: string }) {
   return (
@@ -291,8 +292,10 @@ export default function HeroShowcase() {
   const headingOpacity = useTransform(scrollYProgress, [MORPH_END - 0.24, MORPH_END - 0.05], [0, 1]);
 
   // Phase 2: the whole formed grid scrolls up so the bottom row comes into view.
-  // Hold the formed grid briefly so it's clearly visible, then scroll it up (phase 2).
-  const galleryY = useTransform(scrollYProgress, [MORPH_END + 0.12, 1], ["0vh", "-58vh"]);
+  // Hold the formed grid STATIONARY for a long span (MORPH_END → 0.8) so every
+  // project card — incl. the BVC card that links to the case study — is
+  // comfortably clickable, then pan it up over the last stretch.
+  const galleryY = useTransform(scrollYProgress, [0.8, 1], ["0vh", "-58vh"]);
 
   if (!enabled) return <StaticFallback />;
 
