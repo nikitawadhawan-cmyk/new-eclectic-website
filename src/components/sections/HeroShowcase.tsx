@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "@/components/Img";
+import Image, { assetPath } from "@/components/Img";
 import {
   motion,
   useMotionValue,
@@ -45,7 +45,7 @@ const CARDS: Card[] = [
   {
     title: "BVC Logistics",
     subtitle: "B2B Logistics Site",
-    href: "#",
+    href: "/projects/bvc-logistics",
     bg: "/figma/lp-bg-1.jpg",
     screen: "/figma/lp-screen-1.jpg",
     alt: "BVC Logistics website — Secure Global Logistics for Gems & Jewellery",
@@ -173,7 +173,7 @@ function MorphCard({ card, progress }: { card: Card; progress: MotionValue<numbe
       className="pointer-events-none absolute left-1/2 top-1/2 w-[70vw] max-w-[500px] -translate-x-1/2 -translate-y-1/2 sm:w-[46vw]"
       style={{ zIndex: card.z }}
     >
-      <motion.a href={card.href} className="group pointer-events-auto block" style={{ x, y, rotate, scale }}>
+      <motion.a href={assetPath(card.href)} className="group pointer-events-auto block" style={{ x, y, rotate, scale }}>
         <CardVisual card={card} />
         <motion.div style={{ opacity: captionOpacity }}>
           <CardCaption card={card} />
@@ -230,7 +230,7 @@ function StaticFallback() {
           </h2>
           <div className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2">
             {CARDS.map((card) => (
-              <a key={card.title} href={card.href} className="group block">
+              <a key={card.title} href={assetPath(card.href)} className="group block">
                 <CardVisual card={card} />
                 <CardCaption card={card} />
               </a>
