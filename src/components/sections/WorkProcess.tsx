@@ -89,8 +89,8 @@ function CardInner({ step }: { step: Step }) {
 
 /** One card that flips/reveals in as the section scrolls into view (staggered). */
 function RevealCard({ step, index, progress }: { step: Step; index: number; progress: MotionValue<number> }) {
-  // Stay closed briefly as the section settles in, then reveal on scroll.
-  const delay = 0.18 + index * 0.12;
+  // Stay closed briefly as the section settles in, then reveal on scroll (reverses on scroll-up).
+  const delay = 0.16 + index * 0.12;
   const rotateY = useTransform(progress, [delay, delay + 0.3], [78, 0]);
   const opacity = useTransform(progress, [delay, delay + 0.18], [0, 1]);
   const y = useTransform(progress, [delay, delay + 0.3], [46, 0]);
@@ -98,7 +98,14 @@ function RevealCard({ step, index, progress }: { step: Step; index: number; prog
   return (
     <div className={step.offset ? "lg:pt-[60px]" : "lg:pb-[60px]"} style={{ perspective: 1400 }}>
       <motion.div style={{ rotateY, opacity, y, transformOrigin: "bottom center" }} className="h-full">
-        <CardInner step={step} />
+        {/* Once revealed, the card idly hovers + bounces (each card offset, so they bob independently). */}
+        <motion.div
+          className="h-full"
+          animate={{ y: [0, -12, 0], rotate: [0, -1.1, 0] }}
+          transition={{ duration: 2.8 + index * 0.25, repeat: Infinity, ease: "easeInOut", delay: index * 0.3 }}
+        >
+          <CardInner step={step} />
+        </motion.div>
       </motion.div>
     </div>
   );
@@ -179,7 +186,7 @@ export default function WorkProcess() {
   }
 
   return (
-    <section ref={sectionRef} className="relative h-[170vh] w-full overflow-hidden bg-[#f3f3f5]">
+    <section ref={sectionRef} className="relative h-[150vh] w-full bg-[#f3f3f5]">
       <div className="sticky top-0 h-screen overflow-hidden">
         <Blob />
         <div className="relative flex h-full items-center">
