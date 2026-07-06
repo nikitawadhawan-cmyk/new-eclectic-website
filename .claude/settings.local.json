@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:launchfolio.framer.website)",
+      "WebFetch(domain:www.upwork.com)"
+    ]
+  }
+}
