@@ -21,21 +21,31 @@ function SearchIcon({ className }: { className?: string }) {
   );
 }
 
-/* ── Card 1 decoration: a stylised browser / search UI mockup ─────────── */
-function BrowserMockup() {
+/* ── Card 1 decoration: a phone mockup with a search UI, filling the card ── */
+function PhoneMockup() {
   return (
-    <div className="pointer-events-none absolute inset-x-6 -bottom-4 lg:inset-x-10">
-      <div className="rounded-t-[20px] border border-white/10 bg-white/[0.04] p-5 shadow-[0_-20px_60px_-30px_rgba(0,0,0,0.6)] backdrop-blur-sm lg:p-6">
-        <span className="block h-2.5 w-16 rounded-full bg-white/20" />
-        <div className="mt-5 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3.5">
-          <SearchIcon className="size-5 shrink-0 text-white/40" />
-          <span className="block h-2 w-1/2 rounded-full bg-white/15" />
-        </div>
-        <div className="mt-6 space-y-3.5">
-          <span className="block h-2 w-3/4 rounded-full bg-white/12" />
-          <span className="block h-2 w-2/3 rounded-full bg-white/[0.08]" />
-          <span className="block h-2 w-11/12 rounded-full bg-white/[0.08]" />
-          <span className="block h-2 w-1/2 rounded-full bg-white/[0.08]" />
+    <div className="pointer-events-none absolute inset-x-0 -bottom-8 top-2 flex justify-center overflow-hidden lg:-bottom-10">
+      <div className="relative w-[250px] max-w-[80%] rounded-t-[44px] border border-b-0 border-white/12 bg-gradient-to-b from-white/[0.07] to-white/[0.02] p-3.5 shadow-[0_-30px_80px_-40px_rgba(0,0,0,0.7)] backdrop-blur-sm">
+        {/* speaker / notch */}
+        <span className="mx-auto mb-3.5 block h-1.5 w-16 rounded-full bg-white/25" />
+        <div className="rounded-[32px] border border-white/10 bg-white/[0.03] p-4">
+          {/* search bar */}
+          <div className="flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.05] px-3.5 py-2.5">
+            <SearchIcon className="size-4 shrink-0 text-white/40" />
+            <span className="block h-2 w-1/2 rounded-full bg-white/15" />
+          </div>
+          {/* filter chips */}
+          <div className="mt-4 flex gap-2">
+            <span className="h-6 flex-1 rounded-full bg-gold/25" />
+            <span className="h-6 flex-1 rounded-full bg-white/[0.07]" />
+            <span className="h-6 flex-1 rounded-full bg-white/[0.07]" />
+          </div>
+          {/* content cards */}
+          <div className="mt-4 space-y-3">
+            <span className="block h-14 rounded-2xl border border-white/5 bg-white/[0.05]" />
+            <span className="block h-14 rounded-2xl border border-white/5 bg-white/[0.05]" />
+            <span className="block h-14 rounded-2xl border border-white/5 bg-white/[0.05]" />
+          </div>
         </div>
       </div>
     </div>
@@ -138,8 +148,8 @@ export default function OurServices() {
               websites tailored to your brand identity, industry, and target
               audience.
             </p>
-            <div className="relative mt-8 flex-1">
-              <BrowserMockup />
+            <div className="relative mt-8 min-h-[260px] flex-1">
+              <PhoneMockup />
             </div>
           </article>
 
