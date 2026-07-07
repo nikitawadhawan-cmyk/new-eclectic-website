@@ -2,6 +2,7 @@ import Header from "@/components/sections/Header";
 import HeroShowcase from "@/components/sections/HeroShowcase";
 import ClientLogos from "@/components/sections/ClientLogos";
 import Innovate from "@/components/sections/Innovate";
+import OurServices from "@/components/sections/OurServices";
 import BigQuote from "@/components/sections/BigQuote";
 import Services from "@/components/sections/Services";
 import WorkProcess from "@/components/sections/WorkProcess";
@@ -25,6 +26,9 @@ export default function Home() {
           <ClientLogos />
         </Reveal>
         <Innovate />
+        <Reveal>
+          <OurServices />
+        </Reveal>
         <FlipReveal>
           <BigQuote />
         </FlipReveal>
