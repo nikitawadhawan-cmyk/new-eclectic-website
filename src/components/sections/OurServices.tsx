@@ -167,10 +167,11 @@ export default function OurServices() {
           {/* Webflow — bottom right card */}
           <article className="relative flex flex-col overflow-hidden rounded-[28px] border border-white/10 bg-[#20264c] p-8 lg:p-10">
             <h3 className="max-w-[280px] text-[24px] font-medium leading-[1.2] tracking-[-0.5px] lg:text-[30px]">
-              Webflow Website Development
+              WordPress Website Development
             </h3>
             <p className="mt-4 max-w-[340px] text-[16px] leading-[24px] text-white/60">
-              Our team specializes in no-code, high-impact interactive websites.
+              Our team specializes in high-impact interactive WordPress
+              websites.
             </p>
             <NodeGraph />
           </article>
