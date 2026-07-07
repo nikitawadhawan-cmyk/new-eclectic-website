@@ -5,6 +5,7 @@ import Innovate from "@/components/sections/Innovate";
 import OurServices from "@/components/sections/OurServices";
 import BigQuote from "@/components/sections/BigQuote";
 import WorkProcess from "@/components/sections/WorkProcess";
+import OurWork from "@/components/sections/OurWork";
 import AboutCaseStudy from "@/components/sections/AboutCaseStudy";
 import Pricing from "@/components/sections/Pricing";
 import Testimonials from "@/components/sections/Testimonials";
@@ -32,6 +33,9 @@ export default function Home() {
           <BigQuote />
         </FlipReveal>
         <WorkProcess />
+        <Reveal>
+          <OurWork />
+        </Reveal>
         <FlipReveal>
           <AboutCaseStudy />
         </FlipReveal>
