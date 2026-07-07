@@ -46,29 +46,24 @@ body {
   }
 }
 
-/* Horizontal auto-scroll marquee for the "Our Services" section. The track
-   holds two identical copies of the columns; shifting it by -50% loops
-   seamlessly. Pauses on hover; disabled for reduced-motion users. */
-@keyframes services-marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
+/* "Our Services" horizontal scroller: a real scroll container (so the user
+   can drag the scrollbar / swipe / use the arrows) that is ALSO auto-scrolled
+   by JS in the component. This styles its slim gold scrollbar. */
+.services-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #e8c700 rgba(255, 255, 255, 0.12);
 }
 
-.services-marquee {
-  animation: services-marquee 55s linear infinite;
-  will-change: transform;
+.services-scroll::-webkit-scrollbar {
+  height: 6px;
 }
 
-.services-marquee:hover {
-  animation-play-state: paused;
+.services-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .services-marquee {
-    animation: none;
-  }
+.services-scroll::-webkit-scrollbar-thumb {
+  background: #e8c700;
+  border-radius: 999px;
 }

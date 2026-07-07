@@ -1,11 +1,20 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+
 /**
  * OurServices — "Our Services" band for the homepage.
  *
  * Layout adapted from a reference (Schbang) but recolored into the
- * eclectic-digital brand palette: a navy (#2a315f) band with a badge + headline,
- * then a full-width horizontal MARQUEE of service columns that auto-scrolls
- * (CSS `.services-marquee`, see globals.css). It is decorative — not clickable,
- * no buttons, no arrow nav — and pauses on hover / for reduced-motion users.
+ * eclectic-digital brand palette: a navy (#2a315f) band with a badge +
+ * headline, then a full-width horizontal scroller of service columns.
+ *
+ * The track is a REAL scroll container: it auto-drifts like a marquee
+ * (rAF ping-pong, pauses on hover/press and briefly after any manual
+ * interaction; disabled for reduced-motion), and can also be scrolled
+ * manually — via the visible gold scrollbar (.services-scroll in
+ * globals.css), swipe/trackpad, or the arrow buttons at each end.
+ * Columns themselves are decorative, not clickable.
  */
 
 type Service = { title: string; desc: string };
@@ -41,6 +50,25 @@ const SERVICES: Service[] = [
   },
 ];
 
+/** px the auto-drift moves per second */
+const DRIFT_SPEED = 32;
+/** how long a manual interaction pauses the auto-drift (ms) */
+const RESUME_DELAY = 2500;
+
+function Chevron({ dir, className }: { dir: "left" | "right"; className?: string }) {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className={className}>
+      <path
+        d={dir === "left" ? "M12.5 4.5 7 10l5.5 5.5" : "M7.5 4.5 13 10l-5.5 5.5"}
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 function ServiceColumn({ index, title, desc }: { index: number } & Service) {
   return (
     <div className="group/col flex h-full w-[270px] shrink-0 flex-col justify-between border-r border-white/10 px-7 py-9 transition-colors duration-300 hover:bg-white/[0.03] sm:w-[340px] sm:px-9 sm:py-12">
@@ -63,6 +91,83 @@ function ServiceColumn({ index, title, desc }: { index: number } & Service) {
 }
 
 export default function OurServices() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  /** auto-drift is suspended while > now (hover/press/manual scroll) */
+  const pausedUntil = useRef(0);
+  const hovering = useRef(false);
+  /** 1 = drifting right, -1 = drifting left (ping-pong at the ends) */
+  const dir = useRef(1);
+  /** set while the rAF loop itself writes scrollLeft, so its own scroll
+   *  events aren't mistaken for manual interaction */
+  const selfScrolling = useRef(false);
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let raf = 0;
+    let last = performance.now();
+
+    const tick = (now: number) => {
+      const dt = (now - last) / 1000;
+      last = now;
+      const max = el.scrollWidth - el.clientWidth;
+      if (max > 0 && !hovering.current && now >= pausedUntil.current) {
+        let next = el.scrollLeft + dir.current * DRIFT_SPEED * dt;
+        if (next >= max) {
+          next = max;
+          dir.current = -1;
+        } else if (next <= 0) {
+          next = 0;
+          dir.current = 1;
+        }
+        selfScrolling.current = true;
+        el.scrollLeft = next;
+        // release the flag after this frame's scroll event has fired
+        requestAnimationFrame(() => (selfScrolling.current = false));
+      }
+      raf = requestAnimationFrame(tick);
+    };
+
+    const pause = () => {
+      pausedUntil.current = performance.now() + RESUME_DELAY;
+    };
+    const onScroll = () => {
+      if (!selfScrolling.current) pause();
+    };
+    const onEnter = () => (hovering.current = true);
+    const onLeave = () => {
+      hovering.current = false;
+      last = performance.now();
+    };
+
+    el.addEventListener("scroll", onScroll, { passive: true });
+    el.addEventListener("pointerenter", onEnter);
+    el.addEventListener("pointerleave", onLeave);
+    el.addEventListener("pointerdown", pause);
+    el.addEventListener("touchstart", pause, { passive: true });
+    raf = requestAnimationFrame(tick);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      el.removeEventListener("scroll", onScroll);
+      el.removeEventListener("pointerenter", onEnter);
+      el.removeEventListener("pointerleave", onLeave);
+      el.removeEventListener("pointerdown", pause);
+      el.removeEventListener("touchstart", pause);
+    };
+  }, []);
+
+  const nudge = (direction: -1 | 1) => {
+    const el = trackRef.current;
+    if (!el) return;
+    pausedUntil.current = performance.now() + RESUME_DELAY;
+    const col = el.querySelector<HTMLElement>(":scope > div");
+    const step = col ? col.offsetWidth : 340;
+    el.scrollBy({ left: direction * step, behavior: "smooth" });
+  };
+
   return (
     <section className="relative w-full overflow-hidden bg-navy py-20 text-white lg:py-24">
       {/* soft brand glow */}
@@ -92,22 +197,41 @@ export default function OurServices() {
         </h2>
       </div>
 
-      {/* Full-width auto-scrolling marquee of service columns */}
-      <div className="relative mt-14 w-full overflow-hidden lg:mt-16">
-        <div className="services-marquee flex h-[360px] w-max border-y border-white/10 sm:h-[420px]">
-          {[...SERVICES, ...SERVICES].map((s, i) => (
-            <ServiceColumn
-              key={i}
-              index={i % SERVICES.length}
-              title={s.title}
-              desc={s.desc}
-            />
+      {/* Scroller */}
+      <div className="relative mt-14 w-full lg:mt-16">
+        {/* Arrow — left end */}
+        <button
+          type="button"
+          aria-label="Scroll services left"
+          onClick={() => nudge(-1)}
+          className="absolute left-3 top-1/2 z-20 flex size-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-navy/80 text-white backdrop-blur-sm transition hover:bg-white hover:text-navy active:scale-95 sm:left-5 sm:size-12"
+        >
+          <Chevron dir="left" className="size-5" />
+        </button>
+
+        {/* Arrow — right end */}
+        <button
+          type="button"
+          aria-label="Scroll services right"
+          onClick={() => nudge(1)}
+          className="absolute right-3 top-1/2 z-20 flex size-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-navy/80 text-white backdrop-blur-sm transition hover:bg-white hover:text-navy active:scale-95 sm:right-5 sm:size-12"
+        >
+          <Chevron dir="right" className="size-5" />
+        </button>
+
+        {/* Manually scrollable + auto-drifting track (gold scrollbar) */}
+        <div
+          ref={trackRef}
+          className="services-scroll flex h-[380px] w-full overflow-x-auto border-y border-white/10 pb-2 sm:h-[440px]"
+        >
+          {SERVICES.map((s, i) => (
+            <ServiceColumn key={s.title} index={i} title={s.title} desc={s.desc} />
           ))}
         </div>
 
         {/* edge fades so columns dissolve into the band at both sides */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-navy to-transparent sm:w-24" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-navy to-transparent sm:w-24" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-navy to-transparent sm:w-20" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-navy to-transparent sm:w-20" />
       </div>
     </section>
   );
