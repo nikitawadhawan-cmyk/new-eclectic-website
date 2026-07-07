@@ -24,8 +24,8 @@ function Logo() {
         />
         <rect x="14.6" y="7.5" width="2.8" height="14.5" rx="1.4" fill="#2a315f" />
         <rect x="21.6" y="7.5" width="2.8" height="14.5" rx="1.4" fill="#2a315f" />
-        <rect x="9.5" y="11.6" width="20" height="2.8" rx="1.4" fill="#e8c700" />
-        <rect x="9.5" y="16.6" width="20" height="2.8" rx="1.4" fill="#e8c700" />
+        <rect x="9.5" y="11.6" width="20" height="2.8" rx="1.4" fill="#2a315f" />
+        <rect x="9.5" y="16.6" width="20" height="2.8" rx="1.4" fill="#2a315f" />
       </svg>
       <span className="whitespace-nowrap text-[19px] font-extrabold lowercase leading-none tracking-[-0.5px]">
         <span className="text-navy">eclectic</span>
