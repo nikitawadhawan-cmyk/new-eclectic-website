@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import Image from "@/components/Img";
 
 const navLinks = [
   { label: "Work", href: "#work" },
@@ -13,24 +14,16 @@ const navLinks = [
 
 function Logo() {
   return (
-    <a href="#top" className="flex shrink-0 items-center gap-2" aria-label="eclectic digital — home">
-      <svg viewBox="0 0 40 40" className="size-8 shrink-0" role="img" aria-hidden="true">
-        <path
-          d="M7 3h26a5 5 0 0 1 5 5v13a5 5 0 0 1-5 5H14l-5.5 6.5V26H7a5 5 0 0 1-5-5V8a5 5 0 0 1 5-5Z"
-          fill="none"
-          stroke="#2a315f"
-          strokeWidth="3"
-          strokeLinejoin="round"
-        />
-        <rect x="14.6" y="7.5" width="2.8" height="14.5" rx="1.4" fill="#2a315f" />
-        <rect x="21.6" y="7.5" width="2.8" height="14.5" rx="1.4" fill="#2a315f" />
-        <rect x="9.5" y="11.6" width="20" height="2.8" rx="1.4" fill="#2a315f" />
-        <rect x="9.5" y="16.6" width="20" height="2.8" rx="1.4" fill="#2a315f" />
-      </svg>
-      <span className="whitespace-nowrap text-[19px] font-extrabold lowercase leading-none tracking-[-0.5px]">
-        <span className="text-navy">eclectic</span>
-        <span className="text-gold">digital</span>
-      </span>
+    <a href="#top" className="flex shrink-0 items-center" aria-label="eclectic digital — home">
+      {/* Real brand logo (public/eclectic-logo-nav.png, 474x74) */}
+      <Image
+        src="/eclectic-logo-nav.png"
+        alt="eclectic digital"
+        width={474}
+        height={74}
+        priority
+        className="h-8 w-auto"
+      />
     </a>
   );
 }
