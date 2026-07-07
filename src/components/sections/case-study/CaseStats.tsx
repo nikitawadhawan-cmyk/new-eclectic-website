@@ -71,7 +71,7 @@ export default function CaseStats() {
         </dl>
 
         {/* (b) TESTIMONIAL QUOTE */}
-        <figure className="mx-auto mt-20 flex w-full max-w-[890px] flex-col items-center gap-6 px-2 text-center lg:mt-32 lg:px-[66px]">
+        <figure className="mt-20 flex w-full flex-col items-start gap-6 text-left lg:mt-32">
           <span
             aria-hidden
             className="block font-serif text-[96px] leading-[0.7] text-[#ffdb00]"
@@ -79,15 +79,15 @@ export default function CaseStats() {
             &ldquo;
           </span>
 
-          <blockquote className="text-[#0a0a0a] text-[26px] leading-[36px] tracking-[-0.4px] sm:text-[32px] sm:leading-[46px] lg:text-[40px] lg:leading-[56px] lg:tracking-[-0.6px]">
+          <blockquote className="w-full text-[#0a0a0a] text-[26px] leading-[36px] tracking-[-0.4px] sm:text-[32px] sm:leading-[46px] lg:text-[40px] lg:leading-[56px] lg:tracking-[-0.6px]">
             I led the end-to-end digital strategy for BVC Logistics&mdash;from
             research and content planning to website structure, user experience,
-            and launch.
+            and launch
           </blockquote>
 
           <hr className="w-full border-0 border-t-[0.8px] border-dashed border-[#e6e6e6]" />
 
-          <figcaption className="flex items-center justify-center gap-4">
+          <figcaption className="flex items-center justify-start gap-4">
             <span className="relative size-[60px] shrink-0 overflow-hidden rounded-[16px]">
               <Image
                 src="/figma/cs-testimonial-avatar.jpg"
