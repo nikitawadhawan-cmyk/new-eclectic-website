@@ -12,20 +12,6 @@
  * button, Webflow with a tool-integration node graph). Fully responsive.
  */
 
-function ArrowUpRight({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className={className}>
-      <path
-        d="M5.833 14.167 14.167 5.833M14.167 5.833H6.667M14.167 5.833v7.5"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
 function SearchIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className={className}>
@@ -166,13 +152,6 @@ export default function OurServices() {
               We build high-converting Shopify stores based on consumer
               psychology and Neuromarketing.
             </p>
-            <a
-              href="#contact"
-              className="group mt-8 inline-flex h-12 w-fit items-center gap-2 rounded-full border border-white/10 bg-navy-deep px-6 text-[15px] font-semibold text-white transition-colors hover:bg-black active:scale-[0.98]"
-            >
-              Visit Us
-              <ArrowUpRight className="size-[18px] text-gold transition-transform group-hover:translate-x-0.5" />
-            </a>
           </article>
 
           {/* Webflow — bottom right card */}
