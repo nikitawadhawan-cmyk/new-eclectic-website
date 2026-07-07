@@ -45,3 +45,30 @@ body {
     animation: none;
   }
 }
+
+/* Horizontal auto-scroll marquee for the "Our Services" section. The track
+   holds two identical copies of the columns; shifting it by -50% loops
+   seamlessly. Pauses on hover; disabled for reduced-motion users. */
+@keyframes services-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.services-marquee {
+  animation: services-marquee 55s linear infinite;
+  will-change: transform;
+}
+
+.services-marquee:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .services-marquee {
+    animation: none;
+  }
+}
