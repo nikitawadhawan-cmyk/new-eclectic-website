@@ -47,18 +47,8 @@ export default function CaseHero() {
   return (
     <section className="w-full bg-white">
       <div className="mx-auto w-full max-w-[1200px] px-6 py-16 lg:px-10 lg:py-24">
-        {/* Eyebrow pill */}
-        <div className="flex justify-center">
-          <span className="inline-flex items-center gap-2 rounded-full border-[0.8px] border-[#dedede] bg-white px-4 py-1.5">
-            <span className="size-1.5 rounded-[3px] bg-navy" />
-            <span className="text-[13px] font-medium uppercase leading-none tracking-[0.02em] text-[#212121] sm:text-[16px]">
-              Best Agency Near you
-            </span>
-          </span>
-        </div>
-
         {/* Heading */}
-        <h1 className="mt-6 text-center font-semibold uppercase text-[#080d0d] text-[40px] leading-[0.95] tracking-[-2px] sm:text-[56px] sm:tracking-[-2.8px] lg:text-[76px] lg:leading-[83.6px] lg:tracking-[-3.8px]">
+        <h1 className="text-center font-semibold uppercase text-[#080d0d] text-[40px] leading-[0.95] tracking-[-2px] sm:text-[56px] sm:tracking-[-2.8px] lg:text-[76px] lg:leading-[83.6px] lg:tracking-[-3.8px]">
           About the Project
         </h1>
 

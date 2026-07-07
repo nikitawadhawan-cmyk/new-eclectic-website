@@ -14,16 +14,12 @@ import Image from "@/components/Img";
  * (b) TESTIMONIAL BAND (89:5813)
  *   - Centered gold quote mark, then the quote (Figma 40px / 56px, centered,
  *     #0a0a0a, tracking -0.6px), a dashed hairline, then a 60px rounded avatar +
- *     "Nikita Wadhawan" (28px) / "CEO, Stodio Agency" (16px, #a5a5a5).
+ *     "Nikita Wadhawan" (28px) / "Founder, Eclectic Agency" (16px, #a5a5a5).
  *
  * DEVIATIONS (flagged):
  *   - Quote-mark color in Figma is #ffdb00; the "+" glyphs use #e8c700. Both are
  *     "gold" — the "+" maps to the --color-gold token (#e8c700); the quote mark
  *     is kept Figma-exact at #ffdb00.
- *   - "CEO, Stodio Agency" is TEMPLATE PLACEHOLDER copy carried over from the
- *     portfolio template (BVC is the real client, "Stodio Agency" is not a real
- *     entity here). Reproduced verbatim as it appears in the Figma per the brief,
- *     but flagged — likely should read the correct BVC-context title.
  *   - Section background is the light surface (#f5f5f7 = --color-surface), matching
  *     the rendered Figma screenshot.
  *   - Figma uses "Stack Sans Headline" for the quote; the project standard is Inter
@@ -33,13 +29,13 @@ import Image from "@/components/Img";
 type Stat = {
   /** The numeric value (without the trailing plus). */
   value: string;
-  /** true when a gold "+" follows the value (48+/18+/150+ but not "2 Months"). */
+  /** true when a gold "+" follows the value (200+/18+/150+ but not "2 Months"). */
   plus?: boolean;
   label: string;
 };
 
 const STATS: Stat[] = [
-  { value: "48", plus: true, label: "Website Pages Planned" },
+  { value: "200", plus: true, label: "Website Pages Planned" },
   { value: "18", plus: true, label: "User Flows Created" },
   { value: "150", plus: true, label: "Content Sections Structured" },
   { value: "2 Months", label: "Project Duration" },
@@ -106,7 +102,7 @@ export default function CaseStats() {
                 Nikita Wadhawan
               </span>
               <span className="text-[#a5a5a5] text-[16px] leading-[24px]">
-                CEO, Stodio Agency
+                Founder, Eclectic Agency
               </span>
             </span>
           </figcaption>
