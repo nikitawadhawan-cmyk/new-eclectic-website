@@ -4,7 +4,6 @@ import ClientLogos from "@/components/sections/ClientLogos";
 import Innovate from "@/components/sections/Innovate";
 import OurServices from "@/components/sections/OurServices";
 import BigQuote from "@/components/sections/BigQuote";
-import Services from "@/components/sections/Services";
 import WorkProcess from "@/components/sections/WorkProcess";
 import AboutCaseStudy from "@/components/sections/AboutCaseStudy";
 import Pricing from "@/components/sections/Pricing";
@@ -31,9 +30,6 @@ export default function Home() {
         </Reveal>
         <FlipReveal>
           <BigQuote />
-        </FlipReveal>
-        <FlipReveal>
-          <Services />
         </FlipReveal>
         <WorkProcess />
         <FlipReveal>
