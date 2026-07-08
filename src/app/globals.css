@@ -45,25 +45,3 @@ body {
     animation: none;
   }
 }
-
-/* "Our Services" horizontal scroller: a real scroll container (so the user
-   can drag the scrollbar / swipe / use the arrows) that is ALSO auto-scrolled
-   by JS in the component. This styles its slim gold scrollbar. */
-.services-scroll {
-  scrollbar-width: thin;
-  scrollbar-color: #e8c700 rgba(255, 255, 255, 0.12);
-}
-
-.services-scroll::-webkit-scrollbar {
-  height: 6px;
-}
-
-.services-scroll::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 999px;
-}
-
-.services-scroll::-webkit-scrollbar-thumb {
-  background: #e8c700;
-  border-radius: 999px;
-}
