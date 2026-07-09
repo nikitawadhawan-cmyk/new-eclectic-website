@@ -59,11 +59,11 @@ const SERVICES: Service[] = [
 
 const N = SERVICES.length;
 /** column width (px) of each service on the pinned track */
-const COL_W = 430;
+const COL_W = 500;
 /** px height of the title area above the line */
-const TITLE_H = 104;
+const TITLE_H = 128;
 /** the line's height */
-const LINE_H = 26;
+const LINE_H = 28;
 
 function ServiceColumn({
   index,
@@ -82,12 +82,12 @@ function ServiceColumn({
       className="absolute top-0 pr-12"
     >
       <div style={{ height: TITLE_H }} className="flex items-end pb-8">
-        <h3 className="text-[24px] font-semibold leading-[1.15] tracking-[0.3px] text-ink">
+        <h3 className="text-[32px] font-semibold leading-[1.12] tracking-[-0.3px] text-ink">
           {s.title}
         </h3>
       </div>
       <div style={{ height: LINE_H }} />
-      <p className="mt-7 text-[15px] leading-[1.5] tracking-[-0.2px] text-muted">
+      <p className="mt-8 text-[17px] leading-[1.55] tracking-[-0.2px] text-muted">
         {s.desc}
       </p>
     </motion.div>
@@ -195,15 +195,16 @@ export default function OurServices() {
           </div>
         </div>
 
-        {/* Scroll-driven track */}
-        <div className="relative mt-[10vh] w-full flex-1">
+        {/* Scroll-driven track — vertically centered in the remaining screen
+            space so the pinned view doesn't leave a large empty band below */}
+        <div className="flex w-full flex-1 items-center">
           <motion.div
             style={{
               x,
               width: N * COL_W,
               marginLeft: "max(24px, calc((100vw - 1120px) / 2))",
             }}
-            className="relative h-full"
+            className="relative h-[400px] shrink-0"
           >
             {/* the growing navy line */}
             <motion.div
