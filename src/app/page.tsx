@@ -1,6 +1,7 @@
 import Header from "@/components/sections/Header";
 import HeroShowcase from "@/components/sections/HeroShowcase";
 import ClientLogos from "@/components/sections/ClientLogos";
+import ShowreelVideo from "@/components/sections/ShowreelVideo";
 import Innovate from "@/components/sections/Innovate";
 import OurServices from "@/components/sections/OurServices";
 import BigQuote from "@/components/sections/BigQuote";
@@ -25,10 +26,13 @@ export default function Home() {
         <Reveal>
           <ClientLogos />
         </Reveal>
-        <Innovate />
         <Reveal>
-          <OurServices />
+          <ShowreelVideo />
         </Reveal>
+        <Innovate />
+        {/* OurServices is pinned/scroll-driven — no Reveal wrapper (its
+            transform would break position: sticky). */}
+        <OurServices />
         <FlipReveal>
           <BigQuote />
         </FlipReveal>

@@ -1,18 +1,27 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  useReducedMotion,
+  type MotionValue,
+} from "framer-motion";
+
 /**
- * OurServices — "Our Services" band for the homepage.
+ * OurServices — pinned scroll-driven "progress line" section (reference:
+ * user's screen recording of a scrollytelling services strip).
  *
- * Design 1a ("Progress bar") from the supplied standalone HTML, recolored
- * from its dark/purple palette into the site's white + navy brand:
- *   - white background (site bg), ink/muted text
- *   - a numbered "Our services" pill badge + left-aligned heading
- *   - services laid out in two rows (4 + 3 columns): title row, then a
- *     PROGRESS LINE (the brand navy, with a soft navy glow) that fills up to
- *     the "active" service, with dashed column dividers, then descriptions.
- *   - services up to the active one are full-strength; later ones are dimmed.
+ * White band, brand-navy line. The section pins while you scroll:
+ * service points appear ONE BY ONE — each new title+description fades in
+ * as the navy line grows underneath it (rounded glowing cap, dashed navy
+ * dividers at column boundaries) — and the whole track slides left so the
+ * newest point is always on screen. Badge + one-line heading stay pinned.
  *
- * Desktop (lg+) renders the faithful progress-bar layout; below lg it
- * degrades to a stacked list where the progress reads as a navy left rule.
- * Static + decorative (no buttons/links), like the reference.
+ * Uses the same manual scroll-progress MotionValue pattern as
+ * HeroShowcase/Innovate (reliable where useScroll({target}) was flaky).
+ * Falls back to a static stacked list on small screens / reduced motion.
  */
 
 type Service = { title: string; desc: string };
@@ -48,142 +57,173 @@ const SERVICES: Service[] = [
   },
 ];
 
-/** index of the highlighted service (per the reference design) */
-const ACTIVE = 2;
-/** row split per the reference: 4 columns, then 3 */
-const ROW_COUNTS = [4, 3];
+const N = SERVICES.length;
+/** column width (px) of each service on the pinned track */
+const COL_W = 430;
+/** px height of the title area above the line */
+const TITLE_H = 104;
+/** the line's height */
+const LINE_H = 26;
 
-/* dimmed tones on the white bg (reference dims later items) */
-const TITLE_ON = "text-ink";
-const TITLE_OFF = "text-[#b6b6b6]";
-const DESC_ON = "text-muted";
-const DESC_OFF = "text-[#c6c6c6]";
-
-function ProgressRow({ start, count }: { start: number; count: number }) {
-  const items = SERVICES.slice(start, start + count);
-  const rowActive = ACTIVE >= start && ACTIVE < start + count;
-  const fillFrac =
-    ACTIVE >= start + count ? 1 : rowActive ? (ACTIVE - start + 0.92) / count : 0;
-
+function ServiceColumn({
+  index,
+  r,
+}: {
+  index: number;
+  /** continuous reveal progress in "items" (0..N) */
+  r: MotionValue<number>;
+}) {
+  const s = SERVICES[index];
+  const opacity = useTransform(r, [index + 0.1, index + 0.5], [0, 1]);
+  const y = useTransform(r, [index + 0.1, index + 0.5], [16, 0]);
   return (
-    <div className="relative">
-      {/* Titles */}
-      <div
-        className="grid"
-        style={{ gridTemplateColumns: `repeat(${count}, minmax(0, 1fr))` }}
-      >
-        {items.map((s, i) => (
-          <div key={s.title} className="pr-11">
-            <h3
-              className={`mb-9 text-[22px] font-semibold leading-[1.15] tracking-[0.3px] ${
-                start + i <= ACTIVE ? TITLE_ON : TITLE_OFF
-              }`}
-            >
-              {s.title}
-            </h3>
-          </div>
-        ))}
+    <motion.div
+      style={{ opacity, y, left: index * COL_W, width: COL_W }}
+      className="absolute top-0 pr-12"
+    >
+      <div style={{ height: TITLE_H }} className="flex items-end pb-8">
+        <h3 className="text-[24px] font-semibold leading-[1.15] tracking-[0.3px] text-ink">
+          {s.title}
+        </h3>
       </div>
+      <div style={{ height: LINE_H }} />
+      <p className="mt-7 text-[15px] leading-[1.5] tracking-[-0.2px] text-muted">
+        {s.desc}
+      </p>
+    </motion.div>
+  );
+}
 
-      {/* The line — brand navy progress fill on a hairline track */}
-      <div className="relative mr-11 h-[30px]">
-        <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-[#e6e6e6]" />
-        {fillFrac > 0 && (
-          <div
-            className="absolute bottom-0 left-0 top-0 rounded-full bg-gradient-to-r from-navy-deep to-navy shadow-[0_0_46px_rgba(42,49,95,0.45),0_0_110px_rgba(42,49,95,0.22)]"
-            style={{ width: `${(fillFrac * 100).toFixed(2)}%` }}
-          />
-        )}
-        {Array.from({ length: count - 1 }, (_, i) => (
-          <div
-            key={i}
-            className="absolute -top-[22px] bottom-0 w-0 border-l-2 border-dashed border-navy/40"
-            style={{ left: `${(((i + 1) / count) * 100).toFixed(3)}%` }}
-          />
-        ))}
+/** Static, un-pinned fallback for mobile / reduced motion. */
+function StaticFallback() {
+  return (
+    <section className="w-full bg-white py-20">
+      <div className="mx-auto w-full max-w-[1200px] px-6">
+        <Badge />
+        <h2 className="mt-6 text-[34px] font-medium leading-[1.16] tracking-[-0.5px] text-ink sm:text-[40px]">
+          From Design to Development, Our Services
+        </h2>
+        <ul className="mt-12 flex flex-col">
+          {SERVICES.map((s) => (
+            <li key={s.title} className="border-l-2 border-navy py-6 pl-5">
+              <h3 className="text-[20px] font-semibold leading-[1.2] tracking-[0.3px] text-ink">
+                {s.title}
+              </h3>
+              <p className="mt-2.5 text-[14px] leading-[1.5] text-muted">
+                {s.desc}
+              </p>
+            </li>
+          ))}
+        </ul>
       </div>
+    </section>
+  );
+}
 
-      {/* Descriptions */}
-      <div
-        className="mt-7 grid"
-        style={{ gridTemplateColumns: `repeat(${count}, minmax(0, 1fr))` }}
-      >
-        {items.map((s, i) => (
-          <div key={s.title} className="pr-11">
-            <p
-              className={`text-[15px] leading-[1.45] tracking-[-0.2px] ${
-                start + i <= ACTIVE ? DESC_ON : DESC_OFF
-              }`}
-            >
-              {s.desc}
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>
+function Badge() {
+  return (
+    <span className="inline-flex w-fit items-center gap-[11px] rounded-full border border-[#dedede] py-[5px] pl-1.5 pr-4">
+      <span className="flex size-6 items-center justify-center rounded-full bg-navy text-[12px] font-medium text-white">
+        2
+      </span>
+      <span className="text-[14px] text-ink">Our services</span>
+    </span>
   );
 }
 
 export default function OurServices() {
-  let offset = 0;
-  const rows = ROW_COUNTS.map((count) => {
-    const start = offset;
-    offset += count;
-    return { start, count };
-  });
+  const sectionRef = useRef<HTMLElement>(null);
+  const reduced = useReducedMotion();
+  const [enabled, setEnabled] = useState(true);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const update = () => setEnabled(mq.matches && !reduced);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, [reduced]);
+
+  // Manual scroll progress (0..1 across the pinned span) — same pattern as
+  // HeroShowcase; reliable and reversible.
+  const progress = useMotionValue(0);
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    let raf = 0;
+    const measure = () => {
+      const rect = el.getBoundingClientRect();
+      const total = rect.height - window.innerHeight;
+      const p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
+      progress.set(p);
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(measure);
+    };
+    measure();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, [progress, enabled]);
+
+  // Continuous reveal progress in item units (0..N).
+  const r = useTransform(progress, [0.04, 0.96], [0.35, N], { clamp: true });
+  // Track slides left once ~2.3 items are on screen, keeping the newest visible.
+  const x = useTransform(r, (v) => -Math.max(0, v - 2.3) * COL_W);
+  // The navy line grows just ahead of the newest revealed item.
+  const lineWidth = useTransform(r, (v) =>
+    Math.max(0, Math.min(v + 0.55, N) * COL_W - 48),
+  );
+
+  if (!enabled) return <StaticFallback />;
 
   return (
-    <section className="w-full bg-white py-20 lg:py-28">
-      <div className="mx-auto w-full max-w-[1200px] px-6 lg:px-10">
-        {/* Badge + heading (left-aligned, per design 1a) */}
-        <div className="flex flex-col gap-6">
-          <span className="inline-flex w-fit items-center gap-[11px] rounded-full border border-[#dedede] py-[5px] pl-1.5 pr-4">
-            <span className="flex size-6 items-center justify-center rounded-full bg-navy text-[12px] font-medium text-white">
-              2
-            </span>
-            <span className="text-[14px] text-ink">Our services</span>
-          </span>
-          <h2 className="max-w-[16ch] text-[34px] font-medium leading-[1.16] tracking-[-0.5px] text-ink sm:text-[40px] lg:text-[46px]">
-            From Design to Development, Our Services
-          </h2>
+    <section ref={sectionRef} className="relative h-[420vh] w-full bg-white">
+      <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
+        {/* Pinned header — badge + ONE-LINE heading */}
+        <div className="mx-auto w-full max-w-[1200px] px-6 pt-[9vh] lg:px-10">
+          <div className="flex flex-col gap-6">
+            <Badge />
+            <h2 className="whitespace-nowrap text-[clamp(28px,3.4vw,46px)] font-medium leading-[1.16] tracking-[-0.5px] text-ink">
+              From Design to Development, Our Services
+            </h2>
+          </div>
         </div>
 
-        {/* Desktop: two progress-bar rows */}
-        <div className="mt-14 hidden flex-col gap-[72px] lg:flex lg:mt-[72px]">
-          {rows.map((row) => (
-            <ProgressRow key={row.start} start={row.start} count={row.count} />
-          ))}
+        {/* Scroll-driven track */}
+        <div className="relative mt-[10vh] w-full flex-1">
+          <motion.div
+            style={{
+              x,
+              width: N * COL_W,
+              marginLeft: "max(24px, calc((100vw - 1120px) / 2))",
+            }}
+            className="relative h-full"
+          >
+            {/* the growing navy line */}
+            <motion.div
+              style={{ width: lineWidth, top: TITLE_H, height: LINE_H }}
+              className="absolute left-0 rounded-full bg-gradient-to-r from-navy-deep to-navy shadow-[0_0_46px_rgba(42,49,95,0.45),0_0_110px_rgba(42,49,95,0.22)]"
+            />
+            {/* dashed dividers at column boundaries */}
+            {Array.from({ length: N - 1 }, (_, i) => (
+              <div
+                key={i}
+                style={{ left: (i + 1) * COL_W, top: TITLE_H - 22, height: 22 + LINE_H }}
+                className="absolute w-0 border-l-2 border-dashed border-navy/40"
+              />
+            ))}
+            {/* service points — revealed one by one */}
+            {SERVICES.map((_, i) => (
+              <ServiceColumn key={i} index={i} r={r} />
+            ))}
+          </motion.div>
         </div>
-
-        {/* Mobile/tablet: stacked list; the progress reads as a navy left rule */}
-        <ul className="mt-12 flex flex-col lg:hidden">
-          {SERVICES.map((s, i) => {
-            const on = i <= ACTIVE;
-            return (
-              <li
-                key={s.title}
-                className={`border-l-2 py-6 pl-5 ${
-                  on ? "border-navy" : "border-dashed border-[#d9d9d9]"
-                }`}
-              >
-                <h3
-                  className={`text-[20px] font-semibold leading-[1.2] tracking-[0.3px] ${
-                    on ? TITLE_ON : TITLE_OFF
-                  }`}
-                >
-                  {s.title}
-                </h3>
-                <p
-                  className={`mt-2.5 text-[14px] leading-[1.5] ${
-                    on ? DESC_ON : DESC_OFF
-                  }`}
-                >
-                  {s.desc}
-                </p>
-              </li>
-            );
-          })}
-        </ul>
       </div>
     </section>
   );
