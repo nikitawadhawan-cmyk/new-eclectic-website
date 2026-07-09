@@ -162,7 +162,10 @@ function ProjectBlock({ project }: { project: Project }) {
 
 export default function OurWork() {
   return (
-    <section className="relative w-full overflow-hidden bg-navy py-20 text-white lg:py-24">
+    <section
+      id="work"
+      className="relative w-full scroll-mt-20 overflow-hidden bg-navy py-20 text-white lg:py-24"
+    >
       {/* soft brand glow */}
       <div
         aria-hidden

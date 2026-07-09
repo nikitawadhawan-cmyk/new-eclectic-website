@@ -3,12 +3,13 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import Image from "@/components/Img";
+import Image, { assetPath } from "@/components/Img";
 
+// "/"-prefixed hrefs are wrapped in assetPath() at render so they carry the
+// GitHub Pages basePath and work from any page (e.g. the case study).
 const navLinks = [
-  { label: "Work", href: "#work" },
+  { label: "Work", href: "/#work" },
   { label: "Services", href: "#services" },
-  { label: "Pricing", href: "#pricing" },
   { label: "Blog", href: "#blog" },
 ];
 
@@ -61,7 +62,7 @@ export default function Header() {
             {navLinks.map((link) => (
               <a
                 key={link.label}
-                href={link.href}
+                href={assetPath(link.href)}
                 className="whitespace-nowrap text-[14px] font-semibold tracking-[-0.14px] text-black transition-opacity hover:opacity-70"
               >
                 {link.label}
@@ -106,7 +107,7 @@ export default function Header() {
           {navLinks.map((link) => (
             <a
               key={link.label}
-              href={link.href}
+              href={assetPath(link.href)}
               onClick={() => setOpen(false)}
               className="rounded-2xl px-3 py-2 text-[14px] font-semibold tracking-[-0.14px] text-black transition-colors hover:bg-black/5"
             >
