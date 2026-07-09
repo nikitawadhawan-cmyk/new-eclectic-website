@@ -87,38 +87,6 @@ function LinkedinIcon({ className }: { className?: string }) {
   );
 }
 
-/* Caret used on the "Show all" pill (node 4:7509) */
-function CaretDown({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 12 12"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      className={className}
-    >
-      <path
-        d="M3 4.5 6 7.5 9 4.5"
-        stroke="#2a315f"
-        strokeWidth="1.4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-/* Work-history entries (nodes 4:7489 / 4:7474 / 4:7459). BVC Logistics is the
-   front (highlighted gold) card; the two behind it are the stacked preview. */
-const workHistory = [
-  { company: "BVC Logistics", role: "Full-Stack Designer", dates: "2012-2024" },
-  { company: "Mugen", role: "Staff Product Designer", dates: "2020-2022" },
-  { company: "Axiom", role: "Designer", dates: "2016-2020" },
-];
-
-const cardShadow =
-  "shadow-[0px_0.6px_0.6px_-0.9px_rgba(0,0,0,0.07),0px_1.8px_1.8px_-1.9px_rgba(0,0,0,0.07),0px_4.8px_4.8px_-2.8px_rgba(0,0,0,0.06),0px_15px_15px_-3.8px_rgba(0,0,0,0.03)]";
-
 export default function AboutCaseStudy() {
   return (
     <section className="w-full border-t border-[#dedede] py-20 lg:py-32">
@@ -177,44 +145,6 @@ export default function AboutCaseStudy() {
               </div>
             </div>
 
-            {/* Work history */}
-            <div className="flex flex-col gap-4">
-              <p className="text-[17px] font-medium leading-[25px] tracking-[-0.36px] text-black">
-                My work history
-              </p>
-
-              <div className="flex flex-col items-center gap-6">
-                {/* Stacked cards — front card highlighted gold */}
-                <div className="relative w-full pb-3">
-                  {/* Back card (Axiom) */}
-                  <div
-                    className={`absolute inset-x-[5%] top-5 rounded-2xl border border-[#dedede] bg-white p-4 ${cardShadow}`}
-                  >
-                    <HistoryRow {...workHistory[2]} muted />
-                  </div>
-                  {/* Middle card (Mugen) */}
-                  <div
-                    className={`absolute inset-x-[2.5%] top-2.5 rounded-2xl border border-[#dedede] bg-white p-4 ${cardShadow}`}
-                  >
-                    <HistoryRow {...workHistory[1]} muted />
-                  </div>
-                  {/* Front card (BVC Logistics) — highlighted */}
-                  <div
-                    className={`relative rounded-2xl border border-[#dedede] bg-[#e8c700] p-[18px] ${cardShadow}`}
-                  >
-                    <HistoryRow {...workHistory[0]} />
-                  </div>
-                </div>
-
-                {/* Show all pill */}
-                <span className="flex h-[30px] items-center gap-1 rounded-3xl border border-[#f0f0f0] bg-white pl-4 pr-3 shadow-[0px_0.6px_0.6px_-1.25px_rgba(0,0,0,0.18),0px_2.3px_2.3px_-2.5px_rgba(0,0,0,0.16),0px_10px_10px_-3.8px_rgba(0,0,0,0.06)]">
-                  <span className="text-[11.8px] font-semibold leading-none tracking-[-0.12px] text-black">
-                    Show all
-                  </span>
-                  <CaretDown className="size-3" />
-                </span>
-              </div>
-            </div>
           </div>
 
           {/* ── Right column: Philosophy ── */}
@@ -256,51 +186,9 @@ export default function AboutCaseStudy() {
                 </span>
               </p>
             </div>
-
-            {/* Signature */}
-            <Image
-              src="/figma/about-signature.svg"
-              alt="Handwritten signature"
-              width={97}
-              height={97}
-              className="size-[97px]"
-            />
           </div>
         </div>
       </div>
     </section>
-  );
-}
-
-/* One work-history row: company + role on the left, date range on the right */
-function HistoryRow({
-  company,
-  role,
-  dates,
-  muted = false,
-}: {
-  company: string;
-  role: string;
-  dates: string;
-  muted?: boolean;
-}) {
-  return (
-    <div className="flex items-end justify-between gap-3">
-      <div className="flex flex-col gap-0.5">
-        <span
-          className={`text-[15.8px] font-medium leading-[24px] tracking-[-0.32px] ${
-            muted ? "text-black/80" : "text-black"
-          }`}
-        >
-          {company}
-        </span>
-        <span className="text-[11.6px] font-semibold leading-[13.4px] tracking-[-0.12px] text-[#545454]">
-          {role}
-        </span>
-      </div>
-      <span className="shrink-0 text-[11.3px] font-semibold leading-[13.4px] tracking-[-0.12px] text-[#545454]">
-        {dates}
-      </span>
-    </div>
   );
 }
