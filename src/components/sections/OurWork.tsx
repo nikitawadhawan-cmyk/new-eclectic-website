@@ -24,7 +24,13 @@ type Project = {
   alt: string;
   /** case-study route (internal) — renders the Learn More pill when set */
   href?: string;
+  /** 7 images -> tilted 2/3/2 collage card (Figma node 182:824) instead of a flat screenshot */
+  collage?: string[];
 };
+
+const BVC_COLLAGE = [1, 2, 3, 4, 5, 6, 7].map(
+  (n) => `/figma/ourwork-bvc-${n}.jpg`,
+);
 
 const PROJECTS: Project[] = [
   {
@@ -32,8 +38,9 @@ const PROJECTS: Project[] = [
     tags: ["Website Strategy", "Corporate Website"],
     desc: "We designed the complete digital experience for BVC Logistics — planning the website structure, content hierarchy, user journey, and premium visual storytelling to turn a traditional corporate site into a lead-generation platform.",
     screen: "/figma/lp-screen-1.jpg",
-    alt: "BVC Logistics website — Secure Global Logistics for Gems & Jewellery",
+    alt: "Collage of BVC Logistics work — BVC Universe app, website and campaign pages",
     href: "/projects/bvc-logistics",
+    collage: BVC_COLLAGE,
   },
   {
     title: "Trippy Tour",
@@ -59,18 +66,61 @@ const PROJECTS: Project[] = [
   },
 ];
 
+/**
+ * Tilted 2/3/2 collage card (Figma 182:824): three rows of 16:9 tiles rotated
+ * -11.7deg, staggered horizontally, clipped by the rounded card. Sizes are
+ * percentages of the card so the collage scales with it.
+ */
+function TiltedCollage({ images, alt }: { images: string[]; alt: string }) {
+  const rows: { imgs: string[]; ml: string }[] = [
+    { imgs: images.slice(0, 2), ml: "2%" },
+    { imgs: images.slice(2, 5), ml: "-26%" },
+    { imgs: images.slice(5, 7), ml: "20%" },
+  ];
+  return (
+    <div className="absolute inset-0 bg-[#d9d9d9]" role="img" aria-label={alt}>
+      <div className="absolute left-1/2 top-1/2 w-[150%] -translate-x-1/2 -translate-y-1/2 rotate-[-11.7deg]">
+        <div className="flex flex-col gap-[10px]">
+          {rows.map((row, r) => (
+            <div key={r} className="flex gap-[10px]" style={{ marginLeft: row.ml }}>
+              {row.imgs.map((src) => (
+                <div
+                  key={src}
+                  className="relative aspect-[504/284] w-[39.4%] shrink-0 overflow-hidden rounded-[5px]"
+                >
+                  <Image
+                    src={src}
+                    alt=""
+                    fill
+                    sizes="(min-width: 1200px) 520px, 45vw"
+                    className="object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ProjectBlock({ project }: { project: Project }) {
   return (
     <article className="flex flex-col gap-7">
-      {/* Screenshot card */}
+      {/* Screenshot / collage card */}
       <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.04] sm:aspect-[1334/510]">
-        <Image
-          src={project.screen}
-          alt={project.alt}
-          fill
-          sizes="(min-width: 1200px) 1120px, 100vw"
-          className="object-cover object-top"
-        />
+        {project.collage ? (
+          <TiltedCollage images={project.collage} alt={project.alt} />
+        ) : (
+          <Image
+            src={project.screen}
+            alt={project.alt}
+            fill
+            sizes="(min-width: 1200px) 1120px, 100vw"
+            className="object-cover object-top"
+          />
+        )}
         {project.href && (
           <Link
             href={project.href}
