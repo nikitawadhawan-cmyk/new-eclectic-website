@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * AmoradaScope — "WHAT WE DID" keyline ledger (row styling + animation from
- * the supplied "Project Drivers 3c" standalone HTML, recolored from its dark
- * violet palette onto the site's white bg with the brand navy as the accent).
+ * RitvaaScope — "WHAT WE DID" keyline ledger (cloned from AmoradaScope: row
+ * styling + animation from the "Project Drivers 3c" standalone HTML,
+ * recolored onto the site's white bg with the brand navy as the accent).
  *
  * Header (pill / heading / supporting line) is unchanged. The SIX rows render
  * as a keyline ledger — title | description, hairline-separated (numbers
@@ -17,43 +17,43 @@ import { useEffect, useRef, useState } from "react";
  * 4.5s after the last interaction. Autoplay is disabled for reduced-motion
  * users (hover still works).
  *
- * ⚠ DRAFT COPY: the Figma had no row descriptions (dead "View More" template
- * pills); these descriptions are drafted from the page's real amorada content
- * and need client review. Source "02,02,03…" numbering typo corrected.
+ * ⚠ GLUE COPY: the supporting line under the heading is connective copy not
+ * present in the client's approved HTML — needs client review. Row titles
+ * and descriptions are verbatim from the spec.
  */
 
 type ScopeRow = { title: string; description: string };
 
 const ROWS: ScopeRow[] = [
   {
-    title: "Discovery & merchandising",
+    title: "Discovery & positioning",
     description:
-      "Audited the range and mapped how shoppers browse — by room, by colour, by fabric — so the store structure mirrors the way people actually buy linens.",
+      "Turned the SmartGold + lifetime buyback story into a homepage narrative and a clear buying journey.",
   },
   {
-    title: "Craft-led visual design",
+    title: "Luxury e-commerce design",
     description:
-      "A warm, editorial visual language with generous photography, soft colour, and calm typography that carries the feel of the fabric onto the screen.",
+      "An elegant, tradition-meets-modern visual language with premium, detail-rich product displays.",
   },
   {
-    title: "Catalogue & collections",
+    title: "Trust architecture",
     description:
-      "Colour-organised collections and clean, consistent product grids that make a broad catalogue easy to explore and simple to shop.",
+      "Buyback-guarantee explainers, authenticity cues, and secure-checkout signals at every decision point.",
   },
   {
-    title: "Product storytelling",
+    title: "Collections setup",
     description:
-      "Product pages built around texture and detail — photography-led layouts and considered copy that let every weave and finish speak for itself.",
+      "Mangalsutra and jewellery collections structured for browsing by occasion, style, and price.",
   },
   {
-    title: "Checkout & payments",
+    title: "Shopify build",
     description:
-      "A streamlined Shopify checkout supporting both prepaid and COD payments, tuned to cut friction and drop-off at the final step.",
+      "A custom, mobile-first theme — fast-loading product and collection templates the team can edit.",
   },
   {
-    title: "Launch & growth",
+    title: "Launch & optimisation",
     description:
-      "Store setup, QA, and go-live on Shopify, with analytics and SEO foundations in place so the store keeps growing after launch.",
+      "Analytics and conversion tracking in place, with refinements based on real buyer behaviour.",
   },
 ];
 
@@ -61,7 +61,7 @@ const ROWS: ScopeRow[] = [
 const ADVANCE_MS = 2400;
 const RESUME_MS = 4500;
 
-export default function AmoradaScope() {
+export default function RitvaaScope() {
   const [active, setActive] = useState(0);
   const paused = useRef(false);
   const resumeT = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -104,13 +104,12 @@ export default function AmoradaScope() {
           </span>
 
           <h2 className="max-w-[848px] text-balance text-[40px] font-semibold leading-[1.05] tracking-[-0.03em] text-black sm:text-[56px] lg:text-[76px] lg:leading-[83.6px] lg:tracking-[-3.8px]">
-            Craft You Can Feel Through A Screen
+            Heritage, Engineered To Convert
           </h2>
 
           <p className="max-w-[864px] text-[16px] leading-[1.4] text-muted lg:leading-[22.4px]">
-            From strategy and information architecture to content planning and
-            launch, every deliverable was designed to create a premium digital
-            experience
+            From discovery and positioning to launch and optimisation — the
+            full build, end to end.
           </p>
         </div>
 
