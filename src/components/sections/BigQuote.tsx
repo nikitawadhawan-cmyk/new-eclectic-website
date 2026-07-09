@@ -10,9 +10,9 @@ export default function BigQuote() {
   return (
     <section className="w-full border-t border-t-[#dedede] py-20 lg:py-32">
       <div className="mx-auto w-full max-w-[1200px] px-6 lg:px-10">
-        <div className="mx-auto flex max-w-[780px] flex-col items-center gap-6">
+        <div className="mx-auto flex max-w-[980px] flex-col items-center gap-8">
           {/* Quote */}
-          <blockquote className="text-center text-[20px] font-medium leading-[1.46] tracking-[-0.6px] text-black sm:text-[24px] sm:tracking-[-0.72px] lg:text-[26.8px] lg:leading-[39.2px] lg:tracking-[-0.84px]">
+          <blockquote className="text-center text-[26px] font-medium leading-[1.45] tracking-[-0.6px] text-black sm:text-[32px] sm:tracking-[-0.9px] lg:text-[38px] lg:leading-[1.42] lg:tracking-[-1.1px]">
             &ldquo;Working with Eclectic felt like having a seasoned design
             partner{" "}
             <span className="font-semibold">
@@ -24,16 +24,16 @@ export default function BigQuote() {
           {/* Attribution */}
           <div className="flex items-center justify-center gap-3">
             <span
-              className="flex size-[38px] shrink-0 items-center justify-center rounded-full bg-navy text-[16px] font-bold text-gold"
+              className="flex size-[46px] shrink-0 items-center justify-center rounded-full bg-navy text-[19px] font-bold text-gold"
               aria-hidden="true"
             >
               S
             </span>
             <div className="flex flex-col gap-[5px]">
-              <p className="text-[13.8px] font-semibold leading-[15.68px] tracking-[-0.14px] text-black">
+              <p className="text-[17px] font-semibold leading-[1.15] tracking-[-0.14px] text-black">
                 Soela
               </p>
-              <p className="text-[11.1px] font-semibold leading-[13.44px] tracking-[-0.12px] text-[#545454]">
+              <p className="text-[14px] font-semibold leading-[1.2] tracking-[-0.12px] text-[#545454]">
                 Founder of Spiritude
               </p>
             </div>

@@ -91,7 +91,7 @@ const CARDS: Card[] = [
     title: "amorada",
     lowercase: true,
     subtitle: "Ecommerce Site",
-    href: "#",
+    href: "/projects/amorada",
     bg: "/figma/lp-bg-4.jpg",
     screen: "/figma/lp-screen-4.jpg",
     alt: "Amorada website — Where Comfort Meets Craft",

@@ -1,0 +1,124 @@
+import Image from "@/components/Img";
+
+/**
+ * AmoradaStats — amorada case study, two stacked bands.
+ * Figma: file Gf61npUa7cN0kaGb5RgSwe, nodes 203:1126 ("Numbers that speak"
+ * stats) + testimonial block at the top of 203:1156 (nodes 203:1157–1168).
+ * Same template family as the BVC CaseStats — layout idioms reused.
+ *
+ * (a) STATS BAND (203:1126)
+ *   - Heading "Numbers that speak" — Figma 48px / 57.6px, tracking -1.14px, black.
+ *   - 4-up stat row, thin top hairlines (#ddd, 0.8px). Numbers 52px bold black,
+ *     trailing "+" gold (#e8c700 = --color-gold). Labels 16px, tracking -0.16px.
+ *     "2 Months" fully bold, no "+".
+ *   - Responsive: 4-up desktop -> 2-up tablet -> 1-up mobile.
+ *
+ * (b) TESTIMONIAL BAND (top of 203:1156) — CENTERED per the amorada Figma
+ *     screenshot (unlike the sister BVC page, which was later left-aligned):
+ *   - Centered gold quote mark, quote (Figma 40px / 56px, centered, #0a0a0a,
+ *     tracking -0.6px) WITH trailing period, dashed hairline, then a centered
+ *     60px rounded avatar + "Nikita Wadhawan" (28px) / "Founder, Eclectic
+ *     Agency" (16px, #a5a5a5).
+ *
+ * DEVIATIONS (flagged):
+ *   - Quote text: the Figma carried the BVC template quote with an "Amroda"
+ *     spelling; replaced at client request (2026-07) with a bespoke amorada
+ *     quote ("amorada needed more than a storefront…").
+ *   - Quote-mark color in Figma is #ffdb00 (kept Figma-exact); the "+" glyphs
+ *     are #e8c700 and map to the --color-gold token.
+ *   - Figma quote-mark box is 120px type clipped to a 26px box; rendered at
+ *     96px/0.7 with a serif face (same treatment as the sister CaseStats)
+ *     to avoid descender clipping.
+ *   - Figma uses "Stack Sans Headline" for the quote; project standard is
+ *     Inter (font-sans, per build brief) — no font import.
+ *   - Avatar asset from Figma is byte-identical to the BVC one, so
+ *     /figma/cs-testimonial-avatar.jpg is reused (no am- duplicate written).
+ *   - Section background: the rendered amorada screenshot shows white (the
+ *     sister page used the light surface) — white used here.
+ */
+
+type Stat = {
+  /** The numeric value (without the trailing plus). */
+  value: string;
+  /** true when a gold "+" follows the value (200+/18+/150+ but not "2 Months"). */
+  plus?: boolean;
+  label: string;
+};
+
+const STATS: Stat[] = [
+  { value: "10", plus: true, label: "Website Pages Planned" },
+  { value: "12", plus: true, label: "User Flows Created" },
+  { value: "150", plus: true, label: "Content Sections Structured" },
+  { value: "1 Month", label: "Project Duration" },
+];
+
+export default function AmoradaStats() {
+  return (
+    <section
+      aria-labelledby="amorada-stats-heading"
+      className="w-full bg-white"
+    >
+      <div className="mx-auto w-full max-w-[1200px] px-6 py-16 lg:px-10 lg:py-24">
+        {/* (a) NUMBERS THAT SPEAK */}
+        <h2
+          id="amorada-stats-heading"
+          className="text-black text-[32px] leading-[38px] tracking-[-0.76px] sm:text-[40px] sm:leading-[48px] lg:text-[48px] lg:leading-[57.6px] lg:tracking-[-1.14px]"
+        >
+          Numbers that speak
+        </h2>
+
+        <dl className="mt-12 grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-2 lg:mt-[72px] lg:grid-cols-4">
+          {STATS.map((stat) => (
+            <div key={stat.label} className="border-t-[0.8px] border-[#ddd] pt-16">
+              <dd className="font-bold text-black text-[44px] leading-[44px] tracking-[-1.45px] lg:text-[52px] lg:leading-[52px] lg:tracking-[-1.716px]">
+                {stat.value}
+                {stat.plus ? <span className="text-gold">+</span> : null}
+              </dd>
+              <dt className="mt-1 text-black text-[16px] leading-[22.4px] tracking-[-0.16px]">
+                {stat.label}
+              </dt>
+            </div>
+          ))}
+        </dl>
+
+        {/* (b) TESTIMONIAL QUOTE — centered per the amorada Figma */}
+        <figure className="mt-20 flex w-full flex-col items-center gap-6 text-center lg:mt-32">
+          <span
+            aria-hidden
+            className="block font-serif text-[96px] leading-[0.7] text-[#ffdb00]"
+          >
+            &ldquo;
+          </span>
+
+          <blockquote className="mx-auto w-full max-w-[1065px] text-[#0a0a0a] text-[26px] leading-[36px] tracking-[-0.4px] sm:text-[32px] sm:leading-[46px] lg:text-[40px] lg:leading-[56px] lg:tracking-[-0.6px]">
+            amorada needed more than a storefront&mdash;it needed a feeling. We
+            designed a shopping experience where comfort and craft come through
+            in every scroll.
+          </blockquote>
+
+          <hr className="w-full border-0 border-t-[0.8px] border-dashed border-[#e6e6e6]" />
+
+          <figcaption className="flex items-center justify-center gap-4">
+            <span className="relative size-[60px] shrink-0 overflow-hidden rounded-[16px]">
+              <Image
+                src="/figma/cs-testimonial-avatar.jpg"
+                alt="Nikita Wadhawan"
+                fill
+                sizes="60px"
+                className="object-cover"
+              />
+            </span>
+            <span className="flex flex-col items-start text-left">
+              <span className="text-[#0a0a0a] text-[24px] leading-[34px] tracking-[-1.2px] lg:text-[28px] lg:leading-[42px] lg:tracking-[-1.4px]">
+                Nikita Wadhawan
+              </span>
+              <span className="text-[#a5a5a5] text-[16px] leading-[24px]">
+                Founder, Eclectic Agency
+              </span>
+            </span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+  );
+}

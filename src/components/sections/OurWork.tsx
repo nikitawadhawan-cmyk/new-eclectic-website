@@ -12,7 +12,7 @@ import Link from "next/link";
  * short description on the right. Recolored into the brand navy/gold palette.
  *
  * Projects = the four "Latest Projects" from the hero (same public/figma
- * screenshots); only BVC Logistics has a case-study page to link to.
+ * screenshots); BVC Logistics and amorada have case-study pages to link to.
  */
 
 type Project = {
@@ -63,6 +63,7 @@ const PROJECTS: Project[] = [
     desc: "A warm, craft-led ecommerce experience where comfort meets craft — editorial product storytelling and a clean shopping journey designed to convert browsers into loyal customers.",
     screen: "/figma/lp-screen-4.jpg",
     alt: "Amorada website — Where Comfort Meets Craft",
+    href: "/projects/amorada",
   },
 ];
 

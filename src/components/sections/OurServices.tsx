@@ -171,10 +171,55 @@ export default function OurServices() {
     };
   }, [progress, enabled]);
 
-  // Continuous reveal progress in item units (0..N).
-  const r = useTransform(progress, [0.04, 0.96], [0.35, N], { clamp: true });
-  // Track slides left once ~2.3 items are on screen, keeping the newest visible.
-  const x = useTransform(r, (v) => -Math.max(0, v - 2.3) * COL_W);
+  // ── Scroll choreography ─────────────────────────────────────────────
+  // p 0→ZOOM_IN_END   : the strip zooms IN on the first point (Shopify).
+  // p →REVEAL_END     : points reveal one by one, track slides, all ZOOMED.
+  // p →ZOOM_OUT_END   : after the last point (Landing Pages) arrives, the
+  //                     strip zooms OUT to the normal full layout.
+  // p →1              : brief settled hold, then the section unpins.
+  const ZOOM = 1.42;
+  const ZOOM_IN_END = 0.06;
+  const REVEAL_END = 0.8;
+  const ZOOM_OUT_END = 0.94;
+
+  // Continuous reveal progress in item units (0..N) — reveal finishes at
+  // REVEAL_END so the tail of the scroll is reserved for the zoom-out.
+  const r = useTransform(progress, [0.04, REVEAL_END], [0.35, N], {
+    clamp: true,
+  });
+
+  const rOf = (v: number) =>
+    Math.min(
+      N,
+      Math.max(0.35, 0.35 + ((v - 0.04) * (N - 0.35)) / (REVEAL_END - 0.04)),
+    );
+  const sOf = (v: number) => {
+    if (v <= ZOOM_IN_END) return 1 + (ZOOM - 1) * Math.max(0, v / ZOOM_IN_END);
+    if (v < REVEAL_END) return ZOOM;
+    if (v >= ZOOM_OUT_END) return 1;
+    return ZOOM + (1 - ZOOM) * ((v - REVEAL_END) / (ZOOM_OUT_END - REVEAL_END));
+  };
+
+  // Zoom scale on the whole track (transform-origin: left, at the line's y).
+  const scale = useTransform(progress, sOf);
+
+  // Track x: while zoomed, keep the newest revealed point centered in the
+  // viewport (accounting for scale); during the zoom-out, blend to the
+  // normal end-of-strip position.
+  const x = useTransform(progress, (v) => {
+    if (typeof window === "undefined") return 0;
+    const vw = window.innerWidth;
+    const layoutLeft = Math.max(24, (vw - 1120) / 2);
+    const s = sOf(v);
+    const iCenter = Math.min(N - 1, Math.max(0, rOf(v) - 0.5));
+    const centered = vw / 2 - layoutLeft - s * (iCenter + 0.5) * COL_W;
+    const endTarget = -(N - 2.3) * COL_W;
+    if (v < REVEAL_END) return centered;
+    if (v >= ZOOM_OUT_END) return endTarget;
+    const t = (v - REVEAL_END) / (ZOOM_OUT_END - REVEAL_END);
+    return centered * (1 - t) + endTarget * t;
+  });
+
   // The navy line grows just ahead of the newest revealed item.
   const lineWidth = useTransform(r, (v) =>
     Math.max(0, Math.min(v + 0.55, N) * COL_W - 48),
@@ -183,7 +228,7 @@ export default function OurServices() {
   if (!enabled) return <StaticFallback />;
 
   return (
-    <section ref={sectionRef} className="relative h-[420vh] w-full bg-white">
+    <section ref={sectionRef} className="relative h-[500vh] w-full bg-white">
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
         {/* Pinned header — badge + ONE-LINE heading */}
         <div className="mx-auto w-full max-w-[1200px] px-6 pt-[9vh] lg:px-10">
@@ -201,6 +246,10 @@ export default function OurServices() {
           <motion.div
             style={{
               x,
+              scale,
+              // zoom anchors on the line's vertical position at the track's
+              // left edge, so the strip stays visually stable while scaling
+              transformOrigin: `0px ${TITLE_H + LINE_H / 2}px`,
               width: N * COL_W,
               marginLeft: "max(24px, calc((100vw - 1120px) / 2))",
             }}
