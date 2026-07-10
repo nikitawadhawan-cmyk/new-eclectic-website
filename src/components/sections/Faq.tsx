@@ -58,6 +58,15 @@ const ITEMS: FaqItem[] = [
   },
 ];
 
+/** WhatsApp glyph (official brand mark, single path). */
+function WhatsAppIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+      <path d="M12.04 2c-5.52 0-10 4.48-10 10 0 1.77.46 3.45 1.27 4.9L2 22l5.25-1.38a9.96 9.96 0 0 0 4.79 1.22h.01c5.52 0 10-4.48 10-10s-4.48-9.84-10.02-9.84Zm0 18.15h-.01a8.3 8.3 0 0 1-4.23-1.16l-.3-.18-3.12.82.83-3.04-.2-.31a8.26 8.26 0 0 1-1.27-4.42c0-4.58 3.73-8.31 8.32-8.31 2.22 0 4.31.87 5.88 2.44a8.24 8.24 0 0 1 2.43 5.87c0 4.58-3.74 8.29-8.33 8.29Zm4.56-6.21c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.13-.17.24-.64.81-.79.98-.14.17-.29.19-.54.06-.25-.12-1.04-.38-1.98-1.22-.73-.65-1.23-1.46-1.37-1.7-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.16-.24.25-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.16 0-.43.06-.66.31-.23.24-.86.85-.86 2.06 0 1.22.88 2.4 1 2.56.13.17 1.75 2.67 4.24 3.74.59.26 1.05.41 1.41.53.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.23-.16-.48-.28Z" />
+    </svg>
+  );
+}
+
 function ToggleIcon({ open }: { open: boolean }) {
   return (
     <span
@@ -146,8 +155,8 @@ export default function Faq() {
             <div className="flex flex-col gap-6">
               <div className="relative size-16 overflow-hidden rounded-full">
                 <Image
-                  src="/figma/faq-headshot.png"
-                  alt="Headshot of the designer"
+                  src="/figma/about-portrait.png"
+                  alt="Nikita Wadhawan, Founder of Eclectic Agency"
                   fill
                   sizes="64px"
                   className="object-cover"
@@ -168,72 +177,18 @@ export default function Faq() {
               </div>
             </div>
 
-            <div className="flex items-center gap-[18px]">
-              <span className="inline-flex h-11 items-center gap-1 rounded-[24px] border border-[#2a315f] bg-[#2a315f] px-3 shadow-[0px_0.741px_0.741px_-0.75px_rgba(0,0,0,0.33),0px_2.018px_2.018px_-1.5px_rgba(0,0,0,0.32),0px_4.431px_4.431px_-2.25px_rgba(0,0,0,0.3),0px_9.835px_9.835px_-3px_rgba(0,0,0,0.25),0px_25px_25px_-3.75px_rgba(0,0,0,0.11)]">
-                <svg
-                  viewBox="0 0 18 18"
-                  fill="none"
-                  className="size-[18px] shrink-0"
-                  aria-hidden
-                >
-                  <path
-                    d="M15.1875 6.1875H2.8125V3.375C2.8125 3.0645 3.0645 2.8125 3.375 2.8125H14.625C14.9355 2.8125 15.1875 3.0645 15.1875 3.375V6.1875Z"
-                    fill="white"
-                  />
-                  <path
-                    d="M3.375 15.1875C3.0645 15.1875 2.8125 14.9355 2.8125 14.625V3.375C2.8125 3.0645 3.0645 2.8125 3.375 2.8125H14.625C14.9355 2.8125 15.1875 3.0645 15.1875 3.375V14.625C15.1875 14.9355 14.9355 15.1875 14.625 15.1875H3.375Z"
-                    stroke="white"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M12.375 1.6875V3.9375"
-                    stroke="white"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M5.625 1.6875V3.9375"
-                    stroke="white"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M2.8125 6.1875H15.1875"
-                    stroke="white"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M6.46875 10.6875L8.15625 12.375L11.5312 9"
-                    stroke="white"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                <span className="px-1.5 font-semibold tracking-[-0.14px] text-white text-[13.6px] leading-[15.68px]">
-                  Schedule Now
-                </span>
+            {/* WhatsApp CTA — placeholder "#contact" link until a real
+                wa.me/<number> is provided (no contact number exists in the
+                codebase yet, see HANDOVER.md §8). */}
+            <a
+              href="#contact"
+              className="inline-flex h-11 w-fit items-center gap-2 rounded-[24px] border border-[#25d366] bg-[#25d366] px-4 shadow-[0px_0.741px_0.741px_-0.75px_rgba(0,0,0,0.33),0px_2.018px_2.018px_-1.5px_rgba(0,0,0,0.32),0px_4.431px_4.431px_-2.25px_rgba(0,0,0,0.3),0px_9.835px_9.835px_-3px_rgba(0,0,0,0.25),0px_25px_25px_-3.75px_rgba(0,0,0,0.11)] transition-transform duration-200 hover:-translate-y-0.5 active:scale-95"
+            >
+              <WhatsAppIcon className="size-[18px] shrink-0 text-white" />
+              <span className="px-1.5 font-semibold tracking-[-0.14px] text-white text-[13.6px] leading-[15.68px]">
+                Chat on WhatsApp
               </span>
-
-              <svg
-                viewBox="0 0 61 13"
-                className="h-[13px] w-[61px] shrink-0"
-                fill="none"
-                aria-label="Cal.com"
-                role="img"
-              >
-                <path
-                  d="M6.075 12.887C2.61 12.887 0 10.076 0 6.605C0 3.124 2.476 0.29 6.075 0.29C7.985 0.29 9.306 0.891 10.339 2.268L8.673 3.691C7.973 2.927 7.13 2.546 6.075 2.546C3.731 2.546 2.443 4.384 2.443 6.605C2.443 8.826 3.854 10.631 6.075 10.631C7.119 10.631 8.007 10.25 8.707 9.486L10.35 10.966C9.362 12.285 8.007 12.887 6.075 12.887ZM17.525 3.644H19.768V12.666H17.525V11.348C17.058 12.285 16.28 12.91 14.793 12.91C12.416 12.91 10.517 10.792 10.517 8.19C10.517 5.587 12.416 3.47 14.793 3.47C16.269 3.47 17.058 4.095 17.525 5.032V3.644ZM17.591 8.19C17.591 6.779 16.647 5.61 15.159 5.61C13.726 5.61 12.794 6.79 12.794 8.19C12.794 9.555 13.726 10.77 15.159 10.77C16.636 10.77 17.591 9.59 17.591 8.19ZM21.356 0H23.599V12.655H21.356V0ZM24.599 11.464C24.599 10.723 25.176 10.099 25.964 10.099C26.321 10.091 26.665 10.232 26.919 10.489C27.172 10.746 27.313 11.098 27.309 11.464C27.309 12.227 26.742 12.851 25.965 12.851C25.603 12.857 25.255 12.712 24.998 12.451C24.741 12.19 24.597 11.834 24.599 11.464ZM35.893 11.209C35.06 12.25 33.794 12.91 32.295 12.91C29.618 12.91 27.653 10.792 27.653 8.19C27.653 5.587 29.618 3.47 32.295 3.47C33.738 3.47 34.993 4.095 35.826 5.078L34.094 6.57C33.661 6.015 33.095 5.599 32.294 5.599C30.862 5.599 29.929 6.779 29.929 8.178C29.929 9.578 30.862 10.758 32.295 10.758C33.161 10.758 33.761 10.295 34.205 9.67L35.893 11.209ZM36.082 8.19C36.082 5.587 38.048 3.47 40.724 3.47C43.401 3.47 45.366 5.588 45.366 8.19C45.366 10.792 43.401 12.91 40.724 12.91C38.048 12.897 36.082 10.792 36.082 8.19ZM43.09 8.19C43.09 6.779 42.156 5.61 40.724 5.61C39.291 5.599 38.359 6.779 38.359 8.19C38.359 9.589 39.291 10.77 40.724 10.77C42.156 10.77 43.09 9.59 43.09 8.19ZM60.536 7.149V12.655H58.293V7.715C58.293 6.154 57.582 5.483 56.516 5.483C55.517 5.483 54.806 5.992 54.806 7.716V12.655H52.563V7.715C52.563 6.154 51.841 5.483 50.786 5.483C49.786 5.483 48.909 5.992 48.909 7.716V12.655H46.666V3.633H48.909V4.882C49.375 3.91 50.219 3.424 51.518 3.424C52.751 3.424 53.784 4.049 54.351 5.102C54.917 4.026 55.75 3.424 57.26 3.424C59.104 3.436 60.536 4.87 60.536 7.149Z"
-                  fill="#B8B8B8"
-                />
-              </svg>
-            </div>
+            </a>
           </div>
         </div>
       </div>

@@ -97,7 +97,7 @@ function ServiceColumn({
 /** Static, un-pinned fallback for mobile / reduced motion. */
 function StaticFallback() {
   return (
-    <section className="w-full bg-white py-20">
+    <section id="services" className="w-full scroll-mt-24 bg-white py-20">
       <div className="mx-auto w-full max-w-[1200px] px-6">
         <Badge />
         <h2 className="mt-6 text-[34px] font-medium leading-[1.16] tracking-[-0.5px] text-ink sm:text-[40px]">
@@ -228,7 +228,11 @@ export default function OurServices() {
   if (!enabled) return <StaticFallback />;
 
   return (
-    <section ref={sectionRef} className="relative h-[500vh] w-full bg-white">
+    <section
+      id="services"
+      ref={sectionRef}
+      className="relative h-[500vh] w-full scroll-mt-24 bg-white"
+    >
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
         {/* Pinned header — badge + ONE-LINE heading */}
         <div className="mx-auto w-full max-w-[1200px] px-6 pt-[9vh] lg:px-10">

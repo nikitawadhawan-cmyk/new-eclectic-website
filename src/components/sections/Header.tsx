@@ -9,7 +9,7 @@ import Image, { assetPath } from "@/components/Img";
 // GitHub Pages basePath and work from any page (e.g. the case study).
 const navLinks = [
   { label: "Work", href: "/#work" },
-  { label: "Services", href: "#services" },
+  { label: "Services", href: "/#services" },
   { label: "Blog", href: "#blog" },
 ];
 

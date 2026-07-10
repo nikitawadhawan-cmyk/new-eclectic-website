@@ -18,8 +18,14 @@
   --color-foreground: var(--color-ink);
 }
 
+/* NOT scroll-behavior: smooth — the pinned scroll-jacking sections
+   (HeroShowcase, Innovate, OurServices, WorkProcess) continuously mutate
+   layout on every scroll frame, which fights a CSS smooth-scroll animation
+   to a permanent standstill: any hash/anchor jump (native or
+   scrollIntoView/scrollTo with behavior:"smooth") silently no-ops at
+   scrollY 0. Confirmed via direct testing. Instant jumps work correctly. */
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 body {
