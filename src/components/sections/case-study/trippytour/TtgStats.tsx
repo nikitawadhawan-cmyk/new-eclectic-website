@@ -9,8 +9,8 @@ import Image from "@/components/Img";
  *   - Heading "Numbers that speak" — 48px / 57.6px, tracking -1.14px, black.
  *   - 4-up meta-facts row styled exactly like the amorada stat cells: thin top
  *     hairlines (#ddd, 0.8px), big value 52px bold black, small label 16px,
- *     tracking -0.16px. All four TTG values are text (Client / Industry /
- *     Type / Goal) — NO gold "+" on any of them.
+ *     tracking -0.16px. First three values get a gold "+" suffix; the
+ *     duration stat is plain text.
  *   - Responsive: 4-up desktop -> 2-up tablet -> 1-up mobile.
  *
  * (b) TESTIMONIAL BAND — CENTERED, same layout as amorada:
@@ -35,10 +35,10 @@ type Stat = {
 };
 
 const STATS: Stat[] = [
-  { value: "Trippy Tour Guide", label: "Client" },
-  { value: "Travel Tech", label: "Industry" },
-  { value: "Product Website", label: "Type" },
-  { value: "Tour Sales & App Installs", label: "Goal" },
+  { value: "50", plus: true, label: "Website Pages Planned" },
+  { value: "20", plus: true, label: "User Flows Created" },
+  { value: "10", plus: true, label: "Apps" },
+  { value: "3 Months", label: "Project Duration" },
 ];
 
 export default function TtgStats() {

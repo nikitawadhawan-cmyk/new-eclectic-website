@@ -1,29 +1,18 @@
 import Image from "@/components/Img";
+import { logos as clientLogos } from "./ClientLogos";
 
 /* -------------------------------------------------------------------------- */
 /*  Client-logos strip (Figma node 4:7787)                                    */
-/*  In Figma this is an animated marquee ticker. It is rendered here as a      */
-/*  clean, static row of wordmarks (flagged in the report).                    */
+/*  Figma spec'd this as an animated marquee ticker (it had shipped as a       */
+/*  static row of placeholder wordmarks — flagged in the report). Now an      */
+/*  infinite scroller using all of the real client logos.                    */
 /* -------------------------------------------------------------------------- */
 
-type ClientLogo = {
-  name: string;
-  src: string;
-  /** Intrinsic viewBox dimensions of the source SVG (for aspect ratio). */
-  width: number;
-  height: number;
-};
-
-// Order matches the Figma ticker list (opacity-70, ~35px tall row).
-const clientLogos: ClientLogo[] = [
-  { name: "Frequencii", src: "/figma/tlogo-frequencii.svg", width: 129, height: 35 },
-  { name: "Luminary", src: "/figma/tlogo-luminary.svg", width: 137, height: 35 },
-  { name: "45 Degrees", src: "/figma/tlogo-45degrees.svg", width: 147, height: 35 },
-  { name: "Codecraft", src: "/figma/tlogo-codecraft.svg", width: 129, height: 35 },
-  { name: "Nimbus", src: "/figma/tlogo-extra.svg", width: 107, height: 35 },
-];
-
 function ClientLogosStrip() {
+  // Track renders the logo list twice back-to-back so the -50% marquee loop
+  // is seamless — see the `marquee` keyframes in globals.css.
+  const track = [...clientLogos, ...clientLogos];
+
   return (
     <div className="w-full border-b-[0.8px] border-[#dedede]">
       <div className="mx-auto flex w-full max-w-[1200px] flex-col items-center gap-6 px-6 py-8 lg:flex-row lg:gap-10 lg:px-10">
@@ -31,17 +20,29 @@ function ClientLogosStrip() {
           <span className="font-medium">Trusted by </span>
           <span className="font-semibold text-black">many</span>
         </p>
-        <div className="flex w-full flex-wrap items-center justify-center gap-x-12 gap-y-6 opacity-70 lg:flex-1 lg:justify-between lg:gap-x-16">
-          {clientLogos.map((logo) => (
-            <Image
-              key={logo.name}
-              src={logo.src}
-              alt={logo.name}
-              width={logo.width}
-              height={logo.height}
-              className="h-[26px] w-auto object-contain lg:h-[30px]"
-            />
-          ))}
+        <div
+          className="w-full overflow-hidden lg:flex-1"
+          style={{
+            maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+            WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+          }}
+        >
+          <div
+            className="marquee-track flex w-max items-center gap-16 opacity-70"
+            style={{ animation: "marquee 24s linear infinite" }}
+          >
+            {track.map((logo, i) => (
+              <Image
+                key={`${logo.name}-${i}`}
+                src={logo.src}
+                alt={logo.name}
+                width={logo.width}
+                height={logo.height}
+                className="w-auto shrink-0 object-contain"
+                style={{ height: logo.displayHeight }}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>

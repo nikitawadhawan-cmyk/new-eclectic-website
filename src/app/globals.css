@@ -40,8 +40,22 @@ body {
   }
 }
 
+/* Infinite logo-strip scroller ("Trusted by many"). Track renders the logo
+   list twice back-to-back; scrolling exactly -50% loops it seamlessly. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .bob {
+    animation: none;
+  }
+  .marquee-track {
     animation: none;
   }
 }

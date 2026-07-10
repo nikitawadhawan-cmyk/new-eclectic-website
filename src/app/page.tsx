@@ -37,7 +37,10 @@ export default function Home() {
           <BigQuote />
         </FlipReveal>
         <WorkProcess />
-        <Reveal>
+        {/* OurWork's 8 stacked project blocks run well past one viewport
+            height, so the default 15%-visible threshold can never be met —
+            use "some" (any pixel visible) instead. */}
+        <Reveal amount="some">
           <OurWork />
         </Reveal>
         <FlipReveal>

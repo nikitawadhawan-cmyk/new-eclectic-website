@@ -65,20 +65,43 @@ git push origin main                            # deploys via Actions (~1 min)
 | --- | --- |
 | `Header` | Sticky pill nav. Logo = real asset `public/eclectic-logo-nav.png`, links home (`assetPath("/")`). Nav: Work → `/#work`, Services (`#services`, dead), Blog (`#blog`, dead), Contact (`#contact`, dead). Pricing removed. |
 | `HeroShowcase` | ⭐ Pinned scroll-morph "Latest Projects" — **matches Figma exactly** (4 cards: BVC Logistics, Trippy Tour, IVVYLISTIC, amorada with `lp-screen-*.jpg`); each card links to its case-study route. Do NOT swap the card artwork — client insisted the Figma design stays. |
-| `ClientLogos` | "Trusted by many" strip |
+| `ClientLogos` | "Trusted by many" strip near the top — 4 real client wordmarks (BVC, Trippy Tour, Ivylistic, amorada), static row. `logos` array is exported for reuse (see `Testimonials` below). |
 | `ShowreelVideo` | 16:9 video slot placeholder — drop `public/showreel.mp4` and flip `HAS_VIDEO` in the component |
 | `Innovate` | ⭐ Pinned "Featured Work" scatter |
 | `OurServices` | ⭐ Pinned scrollytelling: zooms in on the first point, reveals 7 points one-by-one along a growing navy line, zooms out after the last. Static list fallback <1024px / reduced motion. |
 | `BigQuote` | Soela quote (enlarged type) |
-| `WorkProcess` | Numbered step cards, flip-in + bob |
-| `OurWork` | `id="work"`. Schbang-style navy band; **8 blocks, every one links to a case study**. BVC block uses a tilted 7-image collage (Figma 182:824). New projects get appended here (see §6). |
+| `WorkProcess` | ⭐ Pinned scroll-triggered reveal ("osmo stacking-cards" reference, adapted): section pins while scrolling and each of the 4 step cards bounces into its own grid slot one at a time (box 1 → 2 → 3 → 4, `backOut` overshoot easing) — but cards sit **side by side** in the original staggered grid, never covering each other; end state = all 4 visible + idle bob resumes. Static flip-in grid fallback <1024px / reduced motion. |
+| `OurWork` | `id="work"`. Schbang-style navy band; **8 blocks, every one links to a case study, every one uses a tilted collage card** (Figma 182:824 pattern, generalized to 5–7 images per client — see `collageRows`/`collageMargin` in `OurWork.tsx`). New projects get appended here (see §6). |
 | `AboutCaseStudy` | Portrait + philosophy (work-history stack + signature removed at client request) |
-| `Pricing`, `Testimonials`, `Faq`, `Footer` | Footer = giant "eclecticdigital" wordmark + socials/links/credit (all `#` placeholders) |
+| `Pricing`, `Testimonials`, `Faq`, `Footer` | `Testimonials` also renders a second "Trusted by many" strip (`ClientLogosStrip`) — this one is an **infinite CSS marquee** using the same real client logos as the top `ClientLogos` (previously shipped as a static row of fake placeholder wordmarks — Luminary/Frequencii/etc — now fixed). Footer = giant "eclecticdigital" wordmark + socials/links/credit (all `#` placeholders). |
 
-**Animation gotchas (hard-won):** pinned sections use a manual scroll-progress
-`MotionValue` (rect-based listener), NOT `useScroll({target})`. Never wrap a
-pinned/sticky section in `Reveal` (ancestor transform breaks sticky). Clip on
-the sticky child, not the pinned section. Test several viewport heights.
+**Animation gotchas (hard-won):** pinned sections (`HeroShowcase`, `Innovate`,
+`OurServices`, `WorkProcess`) use a manual scroll-progress `MotionValue`
+(rect-based listener), NOT `useScroll({target})`. Never wrap a pinned/sticky
+section in `Reveal` (ancestor transform breaks sticky). Clip on the sticky
+child, not the pinned section. Test several viewport heights.
+
+- **`Reveal`'s `amount` prop matters for tall sections.** `whileInView`'s
+  default `amount: 0.15` means 15% of the child's *height* must be onscreen
+  before it fires — fine for normal sections, but a section taller than
+  ~6-7x the viewport (e.g. `OurWork` with 8 stacked blocks) can never hit
+  that fraction, so it silently stays at `opacity: 0` forever (looks like a
+  blank section, no error). Fix: pass `amount="some"` (any pixel visible) for
+  very tall `Reveal` children — see `<Reveal amount="some"><OurWork /></Reveal>`
+  in `page.tsx`.
+- **`useTransform`'s `ease` option wants one easing per keyframe *segment*
+  (`inputs.length - 1`), not a bare easing function** — passing a single
+  function throws a silent runtime error ("a is not a function") inside
+  framer-motion with no useful stack trace pointing at your code. Wrap it:
+  `new Array(inputs.length - 1).fill(BOUNCE)`.
+- **Turbopack dev cache can go stale on new CSS.** If a new `@keyframes` /
+  class you just added to `globals.css` isn't showing up in the served
+  bundle (check via `document.styleSheets`), it's not your code — clear
+  `rm -rf .next` and restart the dev server. Hit this exact issue getting
+  the marquee keyframes to appear.
+- `.claude/launch.json`'s dev config has `"autoPort": true` — this project's
+  dev server sometimes gets its port taken by another session; autoPort lets
+  `preview_start` fall back to a free port instead of erroring.
 
 ## 5. Case-study pages
 
@@ -114,7 +137,23 @@ For a new client page in the same design (this is the established flow):
    client prefix (existing: `cs- am- rit- pmo- ttg- ivy- nil- hdfc-`),
    optimize via `sips -Z 1400 -s format jpeg -s formatOptions 80`, and
    **visually verify every image before placing it** (several "campus
-   photos" turned out to be WhatsApp screenshots).
+   photos" turned out to be WhatsApp screenshots — see §8, this is still
+   live on the Ivylistic page).
+   - **If you need a real "here's the actual website" screenshot** (device
+     mockups, hero captures) and the client site has no static export for
+     it: `pip install playwright && python3 -m playwright install chromium`,
+     then drive a headless `chromium` page (set viewport, `goto`,
+     `wait_for_timeout`, dismiss cookie/location popups by `page.click`,
+     `page.screenshot(clip=…)`) and save straight to `public/figma/`. Used
+     this for `ttg-hero-mobile.jpg`. The Claude Browser/computer-use
+     screenshot tools' `save_to_disk` output is NOT reachable from Bash in
+     this environment — this is the reliable path to an actual file.
+   - **No pre-made laptop+phone device-mockup photo?** (BVC/amorada each
+     have one bespoke export, `cs-showcase.jpg`/`am-showcase.jpg`.) Build a
+     CSS device frame instead of skipping the treatment — see
+     `RitvaaShowcase.tsx`'s `DeviceMockup()` (dark bezel divs + `next/image`
+     "screen" inside, at the same `aspect-[1524/776]` frame). Not
+     photorealistic, but keeps the section's visual language.
 3. **Spec**: write `.figma-to-website/<client>-case-study/spec.md` mapping
    each section's verbatim content + image assignments (copy an existing
    spec). Mark invented connective copy as "(glue)" for client review.
@@ -140,6 +179,14 @@ muted-2 `#828282` · line `#e6e6e6` · surface `#f5f5f7` · gold `#e8c700`
 
 ## 8. Open items / placeholders
 
+- **Ivylistic case-study page still shows private WhatsApp screenshots**
+  (`ivy-booth.jpg`, `ivy-oxford.jpg` — a personal admissions-congratulations
+  chat, one name partially redacted) in `IvyHero.tsx`, `IvyShowcase.tsx`,
+  and `IvyCTA.tsx`. These were meant to be campus/team photos; the scrape
+  grabbed the wrong images. Already excluded from the homepage `OurWork`
+  collage (see `OurWork.tsx` comment) but the case-study page itself still
+  needs real replacement photos before this goes out publicly — **flag to
+  client / re-scrape before push.**
 - **HDFC Life hero "View Live Website" points at hdfclife.com** — awaiting
   the real campaign landing-page URL from the client (swap in HdfcHero.tsx).
 - All `#contact` / `#services` / `#blog` / footer social links are dead
@@ -151,16 +198,25 @@ muted-2 `#828282` · line `#e6e6e6` · surface `#f5f5f7` · gold `#e8c700`
   Nilambar-block imagery reusing Ivylistic (faithful to its Figma; needs
   real content). AmoradaScope descriptions are drafted copy.
 - Homepage FAQ answers 02–05 are placeholder; BVC CaseFaq answers are
-  drafted; Nilambar imagery reuses the site's only wide photo 3×.
+  drafted.
+- **Nilambar only has 3 real site photos total** (`nil-hero`, `nil-founder`,
+  `nil-person`) — reused across the site wherever more images are needed
+  (e.g. the homepage collage repeats each once to fill 6 tiles). Needs a
+  real image set from the client.
 - `netlify.toml` is inert leftover; hosting is GitHub Pages.
+- Ritvaa's `RitvaaShowcase` uses a CSS-built laptop+phone mockup (no
+  photographic export exists for this client) — see §6 for the pattern if
+  another client needs the same treatment.
 
 ## 9. Accounts
 
 - Repo under GitHub account **`nikitawadhawan-cmyk`** (`gh` CLI authed; push
   works). The separate `nikita-wadhawan-eclectic` account is NOT used.
 
-_Last updated: after the HDFC Life case study (8 case-study pages, homepage
-fully linked). At that point the last five pages (peak-mode-on, trippy-tour-
-guide, ivylistic, nilambar, hdfc-life) + homepage updates + this doc were
-sitting UNCOMMITTED in the working tree, awaiting the client's go to push —
-check `git status` before assuming the live site matches local._
+_Last updated: after the OurWork/WorkProcess animation rework (all 8 OurWork
+blocks now use the tilted-collage treatment; WorkProcess got a pinned
+scroll-triggered reveal; both "Trusted by many" strips fixed — one now a real
+marquee), plus content updates on the Ritvaa and Trippy Tour Guide case
+studies (real stats, real hero/showcase imagery). Check `git status` before
+assuming the live site matches local — this repo tends to accumulate a batch
+of work before the client says go._

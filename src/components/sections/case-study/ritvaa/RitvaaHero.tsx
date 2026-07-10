@@ -26,8 +26,8 @@ type HeroImage = {
 
 const HERO_IMAGES: HeroImage[] = [
   {
-    src: "/figma/rit-prod-1.jpg",
-    alt: "Ritvaa SmartGold mangalsutra with green and pink stones on a white background",
+    src: "/figma/rit-usp.jpg",
+    alt: "Ritvaa brand USP graphic — 2 years warranty, 3 million+ customers, lifetime service, 50x thick gold layered",
   },
   {
     src: "/figma/rit-banner-1.jpg",
@@ -35,8 +35,8 @@ const HERO_IMAGES: HeroImage[] = [
     accent: true,
   },
   {
-    src: "/figma/rit-prod-2.jpg",
-    alt: "Ritvaa SmartGold necklace product shot on a white background",
+    src: "/figma/rit-saubhagya.jpg",
+    alt: "Model wearing a Ritvaa SmartGold mangalsutra and bangles in traditional attire",
   },
 ];
 

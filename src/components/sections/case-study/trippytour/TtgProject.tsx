@@ -8,9 +8,11 @@ import Image from "@/components/Img";
  *
  * A two-column band on a subtle dotted paper background:
  *   LEFT  — "● ABOUT THE PROJECT" eyebrow pill (gold dot) at the top, and a
- *           rounded photo card at the bottom: ttg-app-1.jpg, a tall phone
- *           screenshot of the app's "All Tours" screen (object-cover,
- *           anchored to the top so the screen header stays visible).
+ *           rounded photo card at the bottom: ttg-hero-mobile.jpg, a
+ *           screenshot of the live trippytourguide.com mobile hero — "A
+ *           Guide in Your Pocket" / "Explore the World at Your Own Pace" —
+ *           captured directly from the real site (object-cover, anchored to
+ *           the top so the headline stays visible).
  *   RIGHT — big "The Project" heading, a hairline rule, then three
  *           paragraphs, each opening with a bold lead sentence (verbatim
  *           from the spec; paragraph 2 keeps the italicised themed-tour
@@ -72,8 +74,8 @@ export default function TtgProject() {
 
             <div className="relative aspect-[524/376] w-full overflow-hidden rounded-[20px]">
               <Image
-                src="/figma/ttg-app-1.jpg"
-                alt="Trippy Tour Guide app screenshot showing the All Tours screen"
+                src="/figma/ttg-hero-mobile.jpg"
+                alt="Trippy Tour Guide mobile homepage — Explore the World at Your Own Pace"
                 fill
                 sizes="(min-width: 1024px) 480px, 100vw"
                 className="object-cover object-top"

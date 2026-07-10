@@ -13,13 +13,14 @@
  *                                        uppercase #181818 → #contact)
  *
  * ASSET APPROACH: background is the SINGLE lifestyle photo
- * public/figma/rit-banner-1.jpg laid as an absolutely-positioned <img>
+ * public/figma/rit-banner-2.jpg (the "Monsoon Deals" banner — kept distinct
+ * from the hero's rit-banner-1.jpg) laid as an absolutely-positioned <img>
  * with the navy tint + live text over it. Uses assetPath() for the raw
  * <img> (GitHub Pages basePath).
  *
  * DEVIATIONS (flagged in report):
  *  - No photo-grid collage asset exists for Ritvaa (amorada uses
- *    am-cta-collage.jpg); a single photo (rit-banner-1.jpg) sits under the
+ *    am-cta-collage.jpg); a single photo (rit-banner-2.jpg) sits under the
  *    same navy tint instead, per spec.
  *  - Heading 128px desktop scaled down mobile-first (no mobile frame in Figma).
  *  - "GET IN TOUCH" button target is a placeholder "#contact" anchor.
@@ -52,7 +53,7 @@ export default function RitvaaCTA() {
           {/* Background photo (single lifestyle banner — no collage asset for Ritvaa) */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={assetPath("/figma/rit-banner-1.jpg")}
+            src={assetPath("/figma/rit-banner-2.jpg")}
             alt=""
             aria-hidden="true"
             className="absolute inset-0 size-full object-cover"

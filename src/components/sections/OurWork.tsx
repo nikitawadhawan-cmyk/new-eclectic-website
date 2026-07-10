@@ -11,9 +11,12 @@ import Link from "next/link";
  * study exists), and below it the project title + tag chips on the left and a
  * short description on the right. Recolored into the brand navy/gold palette.
  *
- * Projects = the four "Latest Projects" from the hero (same public/figma
- * screenshots); BVC Logistics and amorada have case-study pages to link to.
+ * Projects = all case-study clients; each has a tilted-collage or flat
+ * screenshot card with a "Learn More" pill linking to its case study.
  */
+
+/** A collage tile source — a plain path (center-crop) or a path + object-position override (for portrait photos where a center crop would cut off the subject). */
+type CollageImage = string | { src: string; pos: "top" | "center" };
 
 type Project = {
   title: string;
@@ -24,13 +27,79 @@ type Project = {
   alt: string;
   /** case-study route (internal) — renders the Learn More pill when set */
   href?: string;
-  /** 7 images -> tilted 2/3/2 collage card (Figma node 182:824) instead of a flat screenshot */
-  collage?: string[];
+  /** 6-7 images -> tilted collage card (Figma node 182:824) instead of a flat screenshot */
+  collage?: CollageImage[];
 };
 
 const BVC_COLLAGE = [1, 2, 3, 4, 5, 6, 7].map(
   (n) => `/figma/ourwork-bvc-${n}.jpg`,
 );
+
+const TTG_COLLAGE = [
+  "/figma/ttg-bundle-1.jpg",
+  "/figma/ttg-city.jpg",
+  "/figma/ttg-bundle-2.jpg",
+  "/figma/ttg-app-1.jpg",
+  "/figma/ttg-bundle-3.jpg",
+  "/figma/ttg-bundle-4.jpg",
+];
+
+const RITVAA_COLLAGE = [
+  "/figma/rit-banner-1.jpg",
+  "/figma/rit-mood.jpg",
+  "/figma/rit-banner-2.jpg",
+  "/figma/rit-prod-1.jpg",
+  "/figma/rit-prod-2.jpg",
+];
+
+const PMO_COLLAGE = [
+  "/figma/pmo-banner.jpg",
+  "/figma/pmo-hero-1.jpg",
+  "/figma/pmo-mood.jpg",
+  "/figma/pmo-hero-2.jpg",
+  "/figma/pmo-edu.jpg",
+  "/figma/pmo-hero-3.jpg",
+];
+
+/** ivy-booth.jpg / ivy-oxford.jpg are private WhatsApp screenshots, not campus photos — excluded on purpose, see chat with client. */
+const IVY_COLLAGE = [
+  "/figma/ivy-team.jpg",
+  "/figma/ivy-1.jpg",
+  "/figma/ivy-og.jpg",
+  "/figma/ivy-2.jpg",
+  "/figma/ivy-3.jpg",
+];
+
+const HDFC_COLLAGE = [
+  "/figma/hdfc-banner-1.jpg",
+  "/figma/hdfc-banner-3.jpg",
+  "/figma/hdfc-og.jpg",
+  "/figma/hdfc-banner-2.jpg",
+  "/figma/hdfc-banner-4.jpg",
+];
+
+const AMORADA_COLLAGE = [
+  "/figma/am-hero-3.jpg",
+  "/figma/am-hero-1.jpg",
+  "/figma/am-showcase.jpg",
+  "/figma/am-project-bed.jpg",
+  "/figma/am-hero-2.jpg",
+  "/figma/am-proj1-main.jpg",
+];
+
+/**
+ * Nilambar only has 3 site photos total (nil-hero, nil-founder, nil-person)
+ * — each repeats once to fill a 6-tile collage. The two portraits use
+ * pos: "top" so a center-crop doesn't cut the subject's head off.
+ */
+const NILAMBAR_COLLAGE: CollageImage[] = [
+  "/figma/nil-hero.jpg",
+  { src: "/figma/nil-founder.jpg", pos: "top" },
+  "/figma/nil-hero.jpg",
+  { src: "/figma/nil-person.jpg", pos: "top" },
+  { src: "/figma/nil-founder.jpg", pos: "top" },
+  { src: "/figma/nil-person.jpg", pos: "top" },
+];
 
 const PROJECTS: Project[] = [
   {
@@ -47,48 +116,54 @@ const PROJECTS: Project[] = [
     tags: ["Shopify Development", "Luxury Jewellery"],
     desc: "An elegant Shopify platform for Ritvaa's SmartGold jewellery and mangalsutra collections — built around trust, tradition, and a lifetime buyback guarantee.",
     screen: "/figma/rit-banner-1.jpg",
-    alt: "Ritvaa website — Luxury SmartGold Jewellery, Sold on Trust",
+    alt: "Collage of Ritvaa work — SmartGold jewellery campaign photography and product shots",
     href: "/projects/ritvaa",
+    collage: RITVAA_COLLAGE,
   },
   {
     title: "Peak Mode On",
     tags: ["Shopify Development", "Ayurvedic Wellness"],
     desc: "A complete Ayurvedic wellness store built from the ground up on Shopify — with a custom Dosha quiz and educational content that guides first-time buyers.",
     screen: "/figma/pmo-banner.jpg",
-    alt: "Peak Mode On website — Ayurvedic wellness store with a custom Dosha quiz",
+    alt: "Collage of Peak Mode On work — Ayurvedic supplement packaging and product photography",
     href: "/projects/peak-mode-on",
+    collage: PMO_COLLAGE,
   },
   {
     title: "Trippy Tour Guide",
     tags: ["Website Development", "Travel Tech"],
     desc: "A discovery-led website for GPS-activated, self-guided audio tours across 50+ destinations — built to drive tour sales and app downloads.",
     screen: "/figma/ttg-bundle-1.jpg",
-    alt: "Trippy Tour Guide website — self-guided audio tours across 50+ destinations",
+    alt: "Collage of Trippy Tour Guide work — destination photography and the app's tour browser",
     href: "/projects/trippy-tour-guide",
+    collage: TTG_COLLAGE,
   },
   {
     title: "Ivylistic",
     tags: ["Brand Website", "Higher-Ed Consulting"],
     desc: "A strategy-led brand website for an MBA, MiM and MS admissions consultancy — built to earn trust and convert free profile evaluations.",
     screen: "/figma/ivy-og.jpg",
-    alt: "Ivylistic — Higher education, simplified — MBA admissions consulting",
+    alt: "Collage of Ivylistic work — brand identity and the admissions consulting team",
     href: "/projects/ivylistic",
+    collage: IVY_COLLAGE,
   },
   {
     title: "Nilambar",
     tags: ["Corporate Website", "Real Estate & Advisory"],
     desc: "A corporate website that unifies real-estate development, strategic advisory and startup investment under one confident, trustworthy brand.",
     screen: "/figma/nil-hero.jpg",
-    alt: "Nilambar — real-estate and advisory corporate website",
+    alt: "Collage of Nilambar work — real-estate architecture and the advisory team",
     href: "/projects/nilambar",
+    collage: NILAMBAR_COLLAGE,
   },
   {
     title: "HDFC Life",
     tags: ["Landing Page", "Performance Marketing"],
     desc: "A single-purpose, high-conversion landing page that turns awareness traffic into qualified insurance-agent leads.",
     screen: "/figma/hdfc-og.jpg",
-    alt: "HDFC Life — life-insurance illustration from the agent lead-generation campaign",
+    alt: "Collage of HDFC Life work — agent lead-generation campaign creatives",
     href: "/projects/hdfc-life",
+    collage: HDFC_COLLAGE,
   },
   {
     title: "amorada",
@@ -96,42 +171,73 @@ const PROJECTS: Project[] = [
     tags: ["Ecommerce Site", "Brand Experience"],
     desc: "A warm, craft-led ecommerce experience where comfort meets craft — editorial product storytelling and a clean shopping journey designed to convert browsers into loyal customers.",
     screen: "/figma/lp-screen-4.jpg",
-    alt: "Amorada website — Where Comfort Meets Craft",
+    alt: "Collage of amorada work — home-linen product photography and the storefront",
     href: "/projects/amorada",
+    collage: AMORADA_COLLAGE,
   },
 ];
 
 /**
- * Tilted 2/3/2 collage card (Figma 182:824): three rows of 16:9 tiles rotated
- * -11.7deg, staggered horizontally, clipped by the rounded card. Sizes are
- * percentages of the card so the collage scales with it.
+ * Distribute a variable image count into 3 collage rows, giving any
+ * remainder to the middle row first (then the first, then the last) so a
+ * 7-image set lands 2/3/2 (Figma 182:824) and a 6-image set lands 2/2/2.
  */
-function TiltedCollage({ images, alt }: { images: string[]; alt: string }) {
-  const rows: { imgs: string[]; ml: string }[] = [
-    { imgs: images.slice(0, 2), ml: "2%" },
-    { imgs: images.slice(2, 5), ml: "-26%" },
-    { imgs: images.slice(5, 7), ml: "20%" },
-  ];
+function collageRows(images: CollageImage[]): CollageImage[][] {
+  const base = Math.floor(images.length / 3);
+  const sizes = [base, base, base];
+  const remainderOrder = [1, 0, 2];
+  for (let i = 0; i < images.length - base * 3; i++) sizes[remainderOrder[i]] += 1;
+  const rows: CollageImage[][] = [];
+  let cursor = 0;
+  for (const size of sizes) {
+    rows.push(images.slice(cursor, cursor + size));
+    cursor += size;
+  }
+  return rows;
+}
+
+/** Horizontal offset per row, tuned separately for 3-wide vs 2-wide rows. */
+function collageMargin(rowIndex: number, itemsInRow: number): string {
+  const margins = itemsInRow >= 3 ? ["2%", "-26%", "20%"] : ["8%", "-18%", "16%"];
+  return margins[rowIndex] ?? "0%";
+}
+
+/**
+ * Tilted collage card (Figma 182:824): three rows of 16:9 tiles rotated
+ * -11.7deg, staggered horizontally, clipped by the rounded card. Sizes are
+ * percentages of the card so the collage scales with it. Works with 6 or 7
+ * source images (row split adapts — see collageRows).
+ */
+function TiltedCollage({ images, alt }: { images: CollageImage[]; alt: string }) {
+  const rows = collageRows(images).map((imgs, r) => ({
+    imgs,
+    ml: collageMargin(r, imgs.length),
+  }));
   return (
     <div className="absolute inset-0 bg-[#d9d9d9]" role="img" aria-label={alt}>
       <div className="absolute left-1/2 top-1/2 w-[150%] -translate-x-1/2 -translate-y-1/2 rotate-[-11.7deg]">
         <div className="flex flex-col gap-[10px]">
           {rows.map((row, r) => (
             <div key={r} className="flex gap-[10px]" style={{ marginLeft: row.ml }}>
-              {row.imgs.map((src) => (
-                <div
-                  key={src}
-                  className="relative aspect-[504/284] w-[39.4%] shrink-0 overflow-hidden rounded-[5px]"
-                >
-                  <Image
-                    src={src}
-                    alt=""
-                    fill
-                    sizes="(min-width: 1200px) 520px, 45vw"
-                    className="object-cover"
-                  />
-                </div>
-              ))}
+              {row.imgs.map((img, i) => {
+                const src = typeof img === "string" ? img : img.src;
+                const pos = typeof img === "string" ? "center" : img.pos;
+                return (
+                  <div
+                    key={`${src}-${i}`}
+                    className="relative aspect-[504/284] w-[39.4%] shrink-0 overflow-hidden rounded-[5px]"
+                  >
+                    <Image
+                      src={src}
+                      alt=""
+                      fill
+                      sizes="(min-width: 1200px) 520px, 45vw"
+                      className="object-cover"
+                      style={{ objectPosition: pos === "top" ? "50% 15%" : "50% 50%" }}
+                    />
+                  </div>
+                );
+              })}
             </div>
           ))}
         </div>

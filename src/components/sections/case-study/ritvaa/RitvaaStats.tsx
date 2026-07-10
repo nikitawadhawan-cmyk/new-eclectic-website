@@ -8,8 +8,8 @@ import Image from "@/components/Img";
  *   - Heading "Numbers that speak" — 48px / 57.6px, tracking -1.14px, black.
  *   - 4-up meta-facts row styled exactly like the amorada stat cells: thin top
  *     hairlines (#ddd, 0.8px), big value 52px bold black, small label 16px,
- *     tracking -0.16px. All four Ritvaa values are text (Client / Industry /
- *     Platform / Focus) — NO gold "+" on any of them.
+ *     tracking -0.16px. First three values get a gold "+" suffix; the
+ *     duration stat is plain text.
  *   - Responsive: 4-up desktop -> 2-up tablet -> 1-up mobile.
  *
  * (b) TESTIMONIAL BAND — CENTERED, same layout as amorada:
@@ -34,10 +34,10 @@ type Stat = {
 };
 
 const STATS: Stat[] = [
-  { value: "Ritvaa", label: "Client" },
-  { value: "Luxury Jewellery", label: "Industry" },
-  { value: "Shopify", label: "Platform" },
-  { value: "Trust & Tradition", label: "Focus" },
+  { value: "10", plus: true, label: "Website Pages Planned" },
+  { value: "15", plus: true, label: "User Flows Created" },
+  { value: "160", plus: true, label: "Content Sections Structured" },
+  { value: "1 Month", label: "Project Duration" },
 ];
 
 export default function RitvaaStats() {

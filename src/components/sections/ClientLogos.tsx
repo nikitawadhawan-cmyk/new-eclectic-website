@@ -11,7 +11,9 @@ type Logo = {
 };
 
 // Order matches Figma node 23:4117 left-to-right: BVC, Rippy Tour, Ivylistic, Ammorada.
-const logos: Logo[] = [
+// Exported so the "Trusted by many" marquee in Testimonials.tsx can reuse the
+// same real client logos instead of Figma's placeholder wordmarks.
+export const logos: Logo[] = [
   {
     name: "BVC",
     src: "/figma/clientlogo-bvc.png",
