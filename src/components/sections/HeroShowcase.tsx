@@ -60,7 +60,7 @@ const CARDS: Card[] = [
   {
     title: "Trippy Tour",
     subtitle: "Travel Booking Site",
-    href: "#",
+    href: "/projects/trippy-tour-guide",
     bg: "/figma/lp-bg-2.jpg",
     screen: "/figma/lp-screen-2.jpg",
     alt: "Trippy Tour website — Explore the World at Your Own Pace",
@@ -75,7 +75,7 @@ const CARDS: Card[] = [
   {
     title: "IVVYLISTIC",
     subtitle: "Education Platform",
-    href: "#",
+    href: "/projects/ivylistic",
     bg: "/figma/lp-bg-3.jpg",
     screen: "/figma/lp-screen-3.jpg",
     alt: "IVVYLISTIC website — Get into the world's top MBA program",

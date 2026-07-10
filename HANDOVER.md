@@ -1,8 +1,8 @@
 # Eclectic Digital — Website Handover
 
-A single-page marketing/agency website ("eclectic digital"), built from Figma
-designs. Static Next.js site, hosted free on GitHub Pages, auto-deploying on
-every push to `main`.
+A marketing/agency website ("eclectic digital"): a homepage built from Figma
+plus **eight case-study pages**. Static Next.js site, hosted free on GitHub
+Pages, auto-deploying on every push to `main`.
 
 - **Live site:** https://nikitawadhawan-cmyk.github.io/new-eclectic-website/
 - **Repo:** https://github.com/nikitawadhawan-cmyk/new-eclectic-website (public)
@@ -17,175 +17,150 @@ every push to `main`.
 | Language | TypeScript 5 |
 | UI | React 19.2 |
 | Styling | **Tailwind CSS v4** (config-less; theme tokens in `src/app/globals.css` under `@theme`) |
-| Animation | **framer-motion 12** |
-| Icons | **lucide-react** (+ hand-built inline SVGs for designed marks) |
+| Animation | **framer-motion 12** + CSS keyframes |
+| Icons | **lucide-react** (+ hand-built inline SVGs) |
 | Font | **Inter** via `next/font/google` |
 | Hosting | **GitHub Pages** (static export via GitHub Actions) |
 
-> ⚠️ **Note (from `AGENTS.md`):** this Next.js version can differ from older docs.
-> Before changing framework config, read the bundled guide in
-> `node_modules/next/dist/docs/`.
+> ⚠️ From `AGENTS.md`: this Next.js version may differ from training data.
+> Before changing framework config, read `node_modules/next/dist/docs/`.
 
----
-
-## 2. Run it locally
+## 2. Run / build / deploy
 
 ```bash
-npm install
 npm run dev        # http://localhost:3000
+BASE_PATH=/new-eclectic-website npm run build   # prod static export -> ./out
+npx tsc --noEmit && npx eslint src/            # checks
+git push origin main                            # deploys via Actions (~1 min)
 ```
 
-Other scripts:
+- Local dev serves at `/`; production serves from `/new-eclectic-website/`
+  (basePath via `BASE_PATH` env; see `next.config.ts`).
+- **Images MUST go through `src/components/Img.tsx`** — import `Image` from
+  `@/components/Img` (not next/image), or wrap raw paths in `assetPath()`.
+  Otherwise they 404 in production. Internal links: `next/link` handles
+  basePath; raw `<a href="/...">` needs `assetPath()` (see Header.tsx).
+- If `tsc` errors on `.next/**/* 2.ts` files (Finder-made duplicates), run
+  `find .next -name "* 2.*" -delete`.
+- GitHub Actions occasionally 503s platform-wide; a failed deploy is usually
+  theirs — re-run with `gh workflow run deploy.yml`.
 
-```bash
-npm run build      # production build (static export -> ./out)
-npm run lint       # eslint
-npx tsc --noEmit   # type-check
-```
-
-Local dev is served at `/` (no basePath). The production/Pages build is served
-from `/new-eclectic-website/` — see §5.
-
----
-
-## 3. Project structure
+## 3. Site map
 
 ```
-src/
-  app/
-    layout.tsx        # <html>/<body>, Inter font, <title>/<meta>
-    page.tsx          # composes all sections in order (see §4)
-    globals.css       # Tailwind import, brand tokens (@theme), the "bob" keyframe
-  components/
-    Img.tsx           # next/image wrapper + assetPath() — see §5 (basePath)
-    Reveal.tsx        # subtle fade + slide-up on scroll-into-view (once)
-    FlipReveal.tsx    # 3D flip-up on scroll-into-view (once)
-    sections/         # one file per page section
-public/
-  figma/              # 54 exported design assets (images, svgs)
-  .nojekyll           # tells Pages not to run Jekyll
-.github/workflows/
-  deploy.yml          # build static export -> deploy to Pages
-next.config.ts        # output:'export', basePath, images.unoptimized (see §5)
+/                              homepage
+/projects/bvc-logistics        case study (bespoke, built from Figma node 89-5826)
+/projects/amorada              case study (bespoke, built from Figma node 221-5847)
+/projects/ritvaa               case study (clone family — see §5)
+/projects/peak-mode-on         case study (clone)
+/projects/trippy-tour-guide    case study (clone)
+/projects/ivylistic            case study (clone)
+/projects/nilambar             case study (clone)
+/projects/hdfc-life            case study (clone)
 ```
 
----
+## 4. Homepage sections (top to bottom, `src/app/page.tsx`)
 
-## 4. Page sections & animations
+| Section (component in `src/components/sections/`) | Notes |
+| --- | --- |
+| `Header` | Sticky pill nav. Logo = real asset `public/eclectic-logo-nav.png`, links home (`assetPath("/")`). Nav: Work → `/#work`, Services (`#services`, dead), Blog (`#blog`, dead), Contact (`#contact`, dead). Pricing removed. |
+| `HeroShowcase` | ⭐ Pinned scroll-morph "Latest Projects" — **matches Figma exactly** (4 cards: BVC Logistics, Trippy Tour, IVVYLISTIC, amorada with `lp-screen-*.jpg`); each card links to its case-study route. Do NOT swap the card artwork — client insisted the Figma design stays. |
+| `ClientLogos` | "Trusted by many" strip |
+| `ShowreelVideo` | 16:9 video slot placeholder — drop `public/showreel.mp4` and flip `HAS_VIDEO` in the component |
+| `Innovate` | ⭐ Pinned "Featured Work" scatter |
+| `OurServices` | ⭐ Pinned scrollytelling: zooms in on the first point, reveals 7 points one-by-one along a growing navy line, zooms out after the last. Static list fallback <1024px / reduced motion. |
+| `BigQuote` | Soela quote (enlarged type) |
+| `WorkProcess` | Numbered step cards, flip-in + bob |
+| `OurWork` | `id="work"`. Schbang-style navy band; **8 blocks, every one links to a case study**. BVC block uses a tilted 7-image collage (Figma 182:824). New projects get appended here (see §6). |
+| `AboutCaseStudy` | Portrait + philosophy (work-history stack + signature removed at client request) |
+| `Pricing`, `Testimonials`, `Faq`, `Footer` | Footer = giant "eclecticdigital" wordmark + socials/links/credit (all `#` placeholders) |
 
-Composed top-to-bottom in `src/app/page.tsx`. Three sections have **bespoke**
-scroll animations; the rest get a shared reveal wrapper.
+**Animation gotchas (hard-won):** pinned sections use a manual scroll-progress
+`MotionValue` (rect-based listener), NOT `useScroll({target})`. Never wrap a
+pinned/sticky section in `Reveal` (ancestor transform breaks sticky). Clip on
+the sticky child, not the pinned section. Test several viewport heights.
 
-| # | Section (component) | Animation |
-| --- | --- | --- |
-| 1 | **Header** `Header.tsx` | Sticky nav; on scroll it collapses into a floating centred pill (+ mobile menu). |
-| 2 | **HeroShowcase** `HeroShowcase.tsx` | ⭐ Pinned scroll-morph: a fanned stack of browser mockups spreads/scales/un-tilts into the "Latest Projects" 2×2 grid; hero copy scrolls up and past; a phase-2 pan reveals the bottom row. Static fallback on mobile / reduced-motion. |
-| 3 | ClientLogos `ClientLogos.tsx` | `Reveal` (fade-up) |
-| 4 | **Innovate** `Innovate.tsx` | ⭐ Pinned "scatter": the centred "We Strive to Innovate" heading stays put while 6 cards open out from centre to arranged positions and hold; reverses on scroll-up. |
-| 5 | BigQuote `BigQuote.tsx` | `FlipReveal` (3D flip-up) |
-| 6 | Services `Services.tsx` | `FlipReveal` |
-| 7 | **WorkProcess** `WorkProcess.tsx` | ⭐ Normal-flow section; the 4 numbered step cards **flip in** (`whileInView`, one-shot) as you scroll to them, then idly hover/bounce (CSS `@keyframes bob`). |
-| 8 | AboutCaseStudy `AboutCaseStudy.tsx` | `FlipReveal` |
-| 9 | Pricing `Pricing.tsx` | `Reveal` |
-| 10 | Testimonials `Testimonials.tsx` | `Reveal` |
-| 11 | Faq `Faq.tsx` | `Reveal` (section) + client accordion |
-| 12 | Footer `Footer.tsx` | `Reveal` |
+## 5. Case-study pages
 
-**Animation notes / gotchas** (learned the hard way):
+Two families:
 
-- **`overflow-hidden` breaks `position: sticky`.** For pinned sections the clip
-  must live on the *sticky child*, never the pinned `<section>` itself.
-- Pinned sections use a **manual scroll-progress `MotionValue`** (a scroll
-  listener computing `-rect.top / (height - innerHeight)`) driving
-  `useTransform` — this is reversible and reliable where `useScroll({target})`
-  was flaky in this Next/React combo.
-- Absolute-positioned pinned layouts are **viewport-height sensitive** — test at
-  several heights (e.g. 900 and 1050px), not just one.
-- Reduced-motion (`useReducedMotion`) and small screens (`< 640/1024px`) fall
-  back to static layouts in the bespoke sections.
+1. **BVC** (`case-study/Case*.tsx`) and **amorada** (`case-study/amorada/`)
+   were built section-by-section from Figma.
+2. **The clone family** — ritvaa, peakmode, trippytour, ivylistic, nilambar,
+   hdfclife (each in `case-study/<dir>/`) are **1:1 clones of the amorada
+   design** with per-client content. The Ritvaa components are the canonical
+   clone source.
 
----
+Shared section anatomy (every clone page, in order): Hero (uppercase heading,
+"— Case Study — … —" subhead, 3 images w/ bracketed center, intro, View Live
+Website button) → Stats (4 text facts + testimonial quote) → Showcase (wide
+image) → The Project (image + 3 bold-lead paragraphs) → **Results**
+(spotlight-split; hover moves the navy card) → **Challenge/Solution** (two
+spotlight cards, Solution default-active) → **What We Did** (keyline ledger,
+auto-advancing navy highlight every 2.4s, hover takes it, no numbers) →
+**Services bento** (5 cards, hover pops + turns navy) → More Work (2 linked
+project blocks) → CTA (navy tint over photo) → shared `Faq` → `Footer`.
 
-## 5. Hosting: GitHub Pages (important)
+## 6. Playbook — adding the NEXT case-study page
 
-The site is a **static export** deployed by GitHub Actions.
+For a new client page in the same design (this is the established flow):
 
-- `next.config.ts` sets `output: 'export'`, `trailingSlash: true`,
-  `images: { unoptimized: true }`, and a `basePath` driven by the `BASE_PATH`
-  env var.
-- **basePath:** Pages serves the site from `/new-eclectic-website/`, so the CI
-  build sets `BASE_PATH=/new-eclectic-website`. Locally `BASE_PATH` is unset →
-  served at `/`.
-- **Image paths:** because `images.unoptimized` is required for a static export,
-  `next/image` does **not** apply `basePath` to a raw `src`. So **all images go
-  through `src/components/Img.tsx`** (a wrapper that prefixes the basePath), and
-  raw `<img>`/asset paths use `assetPath()` from the same file. **If you add an
-  image, import `Image` from `@/components/Img` (not `next/image`), or wrap the
-  path in `assetPath()`.** Otherwise it 404s on the live site.
-- **Deploy workflow:** `.github/workflows/deploy.yml` runs on push to `main`
-  (and manual dispatch): `npm ci` → `next build` (with `BASE_PATH`) →
-  upload `./out` → `deploy-pages`.
+1. **Content**: get the approved copy (the "Bold Editorial" HTML files in
+   ~/Downloads were the source for all six clones — hero intro, overview
+   paragraphs, results words, challenge/solution, 6 steps, 5 services,
+   pull quote, meta facts, marquee words).
+2. **Images**: scrape the client's live site (`curl` + regex; for SPAs pull
+   the JS bundle). Download 5-6 images to `public/figma/` with a short
+   client prefix (existing: `cs- am- rit- pmo- ttg- ivy- nil- hdfc-`),
+   optimize via `sips -Z 1400 -s format jpeg -s formatOptions 80`, and
+   **visually verify every image before placing it** (several "campus
+   photos" turned out to be WhatsApp screenshots).
+3. **Spec**: write `.figma-to-website/<client>-case-study/spec.md` mapping
+   each section's verbatim content + image assignments (copy an existing
+   spec). Mark invented connective copy as "(glue)" for client review.
+4. **Clone**: create `src/components/sections/case-study/<dir>/<Prefix><X>.tsx`
+   for the 10 sections by copying the Ritvaa components and swapping ONLY
+   content (this was parallelized across 4 sub-agents: hero/stats/showcase ·
+   project/results/challenge · scope/highlights · projects/CTA).
+5. **Route**: `src/app/projects/<slug>/page.tsx` — copy an existing page
+   (Header → Hero unwrapped → sections in `<Reveal>` → Faq → Footer, plus
+   `metadata`).
+6. **Homepage**: append a block to `PROJECTS` in `OurWork.tsx` with
+   `href: "/projects/<slug>"`.
+7. **Verify**: `tsc` + eslint; load the page in the preview (check section
+   order, images, the three interactive sections); check the homepage block;
+   run the production build. Then push when the client says so.
 
-### To deploy a change
-```bash
-git add -A && git commit -m "..." && git push origin main
-```
-That's it — the workflow rebuilds and redeploys (~1 min). Watch it at the repo's
-**Actions** tab.
+## 7. Brand tokens (globals.css `@theme`)
 
-### First-time / re-enabling Pages
-Pages is enabled with **Source = GitHub Actions** (repo Settings → Pages).
-Private-repo Pages needs a paid plan, which is why the repo is **public**.
+navy `#2a315f` · navy-deep `#1f2450` · ink `#171717` · muted `#545454` ·
+muted-2 `#828282` · line `#e6e6e6` · surface `#f5f5f7` · gold `#e8c700`
+(→ `bg-navy`, `text-gold`, …). Logo assets: `public/eclectic-logo-nav.png`
+(header) and `public/eclectic-logo-stacked.png` (spare).
 
----
+## 8. Open items / placeholders
 
-## 6. Brand & design tokens
+- **HDFC Life hero "View Live Website" points at hdfclife.com** — awaiting
+  the real campaign landing-page URL from the client (swap in HdfcHero.tsx).
+- All `#contact` / `#services` / `#blog` / footer social links are dead
+  placeholders — no contact page exists yet.
+- ShowreelVideo awaits `public/showreel.mp4` (`HAS_VIDEO` flag).
+- "(glue)" copy on clone pages (Results headings/subs, Scope supporting
+  lines, some stat-chip labels) needs client sign-off — flagged in docblocks.
+- amorada page: AmoradaProjects has literal "00+ / Lorem Ipsuem" chips and
+  Nilambar-block imagery reusing Ivylistic (faithful to its Figma; needs
+  real content). AmoradaScope descriptions are drafted copy.
+- Homepage FAQ answers 02–05 are placeholder; BVC CaseFaq answers are
+  drafted; Nilambar imagery reuses the site's only wide photo 3×.
+- `netlify.toml` is inert leftover; hosting is GitHub Pages.
 
-Defined in `src/app/globals.css` (`@theme`), used as Tailwind utilities:
+## 9. Accounts
 
-| Token | Value | Utility examples |
-| --- | --- | --- |
-| Navy (primary) | `#2a315f` | `bg-navy` `text-navy` `border-navy` |
-| Navy deep | `#1f2450` | `bg-navy-deep` |
-| Gold (accent) | `#e8c700` | `text-gold` `bg-gold` |
-| Ink | `#171717` | `text-ink` |
-| Muted / muted-2 | `#545454` / `#828282` | `text-muted` `text-muted-2` |
-| Surface | `#f5f5f7` | `bg-surface` |
-| Font | Inter | `font-sans` (default) |
+- Repo under GitHub account **`nikitawadhawan-cmyk`** (`gh` CLI authed; push
+  works). The separate `nikita-wadhawan-eclectic` account is NOT used.
 
-Logo: the **eclectic digital** wordmark + `#` speech-bubble is an inline SVG in
-`Header.tsx` (recreated, not an image file). Drop a real logo asset in `public/`
-and swap it in if you get one.
-
----
-
-## 7. Known content gaps / follow-ups
-
-These are content placeholders left from the Figma build — swap in real copy:
-
-- **FAQ:** only answer #1 came from Figma; answers **02–05** are on-brand
-  placeholders (`Faq.tsx`).
-- **Services:** the "React & Next.js Development" row currently reuses the
-  WordPress icon (`Services.tsx`) — give it its own icon.
-- **Testimonials:** one client-logo in the strip is a placeholder.
-- **Big Quote:** attributed to "Soela / Founder of Spiritude" with a monogram
-  avatar (no real photo) — add a real headshot if available.
-- **Footer:** may still show a faint "JOSEPH" watermark / template links from the
-  source design — review against the eclectic-digital brand.
-- All CTA links (`#contact`, `#`) are placeholders — wire to real destinations.
-- `netlify.toml` in the repo is **inert** (leftover) — safe to delete; hosting is
-  GitHub Pages, not Netlify.
-
----
-
-## 8. Accounts / access
-
-- The repo lives under the GitHub account **`nikitawadhawan-cmyk`** (the machine's
-  `gh` CLI is authenticated for it, so `git push` works directly).
-- There is a *separate, unconnected* account `nikita-wadhawan-eclectic` with an
-  empty repo of the same name — **not** used and not accessible from here.
-
----
-
-_Last updated: handover generated after the viewport-robustness fixes
-(commit `3cb11a5`)._
+_Last updated: after the HDFC Life case study (8 case-study pages, homepage
+fully linked). At that point the last five pages (peak-mode-on, trippy-tour-
+guide, ivylistic, nilambar, hdfc-life) + homepage updates + this doc were
+sitting UNCOMMITTED in the working tree, awaiting the client's go to push —
+check `git status` before assuming the live site matches local._

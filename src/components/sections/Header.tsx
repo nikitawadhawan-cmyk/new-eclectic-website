@@ -15,7 +15,7 @@ const navLinks = [
 
 function Logo() {
   return (
-    <a href="#top" className="flex shrink-0 items-center" aria-label="eclectic digital — home">
+    <a href={assetPath("/")} className="flex shrink-0 items-center" aria-label="eclectic digital — home">
       {/* Real brand logo (public/eclectic-logo-nav.png, 474x74) */}
       <Image
         src="/eclectic-logo-nav.png"
