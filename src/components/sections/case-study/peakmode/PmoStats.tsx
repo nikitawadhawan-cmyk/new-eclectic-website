@@ -35,10 +35,10 @@ type Stat = {
 };
 
 const STATS: Stat[] = [
-  { value: "Peak Mode On", label: "Client" },
-  { value: "Ayurvedic Wellness", label: "Industry" },
+  { value: "50", plus: true, label: "Website Pages Planned" },
+  { value: "20", plus: true, label: "User Flows Created" },
   { value: "Shopify", label: "Platform" },
-  { value: "Full Store, Ground-Up", label: "Scope" },
+  { value: "1 Month", label: "Project Duration" },
 ];
 
 export default function PmoStats() {

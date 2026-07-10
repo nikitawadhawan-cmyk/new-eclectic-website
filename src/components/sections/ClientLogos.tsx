@@ -45,29 +45,43 @@ export const logos: Logo[] = [
 ];
 
 export default function ClientLogos() {
+  // Track renders the logo list twice back-to-back so the -50% marquee loop
+  // is seamless — see the `marquee` keyframes in globals.css. Same pattern
+  // as the ClientLogosStrip marquee further down the page (Testimonials.tsx).
+  const track = [...logos, ...logos];
+
   return (
     <section
       aria-label="Trusted by many"
       className="w-full border-t-[0.8px] border-[#dedede]"
     >
-      <div className="mx-auto w-full max-w-[1200px] px-6 py-8 lg:px-10">
-        <div className="flex flex-col items-center gap-6 lg:flex-row lg:justify-center lg:gap-10">
-          {/* Caption */}
-          <p className="shrink-0 text-[21px] leading-[30.8px] tracking-[-0.66px] text-[#545454]">
-            <span className="font-medium">Trusted by </span>
-            <span className="font-semibold text-black">many</span>
-          </p>
+      <div className="mx-auto flex w-full max-w-[1200px] flex-col items-center gap-6 px-6 py-8 lg:flex-row lg:gap-10 lg:px-10">
+        {/* Caption */}
+        <p className="shrink-0 text-[21px] leading-[30.8px] tracking-[-0.66px] text-[#545454]">
+          <span className="font-medium">Trusted by </span>
+          <span className="font-semibold text-black">many</span>
+        </p>
 
-          {/* Logo row — wraps to a grid on small screens */}
-          <div className="grid w-full grid-cols-2 place-items-center gap-x-8 gap-y-8 opacity-70 sm:grid-cols-4 lg:flex lg:w-auto lg:items-center lg:justify-center lg:gap-x-16">
-            {logos.map((logo) => (
+        {/* Logo marquee */}
+        <div
+          className="w-full overflow-hidden lg:flex-1"
+          style={{
+            maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+            WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+          }}
+        >
+          <div
+            className="marquee-track flex w-max items-center gap-16 opacity-70"
+            style={{ animation: "marquee 24s linear infinite" }}
+          >
+            {track.map((logo, i) => (
               <Image
-                key={logo.name}
+                key={`${logo.name}-${i}`}
                 src={logo.src}
                 alt={logo.name}
                 width={logo.width}
                 height={logo.height}
-                className="w-auto max-w-[70%] object-contain sm:max-w-full"
+                className="w-auto shrink-0 object-contain"
                 style={{ height: logo.displayHeight }}
               />
             ))}

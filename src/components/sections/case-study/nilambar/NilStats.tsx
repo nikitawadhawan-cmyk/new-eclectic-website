@@ -58,7 +58,7 @@ export default function NilStats() {
         <dl className="mt-12 grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-2 lg:mt-[72px] lg:grid-cols-4">
           {STATS.map((stat) => (
             <div key={stat.label} className="border-t-[0.8px] border-[#ddd] pt-16">
-              <dd className="font-bold text-black text-[44px] leading-[44px] tracking-[-1.45px] lg:text-[52px] lg:leading-[52px] lg:tracking-[-1.716px]">
+              <dd className="font-bold text-black text-[36px] leading-[38px] tracking-[-1.19px] lg:text-[36px] lg:leading-[40px] lg:tracking-[-1.19px]">
                 {stat.value}
                 {stat.plus ? <span className="text-gold">+</span> : null}
               </dd>

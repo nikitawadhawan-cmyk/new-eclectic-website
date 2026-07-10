@@ -246,11 +246,36 @@ function TiltedCollage({ images, alt }: { images: CollageImage[]; alt: string })
   );
 }
 
+/** Renders a Link when `href` is set, otherwise a plain article — keeps the
+ *  polymorphic wrapper's props valid for both cases (next/link's `href` is
+ *  required, so it can't be spread conditionally onto a single element type). */
+function CardWrapper({
+  href,
+  className,
+  children,
+}: {
+  href?: string;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  if (href) {
+    return (
+      <Link href={href} className={className}>
+        {children}
+      </Link>
+    );
+  }
+  return <article className={className}>{children}</article>;
+}
+
 function ProjectBlock({ project }: { project: Project }) {
+  // The whole card — image, title, tags, description — is one clickable
+  // link to the case study; "Learn More" is now a purely visual pill (not a
+  // nested <a>, since it lives inside this outer link).
   return (
-    <article className="flex flex-col gap-7">
+    <CardWrapper href={project.href} className="group flex flex-col gap-7">
       {/* Screenshot / collage card */}
-      <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.04] sm:aspect-[1334/510]">
+      <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.04] transition-transform duration-300 group-hover:scale-[1.01] sm:aspect-[1334/510]">
         {project.collage ? (
           <TiltedCollage images={project.collage} alt={project.alt} />
         ) : (
@@ -263,12 +288,9 @@ function ProjectBlock({ project }: { project: Project }) {
           />
         )}
         {project.href && (
-          <Link
-            href={project.href}
-            className="absolute bottom-5 right-5 inline-flex h-12 items-center rounded-full bg-navy-deep/90 px-7 text-[15px] font-semibold text-white backdrop-blur-sm transition hover:bg-gold hover:text-navy active:scale-95 sm:bottom-7 sm:right-7"
-          >
+          <span className="absolute bottom-5 right-5 inline-flex h-12 items-center rounded-full bg-navy-deep/90 px-7 text-[15px] font-semibold text-white backdrop-blur-sm transition group-hover:bg-gold group-hover:text-navy sm:bottom-7 sm:right-7">
             Learn More
-          </Link>
+          </span>
         )}
       </div>
 
@@ -297,7 +319,7 @@ function ProjectBlock({ project }: { project: Project }) {
           {project.desc}
         </p>
       </div>
-    </article>
+    </CardWrapper>
   );
 }
 

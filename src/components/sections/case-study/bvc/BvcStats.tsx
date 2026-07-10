@@ -1,29 +1,14 @@
 import Image from "@/components/Img";
 
 /**
- * CaseStats — BVC case study, two stacked bands.
- * Figma nodes 84:1645 ("Numbers that speak" stats) + 89:5813 (testimonial quote).
+ * BvcStats — BVC Logistics case study, two stacked bands. Clones the
+ * AmoradaStats design 1:1 (same structure, classes, type scale, centered
+ * testimonial); only the content differs. Replaces the old bespoke
+ * CaseStats (which left-aligned the quote).
  *
- * (a) STATS BAND (84:1645)
- *   - Heading "Numbers that speak" — Figma 48px / 57.6px, tracking -1.14px, black.
- *   - 4-up stat row, each with a thin top hairline (Figma #ddd, 0.8px). Numbers
- *     are 52px bold black; the trailing "+" is gold (#e8c700 = --color-gold).
- *     Labels 16px, tracking -0.16px. "2 Months" is fully bold (no "+").
- *   - Responsive: 4-up desktop -> 2-up tablet -> 1-up mobile.
- *
- * (b) TESTIMONIAL BAND (89:5813)
- *   - Centered gold quote mark, then the quote (Figma 40px / 56px, centered,
- *     #0a0a0a, tracking -0.6px), a dashed hairline, then a 60px rounded avatar +
- *     "Nikita Wadhawan" (28px) / "Founder, Eclectic Agency" (16px, #a5a5a5).
- *
- * DEVIATIONS (flagged):
- *   - Quote-mark color in Figma is #ffdb00; the "+" glyphs use #e8c700. Both are
- *     "gold" — the "+" maps to the --color-gold token (#e8c700); the quote mark
- *     is kept Figma-exact at #ffdb00.
- *   - Section background is the light surface (#f5f5f7 = --color-surface), matching
- *     the rendered Figma screenshot.
- *   - Figma uses "Stack Sans Headline" for the quote; the project standard is Inter
- *     (font-sans, per build brief) — no font import, uses the layout default.
+ * (a) STATS BAND — same 4 facts as the original CaseStats: 200+ pages
+ *     planned, 18+ user flows, 150+ content sections, 2 Months duration.
+ * (b) TESTIMONIAL BAND — centered, reusing the original quote verbatim.
  */
 
 type Stat = {
@@ -41,16 +26,16 @@ const STATS: Stat[] = [
   { value: "2 Months", label: "Project Duration" },
 ];
 
-export default function CaseStats() {
+export default function BvcStats() {
   return (
     <section
-      aria-labelledby="case-stats-heading"
-      className="w-full bg-surface"
+      aria-labelledby="bvc-stats-heading"
+      className="w-full bg-white"
     >
       <div className="mx-auto w-full max-w-[1200px] px-6 py-16 lg:px-10 lg:py-24">
         {/* (a) NUMBERS THAT SPEAK */}
         <h2
-          id="case-stats-heading"
+          id="bvc-stats-heading"
           className="text-black text-[32px] leading-[38px] tracking-[-0.76px] sm:text-[40px] sm:leading-[48px] lg:text-[48px] lg:leading-[57.6px] lg:tracking-[-1.14px]"
         >
           Numbers that speak
@@ -70,8 +55,8 @@ export default function CaseStats() {
           ))}
         </dl>
 
-        {/* (b) TESTIMONIAL QUOTE */}
-        <figure className="mt-20 flex w-full flex-col items-start gap-6 text-left lg:mt-32">
+        {/* (b) TESTIMONIAL QUOTE — centered, matching the amorada layout */}
+        <figure className="mt-20 flex w-full flex-col items-center gap-6 text-center lg:mt-32">
           <span
             aria-hidden
             className="block font-serif text-[96px] leading-[0.7] text-[#ffdb00]"
@@ -79,15 +64,15 @@ export default function CaseStats() {
             &ldquo;
           </span>
 
-          <blockquote className="w-full text-[#0a0a0a] text-[26px] leading-[36px] tracking-[-0.4px] sm:text-[32px] sm:leading-[46px] lg:text-[40px] lg:leading-[56px] lg:tracking-[-0.6px]">
+          <blockquote className="mx-auto w-full max-w-[1065px] text-[#0a0a0a] text-[26px] leading-[36px] tracking-[-0.4px] sm:text-[32px] sm:leading-[46px] lg:text-[40px] lg:leading-[56px] lg:tracking-[-0.6px]">
             I led the end-to-end digital strategy for BVC Logistics&mdash;from
             research and content planning to website structure, user experience,
-            and launch
+            and launch.
           </blockquote>
 
           <hr className="w-full border-0 border-t-[0.8px] border-dashed border-[#e6e6e6]" />
 
-          <figcaption className="flex items-center justify-start gap-4">
+          <figcaption className="flex items-center justify-center gap-4">
             <span className="relative size-[60px] shrink-0 overflow-hidden rounded-[16px]">
               <Image
                 src="/figma/cs-testimonial-avatar.jpg"

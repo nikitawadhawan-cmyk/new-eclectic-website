@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import Header from "@/components/sections/Header";
-import CaseHero from "@/components/sections/case-study/CaseHero";
-import CaseStats from "@/components/sections/case-study/CaseStats";
-import CaseShowcase from "@/components/sections/case-study/CaseShowcase";
-import CaseContribution from "@/components/sections/case-study/CaseContribution";
-import CaseDeliverables from "@/components/sections/case-study/CaseDeliverables";
-import CaseHighlights from "@/components/sections/case-study/CaseHighlights";
-import CaseProjects from "@/components/sections/case-study/CaseProjects";
-import CaseGallery from "@/components/sections/case-study/CaseGallery";
-import CaseCTA from "@/components/sections/case-study/CaseCTA";
-import CaseFaq from "@/components/sections/case-study/CaseFaq";
+import BvcHero from "@/components/sections/case-study/bvc/BvcHero";
+import BvcStats from "@/components/sections/case-study/bvc/BvcStats";
+import BvcShowcase from "@/components/sections/case-study/bvc/BvcShowcase";
+import BvcProject from "@/components/sections/case-study/bvc/BvcProject";
+import BvcResults from "@/components/sections/case-study/bvc/BvcResults";
+import BvcChallenge from "@/components/sections/case-study/bvc/BvcChallenge";
+import BvcScope from "@/components/sections/case-study/bvc/BvcScope";
+import BvcHighlights from "@/components/sections/case-study/bvc/BvcHighlights";
+import BvcProjects from "@/components/sections/case-study/bvc/BvcProjects";
+import BvcCTA from "@/components/sections/case-study/bvc/BvcCTA";
+import Faq from "@/components/sections/Faq";
 import Footer from "@/components/sections/Footer";
 import Reveal from "@/components/Reveal";
 
@@ -24,36 +25,39 @@ export default function BvcLogisticsCaseStudy() {
     <>
       <Header />
       <main>
-        {/* CaseHero is the top hero — rendered without a Reveal wrapper,
-            matching how HeroShowcase isn't wrapped on the homepage.
-            Every other section gets a subtle fade/slide-up reveal on scroll. */}
-        <CaseHero />
+        {/* BvcHero is the top hero — rendered without a Reveal wrapper,
+            matching the amorada case-study page. Every other section gets a
+            subtle fade/slide-up reveal on scroll. */}
+        <BvcHero />
         <Reveal>
-          <CaseStats />
+          <BvcStats />
         </Reveal>
         <Reveal>
-          <CaseShowcase />
+          <BvcShowcase />
         </Reveal>
         <Reveal>
-          <CaseContribution />
+          <BvcProject />
         </Reveal>
         <Reveal>
-          <CaseDeliverables />
+          <BvcResults />
         </Reveal>
         <Reveal>
-          <CaseHighlights />
+          <BvcChallenge />
         </Reveal>
         <Reveal>
-          <CaseProjects />
+          <BvcScope />
         </Reveal>
         <Reveal>
-          <CaseGallery />
+          <BvcHighlights />
         </Reveal>
         <Reveal>
-          <CaseCTA />
+          <BvcProjects />
         </Reveal>
         <Reveal>
-          <CaseFaq />
+          <BvcCTA />
+        </Reveal>
+        <Reveal>
+          <Faq />
         </Reveal>
       </main>
       <Reveal>
