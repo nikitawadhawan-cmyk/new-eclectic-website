@@ -55,74 +55,125 @@ function ClientLogosStrip() {
 
 type QuotePart = { text: string; strong?: boolean };
 
+type BrandLogo = {
+  src: string;
+  /** Intrinsic pixel dimensions of the source asset (for next/image ratio). */
+  width: number;
+  height: number;
+  /** Rendered height in px; tuned per logo so wordmarks and square marks sit
+   *  at a similar visual weight. */
+  displayHeight: number;
+};
+
 type Testimonial = {
   /** Full quote, verbatim, split into normal / bold ("Strong") runs. */
   quote: QuotePart[];
   name: string;
   role: string;
-  avatar: string;
+  logo: BrandLogo;
 };
 
-// Six cards, in Figma grid order (row-major, left-to-right).
+// One card per client on the homepage "Our Work" section, same order as its
+// PROJECTS list. Names are Indian placeholder names and every quote is
+// drafted placeholder copy — swap in real testimonials once clients send them.
 const testimonials: Testimonial[] = [
   {
     quote: [
-      { text: "The new UI design " },
-      { text: "cut our customer support tickets in half.", strong: true },
-      { text: " It's been a game-changer for us." },
+      { text: "Our website went from a static brochure to " },
+      { text: "a genuine lead-generation platform.", strong: true },
+      { text: " The team understood B2B logistics better than agencies twice their size." },
     ],
-    name: "Martina Martinez",
-    role: "Customer Manager at SupportEase",
-    avatar: "/figma/testimonial-avatar-1.png",
+    name: "Nandini Iyer",
+    role: "Marketing Head at BVC Logistics",
+    logo: { src: "/figma/clientlogo-bvc.png", width: 600, height: 261, displayHeight: 26 },
   },
   {
     quote: [
-      { text: "Working with Joseph felt like having a seasoned design partner " },
-      { text: "who truly understood our vision for Zazzle", strong: true },
-      { text: " and brought it to life in ways we hadn't even imagined." },
+      { text: "Selling gold online is all about trust, and " },
+      { text: "the store makes our buyback promise impossible to miss.", strong: true },
+      { text: " Customers tell us the site feels as premium as the jewellery." },
     ],
-    name: "Thomas Weber",
-    role: "Co-founder of KYMA",
-    avatar: "/figma/testimonial-avatar-2.png",
+    name: "Ritika Malhotra",
+    role: "Founder of Ritvaa",
+    logo: { src: "/figma/clientlogo-ritvaa.png", width: 427, height: 205, displayHeight: 30 },
   },
   {
     quote: [
-      { text: "Our website " },
-      { text: "conversion rate improved significantly", strong: true },
-      { text: " thanks to Joseph's expertise." },
+      { text: "The Dosha quiz was a masterstroke — " },
+      { text: "first-time buyers now know exactly what to order.", strong: true },
+      { text: " Our store finally educates the way Ayurveda deserves." },
     ],
-    name: "Ben Harper",
-    role: "CTO of Nexus",
-    avatar: "/figma/testimonial-avatar-3.png",
+    name: "Arjun Mehta",
+    role: "Co-founder of Peak Mode On",
+    logo: { src: "/figma/clientlogo-peakmode.png", width: 168, height: 168, displayHeight: 34 },
   },
   {
     quote: [
-      {
-        text: "Joseph's design approach brought clarity to our complex data visualizations. Our users are thrilled!",
-      },
+      { text: "They built a site that actually sells tours. " },
+      { text: "App downloads and bookings climbed within weeks", strong: true },
+      { text: " of the new site going live." },
     ],
-    name: "Michael Wong",
-    role: "Data Scientist at DataSphere",
-    avatar: "/figma/testimonial-avatar-4.png",
+    name: "Rohan Khanna",
+    role: "Founder of Trippy Tour Guide",
+    logo: { src: "/figma/clientlogo-rippytour.png", width: 250, height: 150, displayHeight: 34 },
   },
   {
     quote: [
-      { text: "The rebranding exceeded our expectations. " },
-      { text: "It's given us a competitive edge in our industry.", strong: true },
+      { text: "Admissions consulting lives or dies on credibility, and " },
+      { text: "the new website earns trust before we ever get on a call.", strong: true },
+      { text: " Free profile evaluations have never converted better." },
     ],
-    name: "Natalie Rivera",
-    role: "Brand Manager at UnityBrands",
-    avatar: "/figma/testimonial-avatar-5.png",
+    name: "Ananya Deshpande",
+    role: "Founder of Ivylistic",
+    logo: { src: "/figma/clientlogo-ivylistic.svg", width: 146, height: 31, displayHeight: 22 },
   },
   {
     quote: [
-      { text: "The redesign transformed our brand image. " },
-      { text: "We've seen a 30% increase in engagement", strong: true },
-      { text: " since launch." },
+      { text: "Real estate, advisory and investments under one roof is hard to explain — " },
+      { text: "they made it feel like one confident brand.", strong: true },
     ],
-    name: "Emma Kraft",
-    role: "CMO of TechVista",
-    avatar: "/figma/testimonial-avatar-6.png",
+    name: "Vikram Rathore",
+    role: "Co-founder of Nilambar",
+    logo: { src: "/figma/clientlogo-nilambar.png", width: 432, height: 114, displayHeight: 26 },
+  },
+  {
+    quote: [
+      { text: "A single landing page that " },
+      { text: "outperformed every previous campaign we had run.", strong: true },
+      { text: " Sharp, focused, and built purely to convert." },
+    ],
+    name: "Aditya Menon",
+    role: "Co-founder of HDFC Life",
+    logo: { src: "/figma/clientlogo-hdfclife.png", width: 100, height: 34, displayHeight: 26 },
+  },
+  {
+    quote: [
+      { text: "They captured the warmth of our brand perfectly. " },
+      { text: "Browsers turn into repeat customers", strong: true },
+      { text: " because the whole journey feels considered." },
+    ],
+    name: "Priya Kapoor",
+    role: "Founder of Amorada",
+    logo: { src: "/figma/clientlogo-ammorada.png", width: 280, height: 70, displayHeight: 24 },
+  },
+  {
+    quote: [
+      { text: "Putting 500+ jewellery SKUs online sounded impossible. " },
+      { text: "The smart filtering makes our entire catalogue effortless to shop.", strong: true },
+    ],
+    name: "Kabir Oberoi",
+    role: "Co-founder of CREAL",
+    logo: { src: "/figma/clientlogo-creal.png", width: 400, height: 158, displayHeight: 28 },
+  },
+  {
+    quote: [
+      { text: "Not a template in sight — " },
+      { text: "a fully hand-built store that matches our design pixel for pixel.", strong: true },
+      { text: " Worth every rupee." },
+    ],
+    name: "Meera Nair",
+    role: "Founder of Lulu & Daisy",
+    logo: { src: "/figma/clientlogo-lulu.png", width: 400, height: 283, displayHeight: 38 },
   },
 ];
 
@@ -144,9 +195,17 @@ function QuoteMark() {
   );
 }
 
-function TestimonialCard({ quote, name, role, avatar }: Testimonial) {
+function TestimonialCard({
+  quote,
+  name,
+  role,
+  logo,
+  className = "",
+}: Testimonial & { className?: string }) {
   return (
-    <div className="flex flex-col justify-between rounded-2xl border border-[#dedede] bg-white p-6 shadow-[0px_0.597px_0.597px_-0.938px_rgba(0,0,0,0.07),0px_1.811px_1.811px_-1.875px_rgba(0,0,0,0.07),0px_4.787px_4.787px_-2.813px_rgba(0,0,0,0.06),0px_15px_15px_-3.75px_rgba(0,0,0,0.03)] lg:h-[280px]">
+    <div
+      className={`flex flex-col justify-between rounded-2xl border border-[#dedede] bg-white p-6 shadow-[0px_0.597px_0.597px_-0.938px_rgba(0,0,0,0.07),0px_1.811px_1.811px_-1.875px_rgba(0,0,0,0.07),0px_4.787px_4.787px_-2.813px_rgba(0,0,0,0.06),0px_15px_15px_-3.75px_rgba(0,0,0,0.03)] ${className}`}
+    >
       {/* Quote */}
       <div className="flex flex-col gap-1">
         <QuoteMark />
@@ -165,17 +224,8 @@ function TestimonialCard({ quote, name, role, avatar }: Testimonial) {
         </p>
       </div>
 
-      {/* Author */}
-      <div className="mt-6 flex items-center gap-2.5">
-        <span className="relative block size-[38px] shrink-0 overflow-hidden rounded-full">
-          <Image
-            src={avatar}
-            alt={name}
-            fill
-            sizes="38px"
-            className="object-cover"
-          />
-        </span>
+      {/* Author — name/role on the left, the client's brand logo on the right */}
+      <div className="mt-6 flex items-center justify-between gap-4">
         <div className="flex min-w-0 flex-col gap-[5px]">
           <p className="text-[13.5px] font-semibold leading-[15.68px] tracking-[-0.14px] text-black">
             {name}
@@ -184,6 +234,14 @@ function TestimonialCard({ quote, name, role, avatar }: Testimonial) {
             {role}
           </p>
         </div>
+        <Image
+          src={logo.src}
+          alt={`${role.split(/ (at|of) /).pop()} logo`}
+          width={logo.width}
+          height={logo.height}
+          className="w-auto max-w-[120px] shrink-0 object-contain opacity-80"
+          style={{ height: logo.displayHeight }}
+        />
       </div>
     </div>
   );
@@ -206,8 +264,18 @@ export default function Testimonials() {
 
           {/* Card grid → 1 col mobile, 2 col tablet, 3 col desktop */}
           <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {testimonials.map((t) => (
-              <TestimonialCard key={t.name} {...t} />
+            {testimonials.map((t, i) => (
+              <TestimonialCard
+                key={t.name}
+                {...t}
+                // 10 cards on a 3-col desktop grid leaves one orphan on the
+                // last row — center it instead of leaving it bottom-left.
+                className={
+                  i === testimonials.length - 1 && testimonials.length % 3 === 1
+                    ? "lg:col-start-2"
+                    : ""
+                }
+              />
             ))}
           </div>
         </div>

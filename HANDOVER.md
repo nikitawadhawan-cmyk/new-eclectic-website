@@ -76,7 +76,7 @@ git push origin main                            # deploys via Actions (~1 min)
 | `OurWork` | `id="work"`. Schbang-style navy band; **10 blocks, every card is a single whole-card `Link`** (not just a "Learn More" button) to its case study, every one uses a tilted collage card (Figma 182:824 pattern, generalized to 5–7 images per client — see `collageRows`/`collageMargin` in `OurWork.tsx`). New projects get appended here (see §6). |
 | `AboutCaseStudy` | Portrait + philosophy (work-history stack + signature removed at client request) |
 | `Pricing` | Reworked to a **single "Single Project" offering** (subscription plan removed at client request — no published cost anywhere in the section). Two-block visual layout kept; CTA is one WhatsApp-green "Get a Quote" button (`#contact` placeholder, see below). |
-| `Testimonials`, `Faq`, `Footer` | `Testimonials` renders the second "Trusted by many" marquee (`ClientLogosStrip`, same real logos as `ClientLogos`). `Faq`'s "Book a Call" card has a WhatsApp CTA + real portrait. Footer = giant "eclecticdigital" wordmark + socials/links/credit (all `#` placeholders). |
+| `Testimonials`, `Faq`, `Footer` | `Testimonials` renders the second "Trusted by many" marquee (`ClientLogosStrip`, same real logos as `ClientLogos`) + 10 testimonial cards — one per `OurWork` client, same order, each with the client's real brand logo in the author row (names/quotes are placeholders — see §8). `Faq`'s "Book a Call" card has a WhatsApp CTA + real portrait. Footer = giant "eclecticdigital" wordmark + socials/links/credit (all `#` placeholders). |
 | `FloatingWhatsApp` | Persistent circular WhatsApp button, fixed bottom-right on every page — mounted once in `src/app/layout.tsx` (not per-page), not part of `page.tsx`'s section list. |
 
 **WhatsApp CTAs:** every WhatsApp button on the site (Pricing, Faq "Book a
@@ -262,6 +262,17 @@ muted-2 `#828282` · line `#e6e6e6` · surface `#f5f5f7` · gold `#e8c700`
   real content). AmoradaScope descriptions are drafted copy.
 - Homepage FAQ answers 02–05 are placeholder; BVC CaseFaq answers are
   drafted.
+- **Homepage `Testimonials` quotes are drafted placeholders** — one card per
+  real client (all 10 `OurWork` brands, same order), but the person names are
+  invented Indian placeholder names (everyone a founder/co-founder except
+  BVC's "Marketing Head") and every quote is made up. Each card shows the
+  client's real brand logo (right side of the author row) instead of a
+  headshot — 6 new wordmarks were scraped from the clients' live sites into
+  `public/figma/clientlogo-*.{png,svg}` (Ritvaa, Peak Mode On, Nilambar,
+  HDFC Life, CREAL, Lulu & Daisy) alongside the 4 that already existed for
+  the top marquee. Peak Mode On's header wordmark is white-on-transparent,
+  so its orange circular brandmark is used instead. Swap in real names and
+  quotes once clients provide them.
 - **Nilambar only has 3 real site photos total** (`nil-hero`, `nil-founder`,
   `nil-person`) — reused across the site wherever more images are needed
   (e.g. the homepage collage repeats each once to fill 6 tiles). Needs a
@@ -276,7 +287,11 @@ muted-2 `#828282` · line `#e6e6e6` · surface `#f5f5f7` · gold `#e8c700`
 - Repo under GitHub account **`nikitawadhawan-cmyk`** (`gh` CLI authed; push
   works). The separate `nikita-wadhawan-eclectic` account is NOT used.
 
-_Last updated: after a large batch covering (1) BVC Logistics rebuilt into
+_Last updated: after the homepage `Testimonials` section was rebuilt — 10
+cards, one per real client (all `OurWork` brands, same order), with invented
+Indian placeholder names/quotes (see §8) and each client's real brand logo
+in the author row; 6 new `clientlogo-*` assets scraped into `public/figma/`.
+Before that, a large batch covering (1) BVC Logistics rebuilt into
 the amorada template design, (2) two new case studies added — CREAL and
 Lulu & Daisy (10 pages total now), (3) every "More Work" project card made
 fully clickable across all 10 case-study pages (fixing amorada's cards,
