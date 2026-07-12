@@ -18,7 +18,7 @@ export default function AmoradaShowcase() {
         <div className="relative aspect-[1524/776] w-full overflow-hidden rounded-2xl bg-surface shadow-[0px_24px_60px_-12px_rgba(0,0,0,0.25)] lg:rounded-3xl">
           <Image
             src="/figma/am-showcase.jpg"
-            alt="The finished amorada website — Where Comfort Meets Craft — shown on a laptop with the mobile site beside it on a phone."
+            alt="The finished Amorada website — Where Comfort Meets Craft — shown on a laptop with the mobile site beside it on a phone."
             fill
             sizes="(min-width: 1200px) 1120px, 100vw"
             className="object-cover"

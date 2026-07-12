@@ -101,6 +101,23 @@ const NILAMBAR_COLLAGE: CollageImage[] = [
   { src: "/figma/nil-person.jpg", pos: "top" },
 ];
 
+const CREAL_COLLAGE = [
+  "/figma/creal-hero-1.jpg",
+  "/figma/creal-shop-her.jpg",
+  "/figma/creal-hero-2.jpg",
+  "/figma/creal-everyday.jpg",
+  "/figma/creal-hero-3.jpg",
+  "/figma/creal-shop-him.jpg",
+];
+
+const LULU_COLLAGE = [
+  "/figma/lulu-hero.jpg",
+  "/figma/lulu-benefit-1.jpg",
+  "/figma/lulu-benefit-3.jpg",
+  "/figma/lulu-benefit-2.jpg",
+  "/figma/lulu-testi.jpg",
+];
+
 const PROJECTS: Project[] = [
   {
     title: "BVC Logistics",
@@ -166,14 +183,31 @@ const PROJECTS: Project[] = [
     collage: HDFC_COLLAGE,
   },
   {
-    title: "amorada",
-    lowercase: true,
+    title: "Amorada",
     tags: ["Ecommerce Site", "Brand Experience"],
     desc: "A warm, craft-led ecommerce experience where comfort meets craft — editorial product storytelling and a clean shopping journey designed to convert browsers into loyal customers.",
     screen: "/figma/lp-screen-4.jpg",
-    alt: "Collage of amorada work — home-linen product photography and the storefront",
+    alt: "Collage of Amorada work — home-linen product photography and the storefront",
     href: "/projects/amorada",
     collage: AMORADA_COLLAGE,
+  },
+  {
+    title: "CREAL",
+    tags: ["Shopify Development", "Fine Jewellery"],
+    desc: "A complete Shopify storefront for a 500+ SKU fine jewellery catalogue — category-led navigation, six-facet smart filtering, and conversion features built for considered purchases.",
+    screen: "/figma/creal-hero-1.jpg",
+    alt: "Collage of CREAL work — fine gold and diamond jewellery campaign photography",
+    href: "/projects/creal",
+    collage: CREAL_COLLAGE,
+  },
+  {
+    title: "Lulu & Daisy",
+    tags: ["Shopify Development", "Fresh Pet Food"],
+    desc: "A 100% custom, hand-coded Shopify Online Store 2.0 theme pixel-matched to a bespoke editorial design — no off-the-shelf template anywhere in the build.",
+    screen: "/figma/lulu-hero.jpg",
+    alt: "Collage of Lulu & Daisy work — fresh dog food photography and packaging",
+    href: "/projects/lulu-daisy",
+    collage: LULU_COLLAGE,
   },
 ];
 

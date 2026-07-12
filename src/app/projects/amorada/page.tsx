@@ -15,9 +15,9 @@ import Footer from "@/components/sections/Footer";
 import Reveal from "@/components/Reveal";
 
 export const metadata: Metadata = {
-  title: "amorada — Case Study | Eclectic Digital",
+  title: "Amorada — Case Study | Eclectic Digital",
   description:
-    "How we designed and built the amorada Shopify store — a craft-led home-linens ecommerce experience where comfort meets craft. Strategy, design, and results.",
+    "How we designed and built the Amorada Shopify store — a craft-led home-linens ecommerce experience where comfort meets craft. Strategy, design, and results.",
 };
 
 export default function AmoradaCaseStudy() {

@@ -1,47 +1,33 @@
 import Image from "@/components/Img";
 
 /**
- * AmoradaProject — "The Project" band for the amorada case study
- * (Figma node 210:2575).
+ * CrealProject — "The Project" band. Clones the AmoradaProject design 1:1
+ * (dotted-paper background, two-column layout, hairline + lead-line
+ * paragraphs); copy from the "Overview" section of the client's brief.
  *
- * A two-column band on a subtle dotted paper background:
- *   LEFT  — "● ABOUT THE PROJECT" eyebrow pill (gold dot) at the top, and a
- *           rounded photo card of a pink quilted bed at the bottom. The
- *           "Crafted to Comfort, Designed to Delight." overlay copy and the
- *           white "EXPLORE BED SPREADS" pill are baked into the exported
- *           photo (verified against the asset), so the card ships as a single
- *           composited image with descriptive alt text.
- *   RIGHT — big "The Project" heading, a hairline rule, then three
- *           paragraphs, each opening with a bold lead sentence.
- *
- * The Figma dotted background is a large raster at 69% opacity; it is
- * recreated here as a pure-CSS diamond dot pattern (two offset 1px
- * radial-gradient layers) over a warm off-white — no image shipped.
- *
- * Flagged deviations: Figma mixes Semi Bold (para 1) and Bold (paras 2–3)
- * for the lead lines — normalised to font-semibold for consistency. The
- * pill fill reads white over the cream background in the render, so it uses
- * bg-white/70 rather than the template's rgba(0,0,0,0.03).
+ * The left photo card is a real CREAL "Everyday Elegance" homepage banner
+ * with baked-in copy and a "Shop Daily Wear" button — same composited-image
+ * treatment as amorada's am-project-bed.jpg.
  */
 
 type Paragraph = { lead: string; body: string };
 
 const PARAGRAPHS: Paragraph[] = [
   {
-    lead: "Texture is the hardest thing to sell online.",
-    body: "Home linens are bought by touch — the drape, the weave, the softness. The store had to make craftsmanship feel tangible through a screen.",
+    lead: "A big catalogue, a considered purchase.",
+    body: "With 500+ SKUs across rings, earrings, mangalsutra and men's pieces, CREAL's shoppers need to find the exact piece — and feel confident enough to buy fine jewellery online.",
   },
   {
-    lead: "A broad catalogue, made easy to shop.",
-    body: "From bedding and table linens to bath, kitchen and cutlery, we organised everything by room and by colour palette — beige, grey, white — so browsing feels curated, not overwhelming.",
+    lead: "Findability is the feature.",
+    body: "Category-led navigation and six-facet smart filtering — metal, colour, ring size, occasion and more — turn a large catalogue into a fast, guided path to the right product.",
   },
   {
-    lead: "Built to convert, end to end.",
-    body: "Bestsellers, new arrivals and Luxe Linens up front; free-shipping and offer messaging where it counts; and a checkout with both prepaid and COD for Indian shoppers.",
+    lead: "Confidence, then conversion.",
+    body: "A PIN-code delivery estimator on the product page, offers and low-stock urgency give high-consideration buyers the reassurance to act.",
   },
 ];
 
-export default function AmoradaProject() {
+export default function CrealProject() {
   return (
     <section
       className="relative w-full bg-[#f7f6f2]"
@@ -54,7 +40,6 @@ export default function AmoradaProject() {
     >
       <div className="mx-auto w-full max-w-[1200px] px-6 py-16 lg:px-10 lg:pb-[104px] lg:pt-28">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,480px)_minmax(0,584px)] lg:justify-between lg:gap-x-14">
-          {/* LEFT — eyebrow pill (top) + bed photo card (bottom) */}
           <div className="flex flex-col gap-8 lg:justify-between lg:gap-10">
             <span className="inline-flex w-fit items-center gap-[11px] rounded-full bg-white/70 px-3 py-[7px]">
               <span
@@ -68,8 +53,8 @@ export default function AmoradaProject() {
 
             <div className="relative aspect-[524/376] w-full overflow-hidden rounded-[20px]">
               <Image
-                src="/figma/am-project-bed.jpg"
-                alt="Pink quilted Amorada bed spread in a warm panelled bedroom, with overlay copy reading 'Crafted to Comfort, Designed to Delight — explore our handcrafted bed spreads made for timeless comfort' and an 'Explore bed spreads' button"
+                src="/figma/creal-everyday.jpg"
+                alt="CREAL 'Everyday Elegance' banner — a gold flower necklace, stud earrings and ring, with overlay copy reading 'Lightweight Designs for Your Daily Shine' and a 'Shop Daily Wear' button"
                 fill
                 sizes="(min-width: 1024px) 480px, 100vw"
                 className="object-cover object-top"
@@ -77,7 +62,6 @@ export default function AmoradaProject() {
             </div>
           </div>
 
-          {/* RIGHT — heading, hairline, three lead-line paragraphs */}
           <div>
             <h2 className="text-[40px] font-semibold leading-[1.02] tracking-[-1.4px] text-black sm:text-[52px] sm:tracking-[-1.8px] lg:text-[64px] lg:leading-[65px] lg:tracking-[-2.2px]">
               The Project

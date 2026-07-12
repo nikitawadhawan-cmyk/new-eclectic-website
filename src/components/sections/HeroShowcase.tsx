@@ -88,8 +88,7 @@ const CARDS: Card[] = [
     yEnd: "116%",
   },
   {
-    title: "amorada",
-    lowercase: true,
+    title: "Amorada",
     subtitle: "Ecommerce Site",
     href: "/projects/amorada",
     bg: "/figma/lp-bg-4.jpg",

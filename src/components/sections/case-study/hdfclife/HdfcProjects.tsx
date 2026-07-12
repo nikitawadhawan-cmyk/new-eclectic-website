@@ -137,17 +137,13 @@ function StatChip({ value, label }: Stat) {
 
 function ProjectBlock({ project }: { project: Project }) {
   return (
-    <article className="flex flex-col gap-6 lg:gap-8">
-      {/* Header row: title + tags on the left, round arrow button on the right */}
+    <Link href={project.href} className="group flex flex-col gap-6 lg:gap-8">
+      {/* Header row: title + tags on the left, round arrow button on the right —
+          the whole card is one link; the button is now purely visual. */}
       <div className="flex items-start justify-between gap-4">
         <div className="flex flex-col gap-4">
-          <h3 className="text-[20px] font-bold leading-[26px] tracking-[-0.16px] text-black lg:text-[24px] lg:leading-[30px]">
-            <Link
-              href={project.href}
-              className="transition-colors hover:text-navy"
-            >
-              {project.title}
-            </Link>
+          <h3 className="text-[20px] font-bold leading-[26px] tracking-[-0.16px] text-black transition-colors group-hover:text-navy lg:text-[24px] lg:leading-[30px]">
+            {project.title}
           </h3>
           <div className="flex flex-wrap items-center gap-1.5">
             {project.tags.map((tag) => (
@@ -156,13 +152,12 @@ function ProjectBlock({ project }: { project: Project }) {
             <TagChip>{project.year}</TagChip>
           </div>
         </div>
-        <Link
-          href={project.href}
-          aria-label={`View the ${project.title} case study`}
-          className="flex size-[44px] shrink-0 items-center justify-center rounded-full border-[0.8px] border-[#cfcfcf] bg-white text-black transition-transform hover:translate-x-0.5 hover:-translate-y-0.5 lg:size-[50px]"
+        <span
+          aria-hidden="true"
+          className="flex size-[44px] shrink-0 items-center justify-center rounded-full border-[0.8px] border-[#cfcfcf] bg-white text-black transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 lg:size-[50px]"
         >
           <ArrowUpRight className="size-5" />
-        </Link>
+        </span>
       </div>
 
       {/* Body row: large screenshot left, thumbnails + text + stats right */}
@@ -207,7 +202,7 @@ function ProjectBlock({ project }: { project: Project }) {
           </div>
         </div>
       </div>
-    </article>
+    </Link>
   );
 }
 

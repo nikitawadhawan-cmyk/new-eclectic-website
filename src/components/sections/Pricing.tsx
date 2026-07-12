@@ -1,21 +1,20 @@
 import Image from "@/components/Img";
 
 /**
- * Pricing — Figma node 4:7536 ("Section - Pricing").
+ * Pricing — Figma node 4:7536 ("Section - Pricing"), reworked to a single
+ * offering (subscription plan removed at client request — project-based
+ * work only, no published cost).
  *
  * Layout (top-to-bottom):
  *  - Heading row: "Simple pricing. Standout designs." (two-tone: grey top line,
  *    black bottom line) + right-aligned description block.
- *  - Pricing container (light grey #f0f0f0 pill) holding:
- *      Top row:
- *        - Left card (navy #2a315f) with a floating "Pause or cancel anytime"
- *          pill, a gold 3D lightning bolt render, gold/white marketing copy,
- *          then (below, white area) a "Slots available" pill + "Hire me today"
- *          heading + supporting copy.
- *        - Right white card: "Unlimited Design" plan — price $1,000 / month,
- *          6-item benefit grid, "Get Started" gold CTA + Stripe logo.
- *      Bottom band (navy #2a315f): "Single Project" plan — description,
- *      4-item benefit grid, "Get quote" gold CTA.
+ *  - Pricing container (light grey #f0f0f0 pill) holding one row:
+ *      - Left card (navy #2a315f) with a floating "Clearly defined scope"
+ *        pill, a gold 3D lightning bolt render, gold/white marketing copy,
+ *        then (below, white area) a "Slots available" pill + "Hire me today"
+ *        heading + supporting copy.
+ *      - Right white card: "Single Project" — description, 4-item benefit
+ *        grid (no price shown), WhatsApp CTA + "Get quote" gold CTA.
  *
  * COLOR NOTE: The Figma accent gold is #e8c700 (buttons, highlight text, pulse
  * dot). This differs from the build-brief `--color-gold` token (#f5c518), so
@@ -40,16 +39,16 @@ function Check({ className = "" }: { className?: string }) {
   );
 }
 
-const DARK_BENEFITS = [
-  "No contracts or commitments",
-  "Pause or cancel anytime",
-  "Multiple Brands",
-  "Unlimited requests",
-  "Avg 48 hour turnaround",
-  "Framer development",
-];
+/** WhatsApp glyph (official brand mark, single path). */
+function WhatsAppIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+      <path d="M12.04 2c-5.52 0-10 4.48-10 10 0 1.77.46 3.45 1.27 4.9L2 22l5.25-1.38a9.96 9.96 0 0 0 4.79 1.22h.01c5.52 0 10-4.48 10-10s-4.48-9.84-10.02-9.84Zm0 18.15h-.01a8.3 8.3 0 0 1-4.23-1.16l-.3-.18-3.12.82.83-3.04-.2-.31a8.26 8.26 0 0 1-1.27-4.42c0-4.58 3.73-8.31 8.32-8.31 2.22 0 4.31.87 5.88 2.44a8.24 8.24 0 0 1 2.43 5.87c0 4.58-3.74 8.29-8.33 8.29Zm4.56-6.21c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.13-.17.24-.64.81-.79.98-.14.17-.29.19-.54.06-.25-.12-1.04-.38-1.98-1.22-.73-.65-1.23-1.46-1.37-1.7-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.16-.24.25-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.16 0-.43.06-.66.31-.23.24-.86.85-.86 2.06 0 1.22.88 2.4 1 2.56.13.17 1.75 2.67 4.24 3.74.59.26 1.05.41 1.41.53.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.23-.16-.48-.28Z" />
+    </svg>
+  );
+}
 
-const SINGLE_BENEFITS = [
+const BENEFITS = [
   "Clearly defined scope",
   "Fixed timeline",
   "3 revision rounds",
@@ -67,9 +66,9 @@ export default function Pricing() {
             <span className="text-black">Standout designs.</span>
           </h2>
           <div className="max-w-[327px] shrink-0 text-[17px] leading-[25.2px] tracking-[-0.36px] lg:pb-1">
-            <p className="font-semibold text-black">Clear costs, no hidden fees.</p>
+            <p className="font-semibold text-black">Clear scope, no hidden surprises.</p>
             <p className="font-medium text-[#545454]">
-              Select from monthly subscriptions or individual project rates.
+              One comprehensive service for any project — get a quote tailored to your needs.
             </p>
           </div>
         </div>
@@ -92,16 +91,16 @@ export default function Pricing() {
                     className="object-contain"
                   />
                 </div>
-                {/* "Pause or cancel anytime" pill */}
+                {/* "Clearly defined scope" pill */}
                 <div className="relative z-10 inline-flex w-fit items-center rounded-3xl border border-[#f0f0f0] bg-white/95 px-3 py-2 backdrop-blur-[2.5px]">
                   <span className="text-[11.6px] font-semibold leading-[13.44px] tracking-[-0.12px] text-black">
-                    Pause or cancel anytime
+                    Clearly defined scope
                   </span>
                 </div>
                 {/* Marketing copy */}
                 <p className="relative z-10 mt-8 max-w-[275px] text-[21px] font-medium leading-[30.8px] tracking-[-0.66px]">
-                  <span className="text-[#e8c700]">Subscription design services </span>
-                  <span className="text-white">for brands who move fast.</span>
+                  <span className="text-[#e8c700]">Comprehensive design services </span>
+                  <span className="text-white">for any project scope.</span>
                 </p>
               </div>
 
@@ -128,20 +127,20 @@ export default function Pricing() {
               </div>
             </div>
 
-            {/* Right white plan card — Unlimited Design */}
+            {/* Right white plan card — Single Project */}
             <div className="flex flex-[1_1_0%] flex-col justify-between gap-8 rounded-xl bg-white p-8 shadow-[0px_1.811px_1.811px_-1.875px_rgba(0,0,0,0.07),0px_4.787px_4.787px_-2.813px_rgba(0,0,0,0.06),0px_15px_15px_-3.75px_rgba(0,0,0,0.03)]">
               <div className="flex flex-col gap-6">
                 {/* Heading & description */}
                 <div className="flex flex-col gap-4">
                   <h3 className="text-[30.9px] font-medium leading-[36.8px] tracking-[-0.96px] text-black">
-                    Unlimited Design
+                    Single Project
                   </h3>
                   <p className="max-w-[400px] text-[13.3px] font-medium leading-[22.4px] tracking-[-0.14px]">
                     <span className="text-black">
-                      One flat monthly rate for unlimited design requests.{" "}
+                      Comprehensive design services for any project scope.{" "}
                     </span>
                     <span className="text-[#545454]">
-                      Ideal for ongoing design requirements.
+                      Ideal for one-time design needs or individual tasks.
                     </span>
                   </p>
                 </div>
@@ -149,19 +148,9 @@ export default function Pricing() {
                 {/* Divider */}
                 <div className="h-px w-full bg-[#dedede]" />
 
-                {/* Price */}
-                <div className="flex items-center gap-2">
-                  <span className="text-[38.6px] font-semibold leading-[48px] tracking-[-1.2px] text-black">
-                    $1,000
-                  </span>
-                  <span className="text-[11.6px] font-semibold leading-[13.44px] tracking-[-0.12px] text-[#545454]">
-                    / month
-                  </span>
-                </div>
-
                 {/* Benefits grid */}
                 <ul className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
-                  {DARK_BENEFITS.map((benefit) => (
+                  {BENEFITS.map((benefit) => (
                     <li key={benefit} className="flex items-center gap-[5px]">
                       <Check className="size-[11px] shrink-0 text-[#171717]" />
                       <span className="text-[13.3px] font-semibold leading-[15.68px] tracking-[-0.14px] text-black">
@@ -172,80 +161,19 @@ export default function Pricing() {
                 </ul>
               </div>
 
-              {/* CTA + Stripe logo */}
-              <div className="flex items-center gap-6">
+              {/* CTA — "Get a Quote" over WhatsApp (placeholder "#contact" link
+                  until a real WhatsApp number is provided, see HANDOVER.md §8) */}
+              <div className="flex flex-wrap items-center gap-4">
                 <a
-                  href="#"
-                  className="inline-flex h-11 items-center justify-center gap-1 rounded-3xl border border-[#e8c700] bg-[#e8c700] px-3 py-2 shadow-[0px_4.431px_4.431px_-2.25px_rgba(0,0,0,0.3),0px_9.835px_9.835px_-3px_rgba(0,0,0,0.25),0px_25px_25px_-3.75px_rgba(0,0,0,0.11)] transition-opacity hover:opacity-90"
+                  href="#contact"
+                  className="inline-flex h-11 w-fit items-center justify-center gap-1.5 rounded-3xl border border-[#25d366] bg-[#25d366] px-4 py-2 shadow-[0px_4.431px_4.431px_-2.25px_rgba(0,0,0,0.3),0px_9.835px_9.835px_-3px_rgba(0,0,0,0.25),0px_25px_25px_-3.75px_rgba(0,0,0,0.11)] transition-opacity hover:opacity-90"
                 >
-                  <span className="relative block size-[18px]">
-                    <Image
-                      src="/figma/pricing-btn-icon1.svg"
-                      alt=""
-                      fill
-                      className="object-contain"
-                    />
-                  </span>
-                  <span className="px-1.5 text-[13.3px] font-semibold leading-[15.68px] tracking-[-0.14px] text-black">
-                    Get Started
+                  <WhatsAppIcon className="size-[18px] text-white" />
+                  <span className="px-1 text-[13.3px] font-semibold leading-[15.68px] tracking-[-0.14px] text-white">
+                    Get a Quote
                   </span>
                 </a>
-                <span className="relative block h-[19px] w-[45px] shrink-0">
-                  <Image
-                    src="/figma/pricing-stripe.svg"
-                    alt="Stripe"
-                    fill
-                    className="object-contain"
-                  />
-                </span>
               </div>
-            </div>
-          </div>
-
-          {/* Bottom band — Single Project (navy) */}
-          <div className="relative flex flex-col gap-4 rounded-xl border border-black bg-navy p-8">
-            <h3 className="text-[30.6px] font-medium leading-[36.8px] tracking-[-0.96px] text-white">
-              Single Project
-            </h3>
-            <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-              <p className="max-w-[400px] text-[13.2px] font-medium leading-[22.4px] tracking-[-0.14px]">
-                <span className="text-white">
-                  Comprehensive design services for any project scope.{" "}
-                </span>
-                <span className="text-[#b8b8b8]">
-                  Ideal for one-time design needs or individual tasks.
-                </span>
-              </p>
-
-              {/* Benefits grid */}
-              <ul className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2 lg:flex-1 lg:max-w-[375px]">
-                {SINGLE_BENEFITS.map((benefit) => (
-                  <li key={benefit} className="flex items-center gap-[5px]">
-                    <Check className="size-[11px] shrink-0 text-[#f0f0f0]" />
-                    <span className="text-[13.2px] font-semibold leading-[15.68px] tracking-[-0.14px] text-white">
-                      {benefit}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* CTA */}
-              <a
-                href="#"
-                className="inline-flex h-11 w-fit items-center justify-center gap-1 rounded-3xl border border-[#dedede] bg-[#e8c700] px-3 py-2 shadow-[0px_4.787px_4.787px_-2.813px_rgba(0,0,0,0.06),0px_15px_15px_-3.75px_rgba(0,0,0,0.03)] transition-opacity hover:opacity-90"
-              >
-                <span className="relative block size-[18px]">
-                  <Image
-                    src="/figma/pricing-btn-icon2.svg"
-                    alt=""
-                    fill
-                    className="object-contain"
-                  />
-                </span>
-                <span className="px-1.5 text-[13.3px] font-semibold leading-[15.68px] tracking-[-0.14px] text-black">
-                  Get quote
-                </span>
-              </a>
             </div>
           </div>
         </div>

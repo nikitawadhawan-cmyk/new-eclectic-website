@@ -1,47 +1,32 @@
 import Image from "@/components/Img";
 
 /**
- * AmoradaProject — "The Project" band for the amorada case study
- * (Figma node 210:2575).
+ * LuluProject — "The Project" band. Clones the AmoradaProject design 1:1
+ * (dotted-paper background, two-column layout, hairline + lead-line
+ * paragraphs); copy from the "Overview" section of the client's brief.
  *
- * A two-column band on a subtle dotted paper background:
- *   LEFT  — "● ABOUT THE PROJECT" eyebrow pill (gold dot) at the top, and a
- *           rounded photo card of a pink quilted bed at the bottom. The
- *           "Crafted to Comfort, Designed to Delight." overlay copy and the
- *           white "EXPLORE BED SPREADS" pill are baked into the exported
- *           photo (verified against the asset), so the card ships as a single
- *           composited image with descriptive alt text.
- *   RIGHT — big "The Project" heading, a hairline rule, then three
- *           paragraphs, each opening with a bold lead sentence.
- *
- * The Figma dotted background is a large raster at 69% opacity; it is
- * recreated here as a pure-CSS diamond dot pattern (two offset 1px
- * radial-gradient layers) over a warm off-white — no image shipped.
- *
- * Flagged deviations: Figma mixes Semi Bold (para 1) and Bold (paras 2–3)
- * for the lead lines — normalised to font-semibold for consistency. The
- * pill fill reads white over the cream background in the render, so it uses
- * bg-white/70 rather than the template's rgba(0,0,0,0.03).
+ * Left photo: a real "First Bowl Experience" lifestyle shot (a golden
+ * retriever beside a pot of slow-simmered bone broth) from the live site.
  */
 
 type Paragraph = { lead: string; body: string };
 
 const PARAGRAPHS: Paragraph[] = [
   {
-    lead: "Texture is the hardest thing to sell online.",
-    body: "Home linens are bought by touch — the drape, the weave, the softness. The store had to make craftsmanship feel tangible through a screen.",
+    lead: "A bespoke design deserves a bespoke build.",
+    body: "Lulu & Daisy had an editorial React design that no Shopify template could do justice. So we didn't use one — we hand-coded the entire Online Store 2.0 theme in Liquid from scratch.",
   },
   {
-    lead: "A broad catalogue, made easy to shop.",
-    body: "From bedding and table linens to bath, kitchen and cutlery, we organised everything by room and by colour palette — beige, grey, white — so browsing feels curated, not overwhelming.",
+    lead: "Pixel-perfect, 1:1.",
+    body: "Every section, snippet and template was ported to match the design down to spacing and type — the storefront is indistinguishable from the mockup.",
   },
   {
-    lead: "Built to convert, end to end.",
-    body: "Bestsellers, new arrivals and Luxe Linens up front; free-shipping and offer messaging where it counts; and a checkout with both prepaid and COD for Indian shoppers.",
+    lead: "Fast, and fully editable.",
+    body: "Critical CSS and lean markup keep loads quick, while schema-driven sections let the client edit everything directly in the Shopify theme editor — no developer required.",
   },
 ];
 
-export default function AmoradaProject() {
+export default function LuluProject() {
   return (
     <section
       className="relative w-full bg-[#f7f6f2]"
@@ -54,7 +39,6 @@ export default function AmoradaProject() {
     >
       <div className="mx-auto w-full max-w-[1200px] px-6 py-16 lg:px-10 lg:pb-[104px] lg:pt-28">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,480px)_minmax(0,584px)] lg:justify-between lg:gap-x-14">
-          {/* LEFT — eyebrow pill (top) + bed photo card (bottom) */}
           <div className="flex flex-col gap-8 lg:justify-between lg:gap-10">
             <span className="inline-flex w-fit items-center gap-[11px] rounded-full bg-white/70 px-3 py-[7px]">
               <span
@@ -68,8 +52,8 @@ export default function AmoradaProject() {
 
             <div className="relative aspect-[524/376] w-full overflow-hidden rounded-[20px]">
               <Image
-                src="/figma/am-project-bed.jpg"
-                alt="Pink quilted Amorada bed spread in a warm panelled bedroom, with overlay copy reading 'Crafted to Comfort, Designed to Delight — explore our handcrafted bed spreads made for timeless comfort' and an 'Explore bed spreads' button"
+                src="/figma/lulu-benefit-3.jpg"
+                alt="A golden retriever waiting beside a pot of Lulu & Daisy slow-simmered bone broth being ladled into a cup, with dog treats alongside"
                 fill
                 sizes="(min-width: 1024px) 480px, 100vw"
                 className="object-cover object-top"
@@ -77,7 +61,6 @@ export default function AmoradaProject() {
             </div>
           </div>
 
-          {/* RIGHT — heading, hairline, three lead-line paragraphs */}
           <div>
             <h2 className="text-[40px] font-semibold leading-[1.02] tracking-[-1.4px] text-black sm:text-[52px] sm:tracking-[-1.8px] lg:text-[64px] lg:leading-[65px] lg:tracking-[-2.2px]">
               The Project

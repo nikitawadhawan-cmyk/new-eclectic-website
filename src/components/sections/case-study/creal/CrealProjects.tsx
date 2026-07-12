@@ -2,31 +2,9 @@ import Image from "@/components/Img";
 import Link from "next/link";
 
 /**
- * AmoradaProjects — "MORE WORK" project showcase on the amorada case-study
- * page. Figma: file Gf61npUa7cN0kaGb5RgSwe, node 203:1293.
- *
- * Pill eyebrow (gold dot + "MORE WORK") and a two-line heading with an italic
- * second line, a "View all works" navy pill + circular arrow on the right,
- * then TWO project blocks (Ivylistic, Nilambar — verified against the
- * rendered screenshot; NOT the three BVC projects from the sister page).
- * Each block: title, two tag chips + year chip, small circular arrow, large
- * screenshot left, two thumbnails + description + two stat chips right.
- * Layout idioms reused from the sister CaseProjects component. The whole
- * card is one link to the real case-study route — the round arrow is now
- * purely visual (house pattern, matches every other clone's Projects block).
- *
- * DEVIATIONS (flagged):
- *   - Both blocks in the Figma use the SAME Ivylistic screenshots (the
- *     Nilambar block is a template duplicate with Ivylistic imagery).
- *     Reproduced as designed — the am-proj1-* assets are shared.
- *   - Stat chips read "00+ / Lorem Ipsuem" in Figma — obvious template
- *     placeholders, kept verbatim per "screenshot is source of truth".
- *     Needs real copy before launch.
- *   - Figma wraps each block in an invisible white-on-white card
- *     (white 0.8px border, 30.8px padding); flattened into the container
- *     like the sister CaseProjects — zero visual difference on white.
- *   - Figma section has rounded-t-[40px] top corners, invisible against the
- *     white page background above (59px white gap in the artboard) — omitted.
+ * CrealProjects — "MORE WORK" project showcase. Clones the AmoradaProjects
+ * design 1:1; links to Lulu & Daisy and Ritvaa — the same two case studies
+ * the client's own "More Work" HTML block linked to.
  */
 
 type Stat = { value: string; label: string };
@@ -45,58 +23,55 @@ type Project = {
 
 const PROJECTS: Project[] = [
   {
-    title: "Ivylistic",
-    href: "/projects/ivylistic",
-    tags: ["Website Development", "Corporate Website"],
+    title: "Lulu & Daisy",
+    href: "/projects/lulu-daisy",
+    tags: ["Shopify Development", "Fresh Pet Food"],
     year: "2026",
-    main: "/figma/am-proj1-main.jpg",
-    mainAlt:
-      "Ivylistic website hero — Get into the world's top MBA program, strategy not guesswork",
+    main: "/figma/lulu-hero.jpg",
+    mainAlt: "Lulu & Daisy website — a golden retriever with a fresh dog food bowl",
     thumbs: [
       {
-        src: "/figma/am-proj1-thumb1.jpg",
-        alt: "Ivylistic MBA services — Pick the package that fits your ambition",
+        src: "/figma/lulu-benefit-1.jpg",
+        alt: "Lulu & Daisy store — 'The First Bowl Experience' banner",
       },
       {
-        src: "/figma/am-proj1-thumb2.jpg",
-        alt: "Ivylistic's process — supporting the MBA journey, phase 01 Discovery",
+        src: "/figma/lulu-benefit-2.jpg",
+        alt: "Lulu & Daisy store — overhead flatlay of fresh dog food ingredients",
       },
     ],
-    description:
-      "A strategy-led admissions brand — higher education, simplified.",
+    description: "A hand-coded, pixel-perfect fresh dog food theme.",
     stats: [
-      { value: "00+", label: "Lorem Ipsuem" },
-      { value: "00+", label: "Lorem Ipsuem" },
+      { value: "100%", label: "Custom Hand-Coded" },
+      { value: "1:1", label: "From Design" },
     ],
   },
   {
-    title: "Nilambar",
-    href: "/projects/nilambar",
-    tags: ["Website Development", "Corporate Website"],
+    title: "Ritvaa",
+    href: "/projects/ritvaa",
+    tags: ["Shopify Development", "Luxury Jewellery"],
     year: "2026",
-    main: "/figma/am-proj1-main.jpg",
+    main: "/figma/rit-banner-1.jpg",
     mainAlt:
-      "Nilambar project preview — website hero with strategy-led messaging",
+      "Ritvaa website — luxury SmartGold jewellery platform campaign banner",
     thumbs: [
       {
-        src: "/figma/am-proj1-thumb1.jpg",
-        alt: "Nilambar project preview — services overview page",
+        src: "/figma/rit-prod-1.jpg",
+        alt: "Ritvaa store — SmartGold jewellery product imagery",
       },
       {
-        src: "/figma/am-proj1-thumb2.jpg",
-        alt: "Nilambar project preview — process walkthrough page",
+        src: "/figma/rit-mood.jpg",
+        alt: "Ritvaa store — lifestyle mood photography",
       },
     ],
     description:
-      "A real-estate and advisory firm, unified under one confident brand.",
+      "Luxury SmartGold jewellery platform, sold on trust and tradition.",
     stats: [
-      { value: "00+", label: "Lorem Ipsuem" },
-      { value: "00+", label: "Lorem Ipsuem" },
+      { value: "SmartGold", label: "Jewellery" },
+      { value: "Lifetime", label: "Buyback Guarantee" },
     ],
   },
 ];
 
-/** Arrow used in the top-right pill button and each block's small round button. */
 function ArrowUpRight({ className = "" }: { className?: string }) {
   return (
     <svg
@@ -162,7 +137,6 @@ function ProjectBlock({ project }: { project: Project }) {
         </span>
       </div>
 
-      {/* Body row: large screenshot left, thumbnails + text + stats right */}
       <div className="flex flex-col gap-8 lg:flex-row lg:items-stretch lg:gap-6">
         <div className="relative aspect-[501/450] w-full shrink-0 overflow-hidden rounded-xl border border-black/[0.18] shadow-[6px_4px_5px_0px_rgba(0,0,0,0.12)] lg:aspect-auto lg:w-[47%]">
           <Image
@@ -208,14 +182,13 @@ function ProjectBlock({ project }: { project: Project }) {
   );
 }
 
-export default function AmoradaProjects() {
+export default function CrealProjects() {
   return (
     <section
-      aria-labelledby="amorada-projects-heading"
+      aria-labelledby="creal-projects-heading"
       className="w-full bg-white py-16 lg:py-24"
     >
       <div className="mx-auto w-full max-w-[1200px] px-6 lg:px-10">
-        {/* Section header */}
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex flex-col gap-6 lg:gap-9">
             <span className="inline-flex items-center gap-1 self-start rounded-full bg-black/[0.03] px-3 py-[7px]">
@@ -228,7 +201,7 @@ export default function AmoradaProjects() {
               </span>
             </span>
             <h2
-              id="amorada-projects-heading"
+              id="creal-projects-heading"
               className="max-w-[608px] text-[28px] font-semibold leading-[1.1] tracking-[-0.3px] text-black sm:text-[32px] lg:text-[36px] lg:leading-[39.6px]"
             >
               Projects I&apos;ve Led Through Strategy,{" "}
@@ -251,7 +224,6 @@ export default function AmoradaProjects() {
           </a>
         </div>
 
-        {/* Project blocks */}
         <div className="mt-12 flex flex-col gap-12 lg:mt-20 lg:gap-16">
           {PROJECTS.map((project) => (
             <ProjectBlock key={project.title} project={project} />

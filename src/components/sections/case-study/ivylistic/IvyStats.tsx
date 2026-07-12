@@ -41,34 +41,65 @@ const STATS: Stat[] = [
   { value: "Free Evaluations", label: "Goal" },
 ];
 
+/** No numeric KPI among Ivylistic's facts — the giant background numeral is omitted. */
+const NUMERAL: string | null = null;
+
 export default function IvyStats() {
   return (
-    <section
-      aria-labelledby="ivy-stats-heading"
-      className="w-full bg-white"
-    >
+    <section aria-label="Numbers that speak" className="w-full bg-white">
       <div className="mx-auto w-full max-w-[1200px] px-6 py-16 lg:px-10 lg:py-24">
-        {/* (a) NUMBERS THAT SPEAK */}
-        <h2
-          id="ivy-stats-heading"
-          className="text-black text-[32px] leading-[38px] tracking-[-0.76px] sm:text-[40px] sm:leading-[48px] lg:text-[48px] lg:leading-[57.6px] lg:tracking-[-1.14px]"
-        >
-          Numbers that speak
-        </h2>
+        {/* (a) NUMBERS THAT SPEAK — cascading editorial layout. Rows show
+            Client / Type / Goal (Industry is skipped from the cascade, same
+            as CREAL/Lulu, but still appears in the footer meta line). */}
+        <div className="relative overflow-hidden">
+          {NUMERAL && (
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute -right-2 top-0 select-none text-[72px] font-semibold leading-none tracking-[-3px] text-navy/[0.05] sm:text-[130px] sm:tracking-[-6px] lg:top-2 lg:text-[200px] lg:tracking-[-8px]"
+            >
+              {NUMERAL}
+            </span>
+          )}
 
-        <dl className="mt-12 grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-2 lg:mt-[72px] lg:grid-cols-4">
-          {STATS.map((stat) => (
-            <div key={stat.label} className="border-t-[0.8px] border-[#ddd] pt-16">
-              <dd className="font-bold text-black text-[36px] leading-[38px] tracking-[-1.19px] lg:text-[36px] lg:leading-[40px] lg:tracking-[-1.19px]">
-                {stat.value}
-                {stat.plus ? <span className="text-gold">+</span> : null}
-              </dd>
-              <dt className="mt-1 text-black text-[16px] leading-[22.4px] tracking-[-0.16px]">
-                {stat.label}
-              </dt>
+          <span className="relative mb-6 block font-mono text-[12px] uppercase tracking-[2.4px] text-navy sm:mb-8">
+            Numbers That Speak
+          </span>
+
+          <div className="relative flex flex-col">
+            <div className="flex flex-wrap items-baseline gap-4 sm:gap-6">
+              <h3 className="m-0 text-[36px] font-semibold leading-[0.95] tracking-[-1.5px] text-black sm:text-[60px] sm:tracking-[-2.5px] lg:text-[84px] lg:tracking-[-3.5px]">
+                {STATS[0].value}
+                {STATS[0].plus ? <span className="text-gold">+</span> : null}
+              </h3>
+              <span className="text-[15px] text-muted-2 sm:text-[16px]">{STATS[0].label}</span>
             </div>
-          ))}
-        </dl>
+
+            <div className="ml-[24px] mt-3 flex flex-wrap items-baseline gap-4 sm:ml-[60px] sm:mt-4 sm:gap-6 lg:ml-[100px]">
+              <h3 className="m-0 bg-gradient-to-r from-navy to-gold bg-clip-text text-[26px] font-semibold leading-none tracking-[-1px] text-transparent sm:text-[42px] sm:tracking-[-1.6px] lg:text-[58px] lg:tracking-[-2px]">
+                {STATS[2].value}
+                {STATS[2].plus ? <span className="text-gold">+</span> : null}
+              </h3>
+              <span className="text-[15px] text-muted-2 sm:text-[16px]">{STATS[2].label}</span>
+            </div>
+
+            <div className="ml-[12px] mt-3 flex flex-wrap items-baseline gap-4 sm:ml-[28px] sm:mt-4 sm:gap-6 lg:ml-[44px]">
+              <h3 className="m-0 text-[20px] font-semibold leading-[1.05] tracking-[-0.6px] text-black sm:text-[30px] sm:tracking-[-1px] lg:text-[40px] lg:tracking-[-1.2px]">
+                {STATS[3].value}
+                {STATS[3].plus ? <span className="text-gold">+</span> : null}
+              </h3>
+              <span className="text-[15px] text-muted-2 sm:text-[16px]">{STATS[3].label}</span>
+            </div>
+          </div>
+
+          <div className="relative mt-12 flex flex-wrap gap-x-10 gap-y-3 border-t border-line pt-8 font-mono text-[11px] uppercase tracking-[1.6px] text-muted-2 sm:mt-16 sm:pt-[30px] sm:text-[12px]">
+            {STATS.map((s) => (
+              <span key={s.label}>
+                {s.label} — {s.value}
+                {s.plus ? "+" : ""}
+              </span>
+            ))}
+          </div>
+        </div>
 
         {/* (b) TESTIMONIAL QUOTE — centered, same as the amorada page */}
         <figure className="mt-20 flex w-full flex-col items-center gap-6 text-center lg:mt-32">

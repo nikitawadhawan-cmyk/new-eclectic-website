@@ -1,53 +1,30 @@
 import Image from "@/components/Img";
 
 /**
- * HdfcStats — HDFC Life case study, two stacked bands. Clones the RitvaaStats
- * design 1:1 (same structure, classes, type scale); only the content differs.
- *
- * (a) STATS BAND
- *   - Heading "Numbers that speak" — 48px / 57.6px, tracking -1.14px, black.
- *   - 4-up meta-facts row styled exactly like the amorada stat cells: thin top
- *     hairlines (#ddd, 0.8px), big value 52px bold black, small label 16px,
- *     tracking -0.16px. All four HDFC Life values are text (Client / Industry /
- *     Type / Goal) — NO gold "+" on any of them.
- *   - Responsive: 4-up desktop -> 2-up tablet -> 1-up mobile.
- *
- * (b) TESTIMONIAL BAND — CENTERED, same layout as amorada:
- *   - Centered gold quote mark, quote (40px / 56px, centered, #0a0a0a,
- *     tracking -0.6px), dashed hairline, then a centered 60px rounded avatar
- *     + "Nikita Wadhawan" (28px) / "Founder, Eclectic Agency" (16px, #a5a5a5).
- *
- * NOTES (carried over from the amorada source):
- *   - Quote-mark color #ffdb00 (Figma-exact); rendered at 96px/0.7 with a
- *     serif face to avoid descender clipping.
- *   - Project standard type is Inter (font-sans) — no font import.
- *   - Avatar reuses /figma/cs-testimonial-avatar.jpg (shared asset).
- *   - Section background: white, matching the amorada page.
+ * LuluStats — Lulu & Daisy case study, two stacked bands. Clones the
+ * AmoradaStats design 1:1; the 4 facts and pull quote are from the client's
+ * "Lulu & Daisy - Bold Editorial" HTML brief (meta strip + closing quote).
  */
 
-type Stat = {
-  /** The value (without the trailing plus). */
-  value: string;
-  /** true when a gold "+" follows the value — no HDFC Life stat uses it. */
-  plus?: boolean;
-  label: string;
-};
+type Stat = { value: string; label: string };
 
 const STATS: Stat[] = [
-  { value: "2", plus: true, label: "Website Pages Planned" },
-  { value: "Insurance", label: "Industry" },
-  { value: "Landing Page", label: "Type" },
-  { value: "2 Weeks", label: "Project Duration" },
+  { value: "Lulu & Daisy", label: "Client" },
+  { value: "Fresh Pet Food", label: "Industry" },
+  { value: "Shopify OS 2.0", label: "Platform" },
+  { value: "Custom Theme, Hand-Coded", label: "Scope" },
 ];
 
-/** Giant faint background numeral — the headline KPI, or null to omit it. */
-const NUMERAL = "2+";
+/** No stat carries a clean numeral (a version number isn't one) — the giant background numeral is omitted. */
+const NUMERAL: string | null = null;
 
-export default function HdfcStats() {
+export default function LuluStats() {
   return (
     <section aria-label="Numbers that speak" className="w-full bg-white">
       <div className="mx-auto w-full max-w-[1200px] px-6 py-16 lg:px-10 lg:py-24">
-        {/* (a) NUMBERS THAT SPEAK — cascading editorial layout */}
+        {/* (a) NUMBERS THAT SPEAK — cascading editorial layout. Rows show
+            Client / Platform / Scope (Industry is skipped from the cascade
+            but still appears in the footer meta line). */}
         <div className="relative overflow-hidden">
           {NUMERAL && (
             <span
@@ -66,25 +43,22 @@ export default function HdfcStats() {
             <div className="flex flex-wrap items-baseline gap-4 sm:gap-6">
               <h3 className="m-0 text-[36px] font-semibold leading-[0.95] tracking-[-1.5px] text-black sm:text-[60px] sm:tracking-[-2.5px] lg:text-[84px] lg:tracking-[-3.5px]">
                 {STATS[0].value}
-                {STATS[0].plus ? <span className="text-gold">+</span> : null}
               </h3>
               <span className="text-[15px] text-muted-2 sm:text-[16px]">{STATS[0].label}</span>
             </div>
 
             <div className="ml-[24px] mt-3 flex flex-wrap items-baseline gap-4 sm:ml-[60px] sm:mt-4 sm:gap-6 lg:ml-[100px]">
               <h3 className="m-0 bg-gradient-to-r from-navy to-gold bg-clip-text text-[26px] font-semibold leading-none tracking-[-1px] text-transparent sm:text-[42px] sm:tracking-[-1.6px] lg:text-[58px] lg:tracking-[-2px]">
-                {STATS[1].value}
-                {STATS[1].plus ? <span className="text-gold">+</span> : null}
+                {STATS[2].value}
               </h3>
-              <span className="text-[15px] text-muted-2 sm:text-[16px]">{STATS[1].label}</span>
+              <span className="text-[15px] text-muted-2 sm:text-[16px]">{STATS[2].label}</span>
             </div>
 
             <div className="ml-[12px] mt-3 flex flex-wrap items-baseline gap-4 sm:ml-[28px] sm:mt-4 sm:gap-6 lg:ml-[44px]">
               <h3 className="m-0 text-[20px] font-semibold leading-[1.05] tracking-[-0.6px] text-black sm:text-[30px] sm:tracking-[-1px] lg:text-[40px] lg:tracking-[-1.2px]">
-                {STATS[2].value}
-                {STATS[2].plus ? <span className="text-gold">+</span> : null}
+                {STATS[3].value}
               </h3>
-              <span className="text-[15px] text-muted-2 sm:text-[16px]">{STATS[2].label}</span>
+              <span className="text-[15px] text-muted-2 sm:text-[16px]">{STATS[3].label}</span>
             </div>
           </div>
 
@@ -92,13 +66,11 @@ export default function HdfcStats() {
             {STATS.map((s) => (
               <span key={s.label}>
                 {s.label} — {s.value}
-                {s.plus ? "+" : ""}
               </span>
             ))}
           </div>
         </div>
 
-        {/* (b) TESTIMONIAL QUOTE — centered, same as the amorada page */}
         <figure className="mt-20 flex w-full flex-col items-center gap-6 text-center lg:mt-32">
           <span
             aria-hidden
@@ -108,8 +80,7 @@ export default function HdfcStats() {
           </span>
 
           <blockquote className="mx-auto w-full max-w-[1065px] text-[#0a0a0a] text-[26px] leading-[36px] tracking-[-0.4px] sm:text-[32px] sm:leading-[46px] lg:text-[40px] lg:leading-[56px] lg:tracking-[-0.6px]">
-            One headline, one form, one job &mdash; and the visitor knows exactly
-            what to do.
+            The storefront you can&apos;t tell apart from the design file.
           </blockquote>
 
           <hr className="w-full border-0 border-t-[0.8px] border-dashed border-[#e6e6e6]" />
