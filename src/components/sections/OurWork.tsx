@@ -11,7 +11,9 @@ import Link from "next/link";
  * study exists), and below it the project title + tag chips on the left and a
  * short description on the right. Recolored into the brand navy/gold palette.
  *
- * Projects = all case-study clients; each has a tilted-collage or flat
+ * Projects = all case-study clients; each renders a flat 2x homepage
+ * screenshot (the tilted-collage path is kept for any project without a live
+ * site to shoot). Was: tilted-collage or flat
  * screenshot card with a "Learn More" pill linking to its case study.
  */
 
@@ -31,184 +33,86 @@ type Project = {
   collage?: CollageImage[];
 };
 
-const BVC_COLLAGE = [1, 2, 3, 4, 5, 6, 7].map(
-  (n) => `/figma/ourwork-bvc-${n}.jpg`,
-);
-
-const TTG_COLLAGE = [
-  "/figma/ttg-bundle-1.jpg",
-  "/figma/ttg-city.jpg",
-  "/figma/ttg-bundle-2.jpg",
-  "/figma/ttg-app-1.jpg",
-  "/figma/ttg-bundle-3.jpg",
-  "/figma/ttg-bundle-4.jpg",
-];
-
-const RITVAA_COLLAGE = [
-  "/figma/rit-web.jpg",
-  "/figma/rit-kangana.jpg",
-  "/figma/rit-looksreal.jpg",
-  "/figma/rit-karigari.jpg",
-  "/figma/rit-grace.jpg",
-  "/figma/rit-mood.jpg",
-];
-
-const PMO_COLLAGE = [
-  "/figma/pmo-banner.jpg",
-  "/figma/pmo-hero-1.jpg",
-  "/figma/pmo-mood.jpg",
-  "/figma/pmo-hero-2.jpg",
-  "/figma/pmo-edu.jpg",
-  "/figma/pmo-hero-3.jpg",
-];
-
-/** ivy-booth.jpg / ivy-oxford.jpg are private WhatsApp screenshots, not campus photos — excluded on purpose, see chat with client. */
-const IVY_COLLAGE = [
-  "/figma/ivy-team.jpg",
-  "/figma/ivy-1.jpg",
-  "/figma/ivy-og.jpg",
-  "/figma/ivy-2.jpg",
-  "/figma/ivy-3.jpg",
-];
-
-const HDFC_COLLAGE = [
-  "/figma/hdfc-banner-1.jpg",
-  "/figma/hdfc-banner-3.jpg",
-  "/figma/hdfc-og.jpg",
-  "/figma/hdfc-banner-2.jpg",
-  "/figma/hdfc-banner-4.jpg",
-];
-
-const AMORADA_COLLAGE = [
-  "/figma/am-hero-3.jpg",
-  "/figma/am-hero-1.jpg",
-  "/figma/am-showcase.jpg",
-  "/figma/am-project-bed.jpg",
-  "/figma/am-hero-2.jpg",
-  "/figma/am-proj1-main.jpg",
-];
-
-/**
- * Nilambar only has 3 site photos total (nil-hero, nil-founder, nil-person)
- * — each repeats once to fill a 6-tile collage. The two portraits use
- * pos: "top" so a center-crop doesn't cut the subject's head off.
- */
-const NILAMBAR_COLLAGE: CollageImage[] = [
-  "/figma/nil-hero.jpg",
-  { src: "/figma/nil-founder.jpg", pos: "top" },
-  "/figma/nil-hero.jpg",
-  { src: "/figma/nil-person.jpg", pos: "top" },
-  { src: "/figma/nil-founder.jpg", pos: "top" },
-  { src: "/figma/nil-person.jpg", pos: "top" },
-];
-
-const CREAL_COLLAGE = [
-  "/figma/creal-hero-1.jpg",
-  "/figma/creal-shop-her.jpg",
-  "/figma/creal-hero-2.jpg",
-  "/figma/creal-everyday.jpg",
-  "/figma/creal-hero-3.jpg",
-  "/figma/creal-shop-him.jpg",
-];
-
-const LULU_COLLAGE = [
-  "/figma/lulu-hero.jpg",
-  "/figma/lulu-benefit-1.jpg",
-  "/figma/lulu-benefit-3.jpg",
-  "/figma/lulu-benefit-2.jpg",
-  "/figma/lulu-testi.jpg",
-];
-
 const PROJECTS: Project[] = [
   {
     title: "BVC Logistics",
     tags: ["Website Strategy", "Corporate Website"],
     desc: "We designed the complete digital experience for BVC Logistics — planning the website structure, content hierarchy, user journey, and premium visual storytelling to turn a traditional corporate site into a lead-generation platform.",
     screen: "/figma/lp-screen-1.jpg",
-    alt: "Collage of BVC Logistics work — BVC Universe app, website and campaign pages",
+    alt: "The BVC Logistics website — homepage screenshot",
     href: "/projects/bvc-logistics",
-    collage: BVC_COLLAGE,
   },
   {
     title: "Ritvaa",
     tags: ["Shopify Development", "Luxury Jewellery"],
     desc: "An elegant Shopify platform for Ritvaa's SmartGold jewellery and mangalsutra collections — built around trust, tradition, and a lifetime buyback guarantee.",
-    screen: "/figma/rit-web.jpg",
-    alt: "Collage of Ritvaa work — SmartGold jewellery campaign photography and product shots",
+    screen: "/figma/rit-web-wide.jpg",
+    alt: "The Ritvaa website — homepage screenshot",
     href: "/projects/ritvaa",
-    collage: RITVAA_COLLAGE,
   },
   {
     title: "Peak Mode On",
     tags: ["Shopify Development", "Ayurvedic Wellness"],
     desc: "A complete Ayurvedic wellness store built from the ground up on Shopify — with a custom Dosha quiz and educational content that guides first-time buyers.",
-    screen: "/figma/pmo-banner.jpg",
-    alt: "Collage of Peak Mode On work — Ayurvedic supplement packaging and product photography",
+    screen: "/figma/pmo-web.jpg",
+    alt: "The Peak Mode On website — homepage screenshot",
     href: "/projects/peak-mode-on",
-    collage: PMO_COLLAGE,
   },
   {
     title: "Trippy Tour Guide",
     tags: ["Website Development", "Travel Tech"],
     desc: "A discovery-led website for GPS-activated, self-guided audio tours across 50+ destinations — built to drive tour sales and app downloads.",
-    screen: "/figma/ttg-bundle-1.jpg",
-    alt: "Collage of Trippy Tour Guide work — destination photography and the app's tour browser",
+    screen: "/figma/ttg-web.jpg",
+    alt: "The Trippy Tour Guide website — homepage screenshot",
     href: "/projects/trippy-tour-guide",
-    collage: TTG_COLLAGE,
   },
   {
     title: "Ivylistic",
     tags: ["Brand Website", "Higher-Ed Consulting"],
     desc: "A strategy-led brand website for an MBA, MiM and MS admissions consultancy — built to earn trust and convert free profile evaluations.",
-    screen: "/figma/ivy-og.jpg",
-    alt: "Collage of Ivylistic work — brand identity and the admissions consulting team",
+    screen: "/figma/ivy-web.jpg",
+    alt: "The Ivylistic website — homepage screenshot",
     href: "/projects/ivylistic",
-    collage: IVY_COLLAGE,
   },
   {
     title: "Nilambar",
     tags: ["Corporate Website", "Real Estate & Advisory"],
     desc: "A corporate website that unifies real-estate development, strategic advisory and startup investment under one confident, trustworthy brand.",
-    screen: "/figma/nil-hero.jpg",
-    alt: "Collage of Nilambar work — real-estate architecture and the advisory team",
+    screen: "/figma/nil-web.jpg",
+    alt: "The Nilambar website — homepage screenshot",
     href: "/projects/nilambar",
-    collage: NILAMBAR_COLLAGE,
   },
   {
     title: "HDFC Life",
     tags: ["Landing Page", "Performance Marketing"],
     desc: "A single-purpose, high-conversion landing page that turns awareness traffic into qualified insurance-agent leads.",
-    screen: "/figma/hdfc-og.jpg",
-    alt: "Collage of HDFC Life work — agent lead-generation campaign creatives",
+    screen: "/figma/hdfc-web.jpg",
+    alt: "The HDFC Life website — homepage screenshot",
     href: "/projects/hdfc-life",
-    collage: HDFC_COLLAGE,
   },
   {
     title: "Amorada",
     tags: ["Ecommerce Site", "Brand Experience"],
     desc: "A warm, craft-led ecommerce experience where comfort meets craft — editorial product storytelling and a clean shopping journey designed to convert browsers into loyal customers.",
     screen: "/figma/lp-screen-4.jpg",
-    alt: "Collage of Amorada work — home-linen product photography and the storefront",
+    alt: "The Amorada website — homepage screenshot",
     href: "/projects/amorada",
-    collage: AMORADA_COLLAGE,
   },
   {
     title: "CREAL",
     tags: ["Shopify Development", "Fine Jewellery"],
     desc: "A complete Shopify storefront for a 500+ SKU fine jewellery catalogue — category-led navigation, six-facet smart filtering, and conversion features built for considered purchases.",
-    screen: "/figma/creal-hero-1.jpg",
-    alt: "Collage of CREAL work — fine gold and diamond jewellery campaign photography",
+    screen: "/figma/creal-web.jpg",
+    alt: "The CREAL website — homepage screenshot",
     href: "/projects/creal",
-    collage: CREAL_COLLAGE,
   },
   {
     title: "Lulu & Daisy",
     tags: ["Shopify Development", "Fresh Pet Food"],
     desc: "A 100% custom, hand-coded Shopify Online Store 2.0 theme pixel-matched to a bespoke editorial design — no off-the-shelf template anywhere in the build.",
-    screen: "/figma/lulu-hero.jpg",
-    alt: "Collage of Lulu & Daisy work — fresh dog food photography and packaging",
+    screen: "/figma/lulu-web.jpg",
+    alt: "The Lulu & Daisy website — homepage screenshot",
     href: "/projects/lulu-daisy",
-    collage: LULU_COLLAGE,
   },
 ];
 
