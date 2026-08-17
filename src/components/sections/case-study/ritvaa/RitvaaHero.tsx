@@ -26,13 +26,14 @@ type HeroImage = {
 
 const HERO_IMAGES: HeroImage[] = [
   {
-    src: "/figma/rit-usp.jpg",
-    alt: "Ritvaa brand USP graphic — 2 years warranty, 3 million+ customers, lifetime service, 50x thick gold layered",
+    src: "/figma/rit-mobile-kangana.jpg",
+    alt: "Kangana by Ritvaa — kundan and pearl gold bangles on maroon silk",
   },
   {
-    src: "/figma/rit-banner-1.jpg",
-    alt: "Ritvaa website banner — A Monsoon of Timeless Style lifestyle campaign",
+    src: "/figma/rit-web.jpg",
+    alt: "The Ritvaa homepage — fanned collection carousel with Saubhagya, Karigari, Kangana, Utsav and Vedika",
     accent: true,
+    imgClassName: "object-[left_top]",
   },
   {
     src: "/figma/rit-saubhagya.jpg",
@@ -97,7 +98,7 @@ export default function RitvaaHero() {
                     alt={img.alt}
                     fill
                     sizes="(min-width: 640px) 33vw, 100vw"
-                    className="object-cover"
+                    className={`object-cover ${img.imgClassName ?? ""}`}
                     priority
                   />
                 </div>

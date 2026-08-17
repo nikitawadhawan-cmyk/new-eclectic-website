@@ -45,7 +45,7 @@ const TTG_COLLAGE = [
 ];
 
 const RITVAA_COLLAGE = [
-  "/figma/rit-banner-1.jpg",
+  "/figma/rit-web.jpg",
   "/figma/rit-mood.jpg",
   "/figma/rit-banner-2.jpg",
   "/figma/rit-prod-1.jpg",
@@ -132,7 +132,7 @@ const PROJECTS: Project[] = [
     title: "Ritvaa",
     tags: ["Shopify Development", "Luxury Jewellery"],
     desc: "An elegant Shopify platform for Ritvaa's SmartGold jewellery and mangalsutra collections — built around trust, tradition, and a lifetime buyback guarantee.",
-    screen: "/figma/rit-banner-1.jpg",
+    screen: "/figma/rit-web.jpg",
     alt: "Collage of Ritvaa work — SmartGold jewellery campaign photography and product shots",
     href: "/projects/ritvaa",
     collage: RITVAA_COLLAGE,

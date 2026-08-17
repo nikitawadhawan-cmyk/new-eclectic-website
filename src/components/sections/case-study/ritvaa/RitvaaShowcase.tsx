@@ -6,15 +6,16 @@ import Image from "@/components/Img";
  * Unlike BVC/amorada (each has a single pre-composited "laptop + phone"
  * photo export, cs-showcase.jpg / am-showcase.jpg), no such asset exists for
  * Ritvaa — so this is a CSS-built device mockup (same idea as the laptop
- * frame in HeroShowcase's CardVisual) showing the real Ritvaa homepage
- * banner (rit-banner-1.jpg — the "A Monsoon of Timeless Style" hero live on
- * ritvaa.in, verified against the real site) on a laptop with a phone
- * beside it, inside the same rounded frame / shadow / aspect-[1524/776]
+ * frame in HeroShowcase's CardVisual): a 2x screenshot of the real Ritvaa
+ * homepage (rit-web.jpg, client-supplied 2026-08-17) on the laptop, and the
+ * "Vedika by Ritvaa" mobile collection card (rit-mobile-vedika.jpg) on the
+ * phone beside it, inside the same rounded frame / shadow / aspect-[1524/776]
  * used by the other two showcases.
  */
 function DeviceMockup() {
-  const screen = "/figma/rit-banner-1.jpg";
-  const alt = "The Ritvaa homepage — A Monsoon of Timeless Style";
+  const screen = "/figma/rit-web.jpg";
+  const phone = "/figma/rit-mobile-vedika.jpg";
+  const alt = "The Ritvaa homepage — collection carousel";
 
   return (
     <div className="relative flex h-full w-full items-center justify-center bg-gradient-to-b from-[#ececec] to-[#dbdbdb]">
@@ -27,7 +28,7 @@ function DeviceMockup() {
               alt={alt}
               fill
               sizes="(min-width: 1200px) 720px, 60vw"
-              className="object-cover object-top"
+              className="object-cover object-[left_top]"
               priority
             />
           </div>
@@ -40,7 +41,7 @@ function DeviceMockup() {
       <div className="absolute bottom-[8%] right-[13%] w-[13%]">
         <div className="overflow-hidden rounded-[18%] border-[5px] border-[#1c1c1c] bg-[#1c1c1c] shadow-[0_20px_45px_-10px_rgba(0,0,0,0.4)]">
           <div className="relative aspect-[9/19.5] w-full overflow-hidden bg-white">
-            <Image src={screen} alt="" fill sizes="140px" className="object-cover" />
+            <Image src={phone} alt="" fill sizes="140px" className="object-cover object-top" />
           </div>
         </div>
       </div>

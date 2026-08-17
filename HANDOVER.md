@@ -281,7 +281,19 @@ muted-2 `#828282` · line `#e6e6e6` · surface `#f5f5f7` · gold `#e8c700`
 - `netlify.toml` is inert leftover; hosting is GitHub Pages.
 - Ritvaa's `RitvaaShowcase` uses a CSS-built laptop+phone mockup (no
   photographic export exists for this client) — see §6 for the pattern if
-  another client needs the same treatment.
+  another client needs the same treatment. Its laptop shows `rit-web.jpg`
+  (client-supplied 2x homepage screenshot, 2026-08-17, cookie bar cropped
+  off) and the phone `rit-mobile-vedika.jpg`; the other two supplied
+  collection cards are `rit-mobile-kangana.jpg` (hero left) and
+  `rit-mobile-utsav.jpg` (The Project). The cards are only 728px wide —
+  fine on the phone, ~1.7x soft in the hero/project slots; ask for larger.
+  `lp-screen-1.jpg` (homepage hero card + Our Work BVC screen) is likewise
+  a client-supplied 2x BVC homepage screenshot.
+- **Image resolution audit (2026-08-17):** 62 of 88 rendered images are
+  upscaled on Retina because the static export can't resize and most photos
+  were scraped at ≤1400px. Full per-file list with needed widths lives in
+  the session artifact "Eclectic Image Audit"; short version — need ≥2800px
+  for hero/showcase/CTA slots, ≥1800px for tiles, logo as SVG.
 
 ## 9. Accounts
 
