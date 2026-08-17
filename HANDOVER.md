@@ -288,9 +288,13 @@ muted-2 `#828282` · line `#e6e6e6` · surface `#f5f5f7` · gold `#e8c700`
   `rit-mood` is the 4096px mangalsutra mood shot, `rit-web` is a
   client-supplied 2x homepage screenshot (cookie bar cropped off). Ritvaa is
   now the one client whose every image is sharp on Retina. `RitvaaShowcase`
-  is a CSS laptop+phone mockup: laptop = `rit-web`, phone = the 728px
-  `rit-mobile-vedika` card (sized to the card's aspect so it shows uncropped;
-  fine at phone size). `lp-screen-1.jpg` (homepage hero card + Our Work BVC
+  = CSS laptop (screen `rit-web`, pre-cropped to 16:10 so it fills
+  edge-to-edge) + `rit-phone.png`, a client-supplied 3D iPhone PSD
+  (`~/Downloads/mobile-phone-with-white-screen-psd-mockup/`) whose "object"
+  layer was exported with alpha and the Vedika photo perspective-warped into
+  its "display" layer (screen-corner detection + PIL PERSPECTIVE, masked by
+  the display alpha for rounded corners/notch). Re-run that pipeline to put a
+  different screen on the same phone. `lp-screen-1.jpg` (homepage hero card + Our Work BVC
   screen) is a client-supplied 2x BVC homepage screenshot.
 - **Image resolution audit (2026-08-17):** 62 of 88 rendered images are
   upscaled on Retina because the static export can't resize and most photos
