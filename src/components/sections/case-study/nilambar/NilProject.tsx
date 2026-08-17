@@ -62,13 +62,13 @@ export default function NilProject() {
               </span>
             </span>
 
-            <div className="relative aspect-[524/376] w-full overflow-hidden rounded-[20px]">
+            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[20px]">
               <Image
-                src="/figma/nil-person.jpg"
-                alt="Smiling businesswoman in a grey blazer pointing to the side in a bright office"
+                src="/figma/nil-web-laptop.jpg"
+                alt="The Nilambar homepage — From First Steps to Forever Plans"
                 fill
                 sizes="(min-width: 1024px) 480px, 100vw"
-                className="object-cover object-top"
+                className="object-cover"
               />
             </div>
           </div>

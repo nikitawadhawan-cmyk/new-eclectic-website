@@ -72,13 +72,13 @@ export default function TtgProject() {
               </span>
             </span>
 
-            <div className="relative aspect-[524/376] w-full overflow-hidden rounded-[20px]">
+            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[20px]">
               <Image
-                src="/figma/ttg-hero-mobile.jpg"
-                alt="Trippy Tour Guide mobile homepage — Explore the World at Your Own Pace"
+                src="/figma/ttg-web-laptop.jpg"
+                alt="The Trippy Tour Guide homepage — Explore the World at Your Own Pace"
                 fill
                 sizes="(min-width: 1024px) 480px, 100vw"
-                className="object-cover object-top"
+                className="object-cover"
               />
             </div>
           </div>

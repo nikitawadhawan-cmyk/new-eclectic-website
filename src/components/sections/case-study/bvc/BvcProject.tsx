@@ -53,13 +53,13 @@ export default function BvcProject() {
               </span>
             </span>
 
-            <div className="relative aspect-[524/376] w-full overflow-hidden rounded-[20px]">
+            <div className="relative aspect-[2000/1081] w-full overflow-hidden rounded-[20px]">
               <Image
-                src="/figma/cs-hero-2.jpg"
-                alt="BVC Logistics container truck at a port at dusk with a cargo plane overhead"
+                src="/figma/lp-screen-1.jpg"
+                alt="The BVC Logistics homepage — India's Largest Secure Logistics Network for Gems & Jewellery"
                 fill
                 sizes="(min-width: 1024px) 480px, 100vw"
-                className="object-cover object-top"
+                className="object-cover"
               />
             </div>
           </div>

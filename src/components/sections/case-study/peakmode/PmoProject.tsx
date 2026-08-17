@@ -61,13 +61,13 @@ export default function PmoProject() {
               </span>
             </span>
 
-            <div className="relative aspect-[524/376] w-full overflow-hidden rounded-[20px]">
+            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[20px]">
               <Image
-                src="/figma/pmo-hero-3.jpg"
-                alt="Peak Mode On Ayurvedic supplement product shot"
+                src="/figma/pmo-web-laptop.jpg"
+                alt="The Peak Mode On homepage — Live at Your Peak"
                 fill
                 sizes="(min-width: 1024px) 480px, 100vw"
-                className="object-cover object-top"
+                className="object-cover"
               />
             </div>
           </div>

@@ -161,7 +161,7 @@ intentional so each client's page can diverge freely later.
 Shared section anatomy (every clone page, in order): Hero (uppercase heading,
 "— Case Study — … —" subhead, 3 images w/ bracketed center, intro, View Live
 Website button) → Stats (4 text facts + testimonial quote — see "Numbers
-that speak" note below) → Showcase (wide image) → The Project (image + 3
+that speak" note below) → Showcase (wide image) → The Project (uncropped 16:10 homepage screenshot, `*-web-laptop.jpg`, box aspect matches the image so nothing clips — + 3
 bold-lead paragraphs) → **Results** (spotlight-split; hover moves the navy
 card) → **Challenge/Solution** (two spotlight cards, Solution default-active)
 → **What We Did** (keyline ledger, auto-advancing navy highlight every 2.4s,

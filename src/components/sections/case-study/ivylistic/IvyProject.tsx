@@ -61,13 +61,13 @@ export default function IvyProject() {
               </span>
             </span>
 
-            <div className="relative aspect-[524/376] w-full overflow-hidden rounded-[20px]">
+            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[20px]">
               <Image
-                src="/figma/ivy-2.jpg"
-                alt="Smiling Ivylistic consultant in a navy blazer and white shirt, photographed in a bright modern office"
+                src="/figma/ivy-web-laptop.jpg"
+                alt="The Ivylistic homepage — Your story is waiting to be told"
                 fill
                 sizes="(min-width: 1024px) 480px, 100vw"
-                className="object-cover object-top"
+                className="object-cover"
               />
             </div>
           </div>

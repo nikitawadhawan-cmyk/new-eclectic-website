@@ -61,13 +61,13 @@ export default function RitvaaProject() {
               </span>
             </span>
 
-            <div className="relative aspect-[524/376] w-full overflow-hidden rounded-[20px]">
+            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[20px]">
               <Image
-                src="/figma/rit-utsav.jpg"
-                alt="Utsav by Ritvaa — bride wearing a gold jhumka earring with pearl drops"
+                src="/figma/rit-web.jpg"
+                alt="The Ritvaa homepage — collection carousel"
                 fill
                 sizes="(min-width: 1024px) 480px, 100vw"
-                className="object-cover object-[center_62%]"
+                className="object-cover"
               />
             </div>
           </div>

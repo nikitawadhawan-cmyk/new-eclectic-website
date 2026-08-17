@@ -63,13 +63,13 @@ export default function HdfcProject() {
               </span>
             </span>
 
-            <div className="relative aspect-[524/376] w-full overflow-hidden rounded-[20px]">
+            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[20px]">
               <Image
-                src="/figma/hdfc-banner-4.jpg"
-                alt="HDFC Life Click 2 Achieve campaign banner with three Kolkata Knight Riders cricketers in a stadium beside the headline “Dream big with bigger guaranteed returns”"
+                src="/figma/hdfc-web.jpg"
+                alt="The HDFC Life homepage"
                 fill
                 sizes="(min-width: 1024px) 480px, 100vw"
-                className="object-cover object-right"
+                className="object-cover"
               />
             </div>
           </div>

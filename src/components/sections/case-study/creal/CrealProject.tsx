@@ -51,13 +51,13 @@ export default function CrealProject() {
               </span>
             </span>
 
-            <div className="relative aspect-[524/376] w-full overflow-hidden rounded-[20px]">
+            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[20px]">
               <Image
-                src="/figma/creal-everyday.jpg"
-                alt="CREAL 'Everyday Elegance' banner — a gold flower necklace, stud earrings and ring, with overlay copy reading 'Lightweight Designs for Your Daily Shine' and a 'Shop Daily Wear' button"
+                src="/figma/creal-web-laptop.jpg"
+                alt="The CREAL homepage — Wedding Collection"
                 fill
                 sizes="(min-width: 1024px) 480px, 100vw"
-                className="object-cover object-top"
+                className="object-cover"
               />
             </div>
           </div>

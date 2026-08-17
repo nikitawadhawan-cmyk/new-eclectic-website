@@ -66,13 +66,13 @@ export default function AmoradaProject() {
               </span>
             </span>
 
-            <div className="relative aspect-[524/376] w-full overflow-hidden rounded-[20px]">
+            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[20px]">
               <Image
-                src="/figma/am-project-bed.jpg"
-                alt="Pink quilted Amorada bed spread in a warm panelled bedroom, with overlay copy reading 'Crafted to Comfort, Designed to Delight — explore our handcrafted bed spreads made for timeless comfort' and an 'Explore bed spreads' button"
+                src="/figma/am-web-laptop.jpg"
+                alt="The Amorada homepage — Let Your Bed Blossom"
                 fill
                 sizes="(min-width: 1024px) 480px, 100vw"
-                className="object-cover object-top"
+                className="object-cover"
               />
             </div>
           </div>
