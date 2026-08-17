@@ -30,10 +30,10 @@ const HERO_IMAGES: HeroImage[] = [
     alt: "Kangana by Ritvaa — kundan and pearl gold bangles on maroon silk",
   },
   {
-    src: "/figma/rit-web.jpg",
-    alt: "The Ritvaa homepage — fanned collection carousel with Saubhagya, Karigari, Kangana, Utsav and Vedika",
+    src: "/figma/rit-saubhagya.jpg",
+    alt: "Saubhagya by Ritvaa — model in a blush kurta wearing a long gold mangalsutra with black beads",
     accent: true,
-    imgClassName: "object-[left_top]",
+    imgClassName: "object-[center_60%]",
   },
   {
     src: "/figma/rit-details.jpg",
