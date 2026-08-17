@@ -73,7 +73,7 @@ git push origin main                            # deploys via Actions (~1 min)
 | `OurServices` | ⭐ Pinned scrollytelling: zooms in on the first point, reveals 7 points one-by-one along a growing navy line, zooms out after the last. Static list fallback <1024px / reduced motion. |
 | `BigQuote` | Soela quote (enlarged type) |
 | `WorkProcess` | ⭐ Pinned scroll-triggered reveal ("osmo stacking-cards" reference, adapted): section pins while scrolling and each of the 4 step cards bounces into its own grid slot one at a time (box 1 → 2 → 3 → 4, `backOut` overshoot easing) — but cards sit **side by side** in the original staggered grid, never covering each other; end state = all 4 visible + idle bob resumes. Static flip-in grid fallback <1024px / reduced motion. |
-| `OurWork` | `id="work"`. Schbang-style navy band; **10 blocks, every card is a single whole-card `Link`** (not just a "Learn More" button) to its case study. **Every card now shows a flat 2x homepage screenshot** (`*-web.jpg`, shot headlessly at 1440px/DPR2 from each live site on 2026-08-17, pop-ups removed; BVC + Ritvaa are client-supplied) — the tilted-collage renderer (`TiltedCollage`, Figma 182:824) is still in the file for any project without a live site, but no block uses it. Amorada's domain is parked, so it keeps the Figma export `lp-screen-4`; HDFC shows hdfclife.com's corporate homepage pending the real campaign URL. New projects get appended here (see §6). |
+| `OurWork` | `id="work"`. Schbang-style navy band; **10 blocks, every card is a single whole-card `Link`** (not just a "Learn More" button) to its case study. **Every card now shows a flat 2x homepage screenshot** (`*-web.jpg`, shot headlessly at 1440px/DPR2 from each live site on 2026-08-17, pop-ups removed; BVC + Ritvaa are client-supplied) — the tilted-collage renderer (`TiltedCollage`, Figma 182:824) is still in the file for any project without a live site, but no block uses it. Amorada's live site is now https://homeamorada.com/ (the old ammorada.com is parked); HDFC shows hdfclife.com's corporate homepage pending the real campaign URL. New projects get appended here (see §6). |
 | `AboutCaseStudy` | **REMOVED from the homepage at client request (2026-08-16)** — component file kept in the repo. Was: portrait + philosophy ("Designing experiences that solve real problems."). |
 | `Pricing` | **REMOVED from the homepage at client request (2026-08-16)** — component file kept. Was: single "Single Project" offering ("Simple pricing. Standout designs.") with a WhatsApp "Get a Quote" CTA. |
 | `Testimonials`, `Faq`, `Footer` | `Testimonials` is **HIDDEN (unmounted) until verified client reviews exist** (client request 2026-08-16) — the component, its placeholder quotes, and the `clientlogo-*` assets all remain in the repo; restore by re-importing it in `page.tsx`. `Faq`'s right-column "Book a Call" card (headshot + "Still not sure?" + WhatsApp CTA) was **removed** the same date, so `Faq` renders single-column on every page. Footer = giant "eclecticdigital" wordmark + socials/links/credit (all `#` placeholders). |
@@ -208,7 +208,7 @@ For a new client page in the same design (this is the established flow):
      this for `ttg-hero-mobile.jpg`. The Claude Browser/computer-use
      screenshot tools' `save_to_disk` output is NOT reachable from Bash in
      this environment — this is the reliable path to an actual file.
-   - **Laptop + iPhone showcase (the current standard — Ritvaa, Peak Mode On):**
+   - **Laptop + iPhone showcase (the current standard — every case study except BVC/HDFC, which keep their bespoke exports):**
      CSS laptop frame + `scripts/phone_composite.py <screen.png> <out.png>`,
      which perspective-warps any ~0.438-aspect screen image into the client's
      3D iPhone (`scripts/phone_body.png` / `phone_screen.png`, extracted from
@@ -255,6 +255,7 @@ muted-2 `#828282` · line `#e6e6e6` · surface `#f5f5f7` · gold `#e8c700`
   collage (see `OurWork.tsx` comment) but the case-study page itself still
   needs real replacement photos before this goes out publicly — **flag to
   client / re-scrape before push.**
+- **Amorada live URL is https://homeamorada.com/** (2026-08-17; `ammorada.com` is a parked Hostinger page).
 - **HDFC Life hero "View Live Website" points at hdfclife.com** — awaiting
   the real campaign landing-page URL from the client (swap in HdfcHero.tsx).
 - **No real WhatsApp number yet** — every WhatsApp CTA on the site (Pricing,

@@ -94,7 +94,7 @@ const PROJECTS: Project[] = [
     title: "Amorada",
     tags: ["Ecommerce Site", "Brand Experience"],
     desc: "A warm, craft-led ecommerce experience where comfort meets craft — editorial product storytelling and a clean shopping journey designed to convert browsers into loyal customers.",
-    screen: "/figma/lp-screen-4.jpg",
+    screen: "/figma/am-web.jpg",
     alt: "The Amorada website — homepage screenshot",
     href: "/projects/amorada",
   },

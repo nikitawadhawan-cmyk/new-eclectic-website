@@ -128,7 +128,7 @@ export default function AmoradaHero() {
         {/* View Live Website button */}
         <div className="mt-8 flex justify-center">
           <a
-            href="https://www.ammorada.com"
+            href="https://homeamorada.com/"
             target="_blank"
             rel="noopener noreferrer"
             className="group inline-flex items-center gap-4 rounded-full border-[0.8px] border-navy bg-navy py-[7px] pl-6 pr-[7px] transition-transform duration-200 hover:-translate-y-0.5 active:scale-[0.98]"

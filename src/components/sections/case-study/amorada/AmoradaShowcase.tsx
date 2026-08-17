@@ -1,28 +1,53 @@
 import Image from "@/components/Img";
 
 /**
- * AmoradaShowcase — Device showcase band (Figma node 210:2525, "Image
- * (Projects Main Image)"). A single full-bleed photo of the finished
- * AMMORADA bed-covers website — "Where Comfort Meets Craft" — shown on a
- * laptop with the mobile site on a phone beside it, on a concrete desk.
- *
- * The Figma node is one photo spanning nearly the full page width
- * (1524 × 776, aspect ≈ 1.96:1) with an object-cover fill. Mirrors the
- * sister BVC page's CaseShowcase: centered in the site content container,
- * rounded frame to match the card idiom, generous vertical padding.
+ * AmoradaShowcase — single wide image band for the Amorada case study.
+ * Clones the RitvaaShowcase device mockup 1:1: a CSS laptop frame showing a
+ * client-supplied 2x screenshot of the live homepage (am-web-laptop.jpg,
+ * cropped to 16:10 so it fills the screen) plus the client's 3D iPhone
+ * mockup (am-phone.png — mobile screenshot composited via
+ * scripts/phone_composite.py). Same rounded frame / shadow / aspect-[1524/776]
+ * as the other showcases.
  */
+function DeviceMockup() {
+  return (
+    <div className="relative flex h-full w-full items-center bg-gradient-to-b from-[#ececec] to-[#dbdbdb]">
+      <div className="relative ml-[5%] w-[70%]">
+        <div className="overflow-hidden rounded-t-[8px] border-[10px] border-b-0 border-[#1c1c1c] bg-[#1c1c1c] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.35)]">
+          <div className="relative aspect-[16/10] w-full overflow-hidden bg-white">
+            <Image
+              src="/figma/am-web-laptop.jpg"
+              alt="The Amorada homepage — Let Your Bed Blossom"
+              fill
+              sizes="(min-width: 1200px) 800px, 70vw"
+              className="object-cover object-top"
+              priority
+            />
+          </div>
+        </div>
+        <div className="h-[10px] w-full rounded-b-[3px] bg-gradient-to-b from-[#3a3a3a] to-[#161616]" />
+        <div className="mx-auto h-[4px] w-[28%] rounded-b-[6px] bg-[#0c0c0c]" />
+      </div>
+      <div className="absolute bottom-[5%] right-[7%] w-[19%] drop-shadow-[0_24px_40px_rgba(0,0,0,0.35)]">
+        <Image
+          src="/figma/am-phone.png"
+          alt="The Amorada mobile homepage on an iPhone"
+          width={1000}
+          height={2189}
+          sizes="(min-width: 1200px) 290px, 24vw"
+          className="h-auto w-full"
+        />
+      </div>
+    </div>
+  );
+}
+
 export default function AmoradaShowcase() {
   return (
     <section className="w-full py-16 lg:py-24">
       <div className="mx-auto w-full max-w-[1200px] px-6 lg:px-10">
         <div className="relative aspect-[1524/776] w-full overflow-hidden rounded-2xl bg-surface shadow-[0px_24px_60px_-12px_rgba(0,0,0,0.25)] lg:rounded-3xl">
-          <Image
-            src="/figma/am-showcase.jpg"
-            alt="The finished Amorada website — Where Comfort Meets Craft — shown on a laptop with the mobile site beside it on a phone."
-            fill
-            sizes="(min-width: 1200px) 1120px, 100vw"
-            className="object-cover"
-          />
+          <DeviceMockup />
         </div>
       </div>
     </section>
