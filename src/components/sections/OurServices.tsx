@@ -68,26 +68,29 @@ const LINE_H = 28;
 function ServiceColumn({
   index,
   r,
+  colW,
 }: {
   index: number;
   /** continuous reveal progress in "items" (0..N) */
   r: MotionValue<number>;
+  /** responsive column width (500px desktop, viewport-fitted on phones) */
+  colW: number;
 }) {
   const s = SERVICES[index];
   const opacity = useTransform(r, [index + 0.1, index + 0.5], [0, 1]);
   const y = useTransform(r, [index + 0.1, index + 0.5], [16, 0]);
   return (
     <motion.div
-      style={{ opacity, y, left: index * COL_W, width: COL_W }}
-      className="absolute top-0 pr-12"
+      style={{ opacity, y, left: index * colW, width: colW }}
+      className="absolute top-0 pr-8 sm:pr-12"
     >
       <div style={{ height: TITLE_H }} className="flex items-end pb-8">
-        <h3 className="text-[32px] font-semibold leading-[1.12] tracking-[-0.3px] text-ink">
+        <h3 className="text-[24px] font-semibold leading-[1.12] tracking-[-0.3px] text-ink sm:text-[32px]">
           {s.title}
         </h3>
       </div>
       <div style={{ height: LINE_H }} />
-      <p className="mt-8 text-[17px] leading-[1.55] tracking-[-0.2px] text-muted">
+      <p className="mt-8 text-[15px] leading-[1.55] tracking-[-0.2px] text-muted sm:text-[17px]">
         {s.desc}
       </p>
     </motion.div>
@@ -136,13 +139,23 @@ export default function OurServices() {
   const reduced = useReducedMotion();
   const [enabled, setEnabled] = useState(true);
 
+  // Pinned scrollytelling now runs at EVERY viewport width (client request
+  // 2026-08-16 — "animations must work on mobile too"). Phones get narrower
+  // columns + a gentler zoom via the viewport-tracked params below. Only
+  // reduced-motion users get the static list.
   useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1024px)");
-    const update = () => setEnabled(mq.matches && !reduced);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
+    setEnabled(!reduced);
   }, [reduced]);
+
+  // Viewport width drives the responsive choreography params. Starts at a
+  // desktop-ish value for SSR/prerender; corrected on mount.
+  const [vw, setVw] = useState(1200);
+  useEffect(() => {
+    const update = () => setVw(window.innerWidth);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
   // Manual scroll progress (0..1 across the pinned span) — same pattern as
   // HeroShowcase; reliable and reversible.
@@ -177,7 +190,11 @@ export default function OurServices() {
   // p →ZOOM_OUT_END   : after the last point (Landing Pages) arrives, the
   //                     strip zooms OUT to the normal full layout.
   // p →1              : brief settled hold, then the section unpins.
-  const ZOOM = 1.42;
+  // On narrow screens the column shrinks to fit the viewport and the zoom is
+  // gentler so the zoomed column never overflows the screen edges.
+  const narrow = vw < 640;
+  const colW = narrow ? Math.max(280, Math.min(400, vw - 56)) : COL_W;
+  const ZOOM = narrow ? 1.12 : 1.42;
   const ZOOM_IN_END = 0.06;
   const REVEAL_END = 0.8;
   const ZOOM_OUT_END = 0.94;
@@ -208,12 +225,14 @@ export default function OurServices() {
   // normal end-of-strip position.
   const x = useTransform(progress, (v) => {
     if (typeof window === "undefined") return 0;
-    const vw = window.innerWidth;
-    const layoutLeft = Math.max(24, (vw - 1120) / 2);
+    const w = window.innerWidth;
+    const layoutLeft = Math.max(24, (w - 1120) / 2);
     const s = sOf(v);
     const iCenter = Math.min(N - 1, Math.max(0, rOf(v) - 0.5));
-    const centered = vw / 2 - layoutLeft - s * (iCenter + 0.5) * COL_W;
-    const endTarget = -(N - 2.3) * COL_W;
+    const centered = w / 2 - layoutLeft - s * (iCenter + 0.5) * colW;
+    // Desktop ends showing the last ~2.3 columns; narrow screens end with the
+    // final column's right edge tucked to the viewport edge instead.
+    const endTarget = narrow ? -(N * colW - (w - 48)) : -(N - 2.3) * colW;
     if (v < REVEAL_END) return centered;
     if (v >= ZOOM_OUT_END) return endTarget;
     const t = (v - REVEAL_END) / (ZOOM_OUT_END - REVEAL_END);
@@ -222,7 +241,7 @@ export default function OurServices() {
 
   // The navy line grows just ahead of the newest revealed item.
   const lineWidth = useTransform(r, (v) =>
-    Math.max(0, Math.min(v + 0.55, N) * COL_W - 48),
+    Math.max(0, Math.min(v + 0.55, N) * colW - 48),
   );
 
   if (!enabled) return <StaticFallback />;
@@ -245,8 +264,9 @@ export default function OurServices() {
         </div>
 
         {/* Scroll-driven track — vertically centered in the remaining screen
-            space so the pinned view doesn't leave a large empty band below */}
-        <div className="flex w-full flex-1 items-center">
+            space on desktop; on phones it hugs the heading instead (centering
+            a 400px track in a tall thin screen left a big empty band). */}
+        <div className="flex w-full flex-1 items-start pt-[5vh] sm:items-center sm:pt-0">
           <motion.div
             style={{
               x,
@@ -254,7 +274,7 @@ export default function OurServices() {
               // zoom anchors on the line's vertical position at the track's
               // left edge, so the strip stays visually stable while scaling
               transformOrigin: `0px ${TITLE_H + LINE_H / 2}px`,
-              width: N * COL_W,
+              width: N * colW,
               marginLeft: "max(24px, calc((100vw - 1120px) / 2))",
             }}
             className="relative h-[400px] shrink-0"
@@ -268,13 +288,13 @@ export default function OurServices() {
             {Array.from({ length: N - 1 }, (_, i) => (
               <div
                 key={i}
-                style={{ left: (i + 1) * COL_W, top: TITLE_H - 22, height: 22 + LINE_H }}
+                style={{ left: (i + 1) * colW, top: TITLE_H - 22, height: 22 + LINE_H }}
                 className="absolute w-0 border-l-2 border-dashed border-navy/40"
               />
             ))}
             {/* service points — revealed one by one */}
             {SERVICES.map((_, i) => (
-              <ServiceColumn key={i} index={i} r={r} />
+              <ServiceColumn key={i} index={i} r={r} colW={colW} />
             ))}
           </motion.div>
         </div>

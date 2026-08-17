@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image, { assetPath } from "@/components/Img";
+import { BOOKING_URL } from "@/components/FloatingBookCall";
 import {
   motion,
   useMotionValue,
@@ -37,6 +38,9 @@ type Card = {
   scaleStart: number;
   xEnd: string;
   yEnd: string;
+  /** grid row in the formed 2×2 (0 = top, 1 = bottom) — used by the
+   *  viewport-computed mobile end positions */
+  row: 0 | 1;
 };
 
 const SCALE_END = 1; // grid card = full base size; hero starts ~10% smaller
@@ -56,6 +60,7 @@ const CARDS: Card[] = [
     scaleStart: 0.9,
     xEnd: "-54%",
     yEnd: "-4%",
+    row: 0,
   },
   {
     title: "Trippy Tour",
@@ -71,6 +76,7 @@ const CARDS: Card[] = [
     scaleStart: 0.87,
     xEnd: "54%",
     yEnd: "-4%",
+    row: 0,
   },
   {
     title: "IVVYLISTIC",
@@ -86,6 +92,7 @@ const CARDS: Card[] = [
     scaleStart: 0.85,
     xEnd: "-54%",
     yEnd: "116%",
+    row: 1,
   },
   {
     title: "Amorada",
@@ -101,6 +108,7 @@ const CARDS: Card[] = [
     scaleStart: 0.84,
     xEnd: "54%",
     yEnd: "116%",
+    row: 1,
   },
 ];
 
@@ -161,16 +169,28 @@ function CardCaption({ card }: { card: Card }) {
   );
 }
 
-function MorphCard({ card, progress }: { card: Card; progress: MotionValue<number> }) {
+function MorphCard({
+  card,
+  progress,
+  yRange,
+}: {
+  card: Card;
+  progress: MotionValue<number>;
+  /** [fanY, gridY] for the morph — card-relative % on desktop, viewport-
+   *  computed px on phones so the formed grid always hugs the heading
+   *  (see the geometry block in HeroShowcase). Units must match within
+   *  the pair — framer can't interpolate "%" → "px". */
+  yRange: [string, string];
+}) {
   const x = useTransform(progress, [0, MORPH_END], [card.xStart, card.xEnd]);
-  const y = useTransform(progress, [0, MORPH_END], [card.yStart, card.yEnd]);
+  const y = useTransform(progress, [0, MORPH_END], yRange);
   const rotate = useTransform(progress, [0, MORPH_END], [card.rotStart, 0]);
   const scale = useTransform(progress, [0, MORPH_END], [card.scaleStart, SCALE_END]);
   const captionOpacity = useTransform(progress, [MORPH_END - 0.12, MORPH_END], [0, 1]);
 
   return (
     <div
-      className="pointer-events-none absolute left-1/2 top-1/2 w-[70vw] max-w-[500px] -translate-x-1/2 -translate-y-1/2 sm:w-[46vw]"
+      className="pointer-events-none absolute left-1/2 top-[62%] w-[46vw] max-w-[500px] -translate-x-1/2 -translate-y-1/2 sm:top-1/2"
       style={{ zIndex: card.z }}
     >
       <motion.a href={assetPath(card.href)} className="group pointer-events-auto block" style={{ x, y, rotate, scale }}>
@@ -200,7 +220,9 @@ function HeroCopy() {
       </p>
       <div>
         <a
-          href="#contact"
+          href={BOOKING_URL}
+          target="_blank"
+          rel="noopener noreferrer"
           className="inline-flex items-center gap-[10px] rounded-[24px] border border-navy bg-navy px-6 py-3 shadow-[0px_9.835px_9.835px_-3px_rgba(0,0,0,0.25),0px_25px_25px_-3.75px_rgba(0,0,0,0.11),0px_0px_0px_1px_#545454] transition-transform duration-200 hover:-translate-y-0.5 active:scale-[0.97]"
         >
           <span className="text-[13.3px] font-semibold tracking-[-0.14px] text-white">Book a call with us</span>
@@ -247,13 +269,44 @@ export default function HeroShowcase() {
   const reduced = useReducedMotion();
   const [enabled, setEnabled] = useState(true);
 
+  // The scroll-morph now runs at EVERY viewport width (client request
+  // 2026-08-16 — "animations must work on mobile too"). Phones get the same
+  // choreography with smaller cards + the copy raised so the fan sits below
+  // it (see the responsive classes in MorphCard / the copy wrapper). Only
+  // reduced-motion users get the static fallback.
   useEffect(() => {
-    const mq = window.matchMedia("(min-width: 640px)");
-    const update = () => setEnabled(mq.matches && !reduced);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
+    setEnabled(!reduced);
   }, [reduced]);
+
+  // Viewport dimensions drive the PHONE end-grid geometry: percentage-based
+  // yEnd values can't fit every phone (card size tracks vw while the heading
+  // tracks vh), so on narrow screens the formed grid's row positions are
+  // computed in px from the real viewport — row 1 sits a fixed gap under the
+  // "Latest Projects" heading, row 2 a caption's height below row 1.
+  const [dims, setDims] = useState({ w: 1200, h: 800 });
+  useEffect(() => {
+    const update = () => setDims({ w: window.innerWidth, h: window.innerHeight });
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+  const narrow = dims.w < 640;
+  // card box height (aspect 497:363 at 46vw) + the caption block under it
+  const cardH = 0.46 * dims.w * (363 / 497);
+  const CAPTION_H = 55;
+  // container center sits at top-[62%]; heading bottom ≈ top-[11vh] + 1 line
+  const contC = 0.62 * dims.h;
+  const headingBottom = 0.11 * dims.h + 52;
+  const row1C = headingBottom + 24 + cardH / 2;
+  const row2C = row1C + cardH + CAPTION_H + 14;
+  /** [fanY, gridY] per card — % pairs on desktop, px pairs on phones (a
+   *  transform can't mix units). Fan offsets convert card-% → px via cardH. */
+  const yRangeFor = (card: Card): [string, string] => {
+    if (!narrow) return [card.yStart, card.yEnd];
+    const fanPx = (parseFloat(card.yStart) / 100) * cardH;
+    const gridPx = (card.row === 0 ? row1C : row2C) - contC;
+    return [`${Math.round(fanPx)}px`, `${Math.round(gridPx)}px`];
+  };
 
   const scrollYProgress = useMotionValue(0);
   useEffect(() => {
@@ -293,8 +346,9 @@ export default function HeroShowcase() {
   // Phase 2: the whole formed grid scrolls up so the bottom row comes into view.
   // Hold the formed grid STATIONARY for a long span (MORPH_END → 0.8) so every
   // project card — incl. the BVC card that links to the case study — is
-  // comfortably clickable, then pan it up over the last stretch.
-  const galleryY = useTransform(scrollYProgress, [0.8, 1], ["0vh", "-58vh"]);
+  // comfortably clickable, then pan it up over the last stretch. On phones the
+  // whole grid already fits on screen, so the pan is just a gentle exit drift.
+  const galleryY = useTransform(scrollYProgress, [0.8, 1], ["0vh", narrow ? "-10vh" : "-58vh"]);
 
   if (!enabled) return <StaticFallback />;
 
@@ -305,7 +359,7 @@ export default function HeroShowcase() {
           {/* Hero copy — scrolls up and past the cards */}
           <motion.div
             style={{ y: copyY, opacity: copyOpacity, pointerEvents: copyPointer }}
-            className="absolute left-6 top-1/2 z-40 -translate-y-1/2 lg:left-10"
+            className="absolute left-6 top-[27%] z-40 -translate-y-1/2 sm:top-1/2 lg:left-10"
           >
             <HeroCopy />
           </motion.div>
@@ -321,7 +375,7 @@ export default function HeroShowcase() {
             </motion.h2>
 
             {CARDS.map((card) => (
-              <MorphCard key={card.title} card={card} progress={scrollYProgress} />
+              <MorphCard key={card.title} card={card} progress={scrollYProgress} yRange={yRangeFor(card)} />
             ))}
           </motion.div>
         </div>

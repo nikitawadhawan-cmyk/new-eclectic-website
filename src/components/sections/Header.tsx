@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import Image, { assetPath } from "@/components/Img";
+import { BOOKING_URL } from "@/components/FloatingBookCall";
 
 // "/"-prefixed hrefs are wrapped in assetPath() at render so they carry the
 // GitHub Pages basePath and work from any page (e.g. the case study).
@@ -69,7 +70,9 @@ export default function Header() {
               </a>
             ))}
             <a
-              href="#contact"
+              href={BOOKING_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="rounded-[24px] border-[0.8px] border-[#dedede] bg-[#fafafa] px-3 py-2 text-[14px] font-semibold tracking-[-0.14px] text-black shadow-[0px_4.787px_4.787px_-2.813px_rgba(0,0,0,0.06),0px_15px_15px_-3.75px_rgba(0,0,0,0.03)] transition-colors hover:bg-white active:scale-[0.97]"
             >
               Contact
@@ -115,7 +118,9 @@ export default function Header() {
             </a>
           ))}
           <a
-            href="#contact"
+            href={BOOKING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             onClick={() => setOpen(false)}
             className="mt-1 rounded-[24px] border-[0.8px] border-[#dedede] bg-[#fafafa] px-3 py-2 text-center text-[14px] font-semibold tracking-[-0.14px] text-black active:scale-[0.98]"
           >

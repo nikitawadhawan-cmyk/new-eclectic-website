@@ -210,6 +210,20 @@ const TILES: Tile[] = [
   { key: "trusted", node: <TrustedCard />, width: 280, ax: 450, ay: 205, rot: 5 },
 ];
 
+/* Compact scatter for narrow viewports (client request 2026-08-16 — the
+   pinned animation must run on mobile too). Same choreography, but only the
+   four tiles that fit AROUND the centered heading on a phone: two above, two
+   below. Helmet + trusted are desktop-only — on a phone they could only sit
+   ON the heading. `ax` is px from center; `ay` here is in vh-PERCENT (of the
+   viewport height, resolved at render) so tiles clear the heading on short
+   phones and don't hug the screen edges on tall ones. */
+const MOBILE_TILES: Tile[] = [
+  { key: "brands", node: <BrandsCard />, width: 185, ax: -60, ay: -30, rot: -4 },
+  { key: "awards", node: <AwardsCard />, width: 165, ax: 82, ay: -35, rot: 3 },
+  { key: "quote", node: <QuoteCard />, width: 185, ax: -58, ay: 31, rot: -3 },
+  { key: "available", node: <AvailableCard />, width: 175, ax: 80, ay: 37, rot: 2 },
+];
+
 const PILE = 0.16; // how close to centre the tiles start before they open out
 const CONVERGE_END = 0.6; // progress at which the tiles reach their arranged spots (then hold)
 
@@ -254,13 +268,33 @@ export default function Innovate() {
   const reduced = useReducedMotion();
   const [enabled, setEnabled] = useState(true);
 
+  // The pinned scatter now runs at EVERY viewport width (client request
+  // 2026-08-16 — "animations must work on mobile too"); narrow viewports get
+  // the compact MOBILE_TILES set. Only reduced-motion users get the grid.
+  useEffect(() => {
+    setEnabled(!reduced);
+  }, [reduced]);
+
+  // Tile set switches at the old 1024px fallback boundary — the desktop
+  // scatter's ±470px spread needs roughly that much width to breathe.
+  const [wide, setWide] = useState(true);
+  const [vh, setVh] = useState(800);
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 1024px)");
-    const update = () => setEnabled(mq.matches && !reduced);
+    const update = () => {
+      setWide(mq.matches);
+      setVh(window.innerHeight);
+    };
     update();
     mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, [reduced]);
+    window.addEventListener("resize", update);
+    return () => {
+      mq.removeEventListener("change", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+  // Mobile ay values are vh-percentages — resolve them to px here.
+  const tiles = wide ? TILES : MOBILE_TILES.map((t) => ({ ...t, ay: (t.ay / 100) * vh }));
 
   // Scroll-scrubbed progress over the pinned section — reversible on scroll-up.
   const progress = useMotionValue(0);
@@ -300,7 +334,7 @@ export default function Innovate() {
           </div>
 
           {/* Tiles open out from the centre as you scroll in, hold, and reverse on scroll-up */}
-          {TILES.map((tile) => (
+          {tiles.map((tile) => (
             <ScatterTile key={tile.key} tile={tile} progress={progress} />
           ))}
         </div>

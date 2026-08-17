@@ -7,9 +7,6 @@ import OurServices from "@/components/sections/OurServices";
 import BigQuote from "@/components/sections/BigQuote";
 import WorkProcess from "@/components/sections/WorkProcess";
 import OurWork from "@/components/sections/OurWork";
-import AboutCaseStudy from "@/components/sections/AboutCaseStudy";
-import Pricing from "@/components/sections/Pricing";
-import Testimonials from "@/components/sections/Testimonials";
 import Faq from "@/components/sections/Faq";
 import Footer from "@/components/sections/Footer";
 import Reveal from "@/components/Reveal";
@@ -43,15 +40,12 @@ export default function Home() {
         <Reveal amount="some">
           <OurWork />
         </Reveal>
-        <FlipReveal>
-          <AboutCaseStudy />
-        </FlipReveal>
-        <Reveal>
-          <Pricing />
-        </Reveal>
-        <Reveal>
-          <Testimonials />
-        </Reveal>
+        {/* AboutCaseStudy ("Designing experiences…") and Pricing ("Simple
+            pricing. Standout designs.") were removed at client request
+            (2026-08-16). Testimonials is HIDDEN until verified client reviews
+            exist — to restore, re-import it and render
+            <Reveal><Testimonials /></Reveal> here. All three component files
+            remain in src/components/sections/. */}
         <Reveal>
           <Faq />
         </Reveal>

@@ -74,17 +74,16 @@ git push origin main                            # deploys via Actions (~1 min)
 | `BigQuote` | Soela quote (enlarged type) |
 | `WorkProcess` | ⭐ Pinned scroll-triggered reveal ("osmo stacking-cards" reference, adapted): section pins while scrolling and each of the 4 step cards bounces into its own grid slot one at a time (box 1 → 2 → 3 → 4, `backOut` overshoot easing) — but cards sit **side by side** in the original staggered grid, never covering each other; end state = all 4 visible + idle bob resumes. Static flip-in grid fallback <1024px / reduced motion. |
 | `OurWork` | `id="work"`. Schbang-style navy band; **10 blocks, every card is a single whole-card `Link`** (not just a "Learn More" button) to its case study, every one uses a tilted collage card (Figma 182:824 pattern, generalized to 5–7 images per client — see `collageRows`/`collageMargin` in `OurWork.tsx`). New projects get appended here (see §6). |
-| `AboutCaseStudy` | Portrait + philosophy (work-history stack + signature removed at client request) |
-| `Pricing` | Reworked to a **single "Single Project" offering** (subscription plan removed at client request — no published cost anywhere in the section). Two-block visual layout kept; CTA is one WhatsApp-green "Get a Quote" button (`#contact` placeholder, see below). |
-| `Testimonials`, `Faq`, `Footer` | `Testimonials` renders the second "Trusted by many" marquee (`ClientLogosStrip`, same real logos as `ClientLogos`) + 10 testimonial cards — one per `OurWork` client, same order, each with the client's real brand logo in the author row (names/quotes are placeholders — see §8). `Faq`'s "Book a Call" card has a WhatsApp CTA + real portrait. Footer = giant "eclecticdigital" wordmark + socials/links/credit (all `#` placeholders). |
-| `FloatingWhatsApp` | Persistent circular WhatsApp button, fixed bottom-right on every page — mounted once in `src/app/layout.tsx` (not per-page), not part of `page.tsx`'s section list. |
+| `AboutCaseStudy` | **REMOVED from the homepage at client request (2026-08-16)** — component file kept in the repo. Was: portrait + philosophy ("Designing experiences that solve real problems."). |
+| `Pricing` | **REMOVED from the homepage at client request (2026-08-16)** — component file kept. Was: single "Single Project" offering ("Simple pricing. Standout designs.") with a WhatsApp "Get a Quote" CTA. |
+| `Testimonials`, `Faq`, `Footer` | `Testimonials` is **HIDDEN (unmounted) until verified client reviews exist** (client request 2026-08-16) — the component, its placeholder quotes, and the `clientlogo-*` assets all remain in the repo; restore by re-importing it in `page.tsx`. `Faq`'s right-column "Book a Call" card (headshot + "Still not sure?" + WhatsApp CTA) was **removed** the same date, so `Faq` renders single-column on every page. Footer = giant "eclecticdigital" wordmark + socials/links/credit (all `#` placeholders). |
+| `FloatingBookCall` | Persistent **"Book a call" pill** (navy, calendar icon), fixed bottom-right on every page — mounted once in `src/app/layout.tsx` (not per-page), not part of `page.tsx`'s section list. Opens the Cal.com scheduling link the old live eclecticdigital.co site used (`https://cal.com/tanmai-relwani-dwewhj/30min`) in a new tab. **Replaced `FloatingWhatsApp` (deleted) on 2026-08-16.** |
 
-**WhatsApp CTAs:** every WhatsApp button on the site (Pricing, Faq "Book a
-Call", `FloatingWhatsApp`) shares one inline `WhatsAppIcon` SVG pattern
-(brand green `#25d366`) and currently links to `#contact` as a **documented
-placeholder** — no real WhatsApp number has been provided yet. Swap all of
-them to `https://wa.me/<number>` together once one exists (search the repo
-for `#contact` — see §8).
+**WhatsApp CTAs: ALL REMOVED (2026-08-16).** Pricing (removed), the Faq
+Book-a-Call card (removed) and `FloatingWhatsApp` (replaced by
+`FloatingBookCall` + Cal.com link) were the three WhatsApp buttons; none
+remain. `#contact` now survives only as the Header nav's dead "Contact"
+anchor (see §8).
 
 **Animation gotchas (hard-won):** pinned sections (`HeroShowcase`, `Innovate`,
 `OurServices`, `WorkProcess`) use a manual scroll-progress `MotionValue`
