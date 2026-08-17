@@ -208,6 +208,14 @@ For a new client page in the same design (this is the established flow):
      this for `ttg-hero-mobile.jpg`. The Claude Browser/computer-use
      screenshot tools' `save_to_disk` output is NOT reachable from Bash in
      this environment — this is the reliable path to an actual file.
+   - **Laptop + iPhone showcase (the current standard — Ritvaa, Peak Mode On):**
+     CSS laptop frame + `scripts/phone_composite.py <screen.png> <out.png>`,
+     which perspective-warps any ~0.438-aspect screen image into the client's
+     3D iPhone (`scripts/phone_body.png` / `phone_screen.png`, extracted from
+     their PSD). Build the screen image first: status-bar strip + the mobile
+     screenshot's header at top, its tab bar pinned at bottom, hero scaled to
+     fill between (see `RitvaaShowcase`/`PmoShowcase` docblocks). Copy
+     `PmoShowcase.tsx` for the next client and swap the two assets.
    - **No pre-made laptop+phone device-mockup photo?** (BVC/amorada each
      have one bespoke export, `cs-showcase.jpg`/`am-showcase.jpg`.) Build a
      CSS device frame instead of skipping the treatment — see
