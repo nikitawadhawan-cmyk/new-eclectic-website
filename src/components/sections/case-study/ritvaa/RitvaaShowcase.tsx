@@ -38,10 +38,13 @@ function DeviceMockup() {
       </div>
 
       {/* Phone — overlaps the laptop's bottom-right corner */}
-      <div className="absolute bottom-[8%] right-[13%] w-[13%]">
-        <div className="overflow-hidden rounded-[18%] border-[5px] border-[#1c1c1c] bg-[#1c1c1c] shadow-[0_20px_45px_-10px_rgba(0,0,0,0.4)]">
-          <div className="relative aspect-[9/19.5] w-full overflow-hidden bg-white">
-            <Image src={phone} alt="" fill sizes="140px" className="object-cover object-top" />
+      <div className="absolute bottom-[7%] right-[11%] w-[17%]">
+        <div className="overflow-hidden rounded-[14%] border-[5px] border-[#1c1c1c] bg-[#1c1c1c] shadow-[0_20px_45px_-10px_rgba(0,0,0,0.4)]">
+          {/* Screen aspect matches the 728x1126 collection card exactly, so the
+              whole card (photo + "VEDIKA BY RITVAA" caption) is visible — no
+              crop. Bigger than the old 13% / 9:19.5 phone at the client's ask. */}
+          <div className="relative aspect-[728/1126] w-full overflow-hidden bg-[#f7f3ee]">
+            <Image src={phone} alt="" fill sizes="200px" className="object-cover object-top" />
           </div>
         </div>
       </div>
