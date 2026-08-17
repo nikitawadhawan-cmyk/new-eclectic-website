@@ -72,9 +72,9 @@ const PROJECTS: Project[] = [
     href: "/projects/ritvaa",
     tags: ["Shopify Development", "Luxury Jewellery"],
     year: "2026",
-    main: "/figma/rit-banner-1.jpg",
+    main: "/figma/rit-looksreal.jpg",
     mainAlt:
-      "Ritvaa campaign banner — “A Monsoon of Timeless Style” with gold and emerald jewellery worn underwater",
+      "Ritvaa 'Looks Real, Feels Real' campaign — model in a mustard saree wearing a kundan choker and bracelet",
     thumbs: [
       {
         src: "/figma/rit-karigari.jpg",
