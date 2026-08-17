@@ -170,14 +170,16 @@ navy) → **More Work** (2 project blocks, the **whole card is one `Link`** —
 not just the arrow icon — to the linked case study) → CTA (navy tint over
 photo) → shared `Faq` → `Footer`.
 
-**"Numbers that speak" (the Stats section's 4-fact row):** redesigned
-site-wide (all 10 pages) into a cascading editorial-typography layout — a
-giant faint background numeral (hardcoded per file as a `NUMERAL` constant,
-`null` when no stat has a natural leading number) behind 3 cascading stat
-rows, plus a compact monospace footer meta line. Recolored from the source
-mockup's purple accents to the site's navy/gold brand palette. Each page's
-underlying stat *data* was left unchanged — only the layout/typography
-changed.
+**"Numbers that speak" (the Stats section's 4-fact row):** the Figma 4-up
+stat grid (amorada 221-5847) — heading, then four hairline-topped cells
+(bold value + gold `+`, 16px label), 4-up → 2-up → 1-up responsive. A
+"cascading editorial" redesign (giant faint numeral + 3 indented rows + mono
+footer line) was tried site-wide in `6a0a1ce` and **reverted 2026-08-17** —
+it left half the width empty, dropped the 4th stat from the main display and
+read badly on the text-valued pages. Per-file `BIG_VALUES` flag: pages whose
+four values are all short (the numeric ones) render at the full 52px; pages
+with any longer text value (CREAL, Lulu, Ivylistic, Nilambar, HDFC) step every
+cell down to one shared 34px so the row stays uniform. Stat *data* untouched.
 
 ## 6. Playbook — adding the NEXT case-study page
 
