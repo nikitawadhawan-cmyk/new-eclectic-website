@@ -9,10 +9,10 @@ import Image from "@/components/Img";
 type Stat = { value: string; label: string };
 
 const STATS: Stat[] = [
-  { value: "CREAL", label: "Client" },
   { value: "Fine Jewellery", label: "Industry" },
-  { value: "Shopify · 500+ SKUs", label: "Platform" },
-  { value: "Full Storefront + Custom Dev", label: "Scope" },
+  { value: "Liquid Shopify", label: "Platform" },
+  { value: "500+ SKUs", label: "Uploaded" },
+  { value: "Custom Dev", label: "Scope" },
 ];
 
 /**
