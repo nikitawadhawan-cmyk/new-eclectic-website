@@ -66,10 +66,10 @@ export default function AmoradaProject() {
               </span>
             </span>
 
-            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[20px]">
+            <div className="relative aspect-square w-full overflow-hidden rounded-[20px]">
               <Image
-                src="/figma/am-web-laptop.jpg"
-                alt="The Amorada homepage — Let Your Bed Blossom"
+                src="/figma/am-project-giftbox.jpg"
+                alt="Amorada bespoke gift set — embroidered sage waffle towels and artisan soaps in a kraft box beside pink chrysanthemums"
                 fill
                 sizes="(min-width: 1024px) 480px, 100vw"
                 className="object-cover"
