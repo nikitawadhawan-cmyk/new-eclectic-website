@@ -26,7 +26,7 @@ type HeroImage = {
 
 const HERO_IMAGES: HeroImage[] = [
   {
-    src: "/figma/rit-mobile-kangana.jpg",
+    src: "/figma/rit-kangana.jpg",
     alt: "Kangana by Ritvaa — kundan and pearl gold bangles on maroon silk",
   },
   {
@@ -36,8 +36,9 @@ const HERO_IMAGES: HeroImage[] = [
     imgClassName: "object-[left_top]",
   },
   {
-    src: "/figma/rit-saubhagya.jpg",
-    alt: "Model wearing a Ritvaa SmartGold mangalsutra and bangles in traditional attire",
+    src: "/figma/rit-details.jpg",
+    alt: "Ritvaa 'Details with Personality' campaign — model in a white kurta wearing a gemstone-set gold necklace and jhumkas",
+    imgClassName: "object-top",
   },
 ];
 

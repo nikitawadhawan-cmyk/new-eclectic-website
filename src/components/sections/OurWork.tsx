@@ -46,10 +46,11 @@ const TTG_COLLAGE = [
 
 const RITVAA_COLLAGE = [
   "/figma/rit-web.jpg",
+  "/figma/rit-kangana.jpg",
+  "/figma/rit-looksreal.jpg",
+  "/figma/rit-karigari.jpg",
+  "/figma/rit-grace.jpg",
   "/figma/rit-mood.jpg",
-  "/figma/rit-banner-2.jpg",
-  "/figma/rit-prod-1.jpg",
-  "/figma/rit-prod-2.jpg",
 ];
 
 const PMO_COLLAGE = [

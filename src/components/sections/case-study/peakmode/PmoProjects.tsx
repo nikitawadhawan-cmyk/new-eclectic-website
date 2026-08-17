@@ -49,7 +49,7 @@ const PROJECTS: Project[] = [
       "Ritvaa website — luxury SmartGold jewellery platform campaign banner",
     thumbs: [
       {
-        src: "/figma/rit-prod-1.jpg",
+        src: "/figma/rit-karigari.jpg",
         alt: "Ritvaa store — SmartGold jewellery product imagery",
       },
       {

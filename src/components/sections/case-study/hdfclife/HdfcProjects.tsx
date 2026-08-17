@@ -77,12 +77,12 @@ const PROJECTS: Project[] = [
       "Ritvaa campaign banner — “A Monsoon of Timeless Style” with gold and emerald jewellery worn underwater",
     thumbs: [
       {
-        src: "/figma/rit-prod-1.jpg",
-        alt: "Ritvaa gold mangalsutra necklace with green and pink stones",
+        src: "/figma/rit-karigari.jpg",
+        alt: "Karigari Collection by Ritvaa — layered gold long necklace on a teal blouse",
       },
       {
         src: "/figma/rit-mood.jpg",
-        alt: "Ritvaa gold mangalsutra with black beads and tasselled floral pendant",
+        alt: "Ritvaa gold mangalsutra styled on a carved wooden frame with festive lights",
       },
     ],
     description:

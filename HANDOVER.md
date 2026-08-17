@@ -279,16 +279,19 @@ muted-2 `#828282` · line `#e6e6e6` · surface `#f5f5f7` · gold `#e8c700`
   (e.g. the homepage collage repeats each once to fill 6 tiles). Needs a
   real image set from the client.
 - `netlify.toml` is inert leftover; hosting is GitHub Pages.
-- Ritvaa's `RitvaaShowcase` uses a CSS-built laptop+phone mockup (no
-  photographic export exists for this client) — see §6 for the pattern if
-  another client needs the same treatment. Its laptop shows `rit-web.jpg`
-  (client-supplied 2x homepage screenshot, 2026-08-17, cookie bar cropped
-  off) and the phone `rit-mobile-vedika.jpg`; the other two supplied
-  collection cards are `rit-mobile-kangana.jpg` (hero left) and
-  `rit-mobile-utsav.jpg` (The Project). The cards are only 728px wide —
-  fine on the phone, ~1.7x soft in the hero/project slots; ask for larger.
-  `lp-screen-1.jpg` (homepage hero card + Our Work BVC screen) is likewise
-  a client-supplied 2x BVC homepage screenshot.
+- **Ritvaa assets were re-scraped from ritvaa.in at full CDN resolution
+  (2026-08-17)** — Shopify serves originals when you drop the `?width=`
+  param. `rit-kangana` / `rit-karigari` / `rit-utsav` / `rit-vedika` /
+  `rit-grace` are the collection-card and campaign photos (1200–1600px),
+  `rit-details` and `rit-looksreal` are 3840px homepage banners cropped to
+  the model side (the banner lettering would otherwise sit behind our copy),
+  `rit-mood` is the 4096px mangalsutra mood shot, `rit-web` is a
+  client-supplied 2x homepage screenshot (cookie bar cropped off). Ritvaa is
+  now the one client whose every image is sharp on Retina. `RitvaaShowcase`
+  is a CSS laptop+phone mockup: laptop = `rit-web`, phone = the 728px
+  `rit-mobile-vedika` card (sized to the card's aspect so it shows uncropped;
+  fine at phone size). `lp-screen-1.jpg` (homepage hero card + Our Work BVC
+  screen) is a client-supplied 2x BVC homepage screenshot.
 - **Image resolution audit (2026-08-17):** 62 of 88 rendered images are
   upscaled on Retina because the static export can't resize and most photos
   were scraped at ≤1400px. Full per-file list with needed widths lives in

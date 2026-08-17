@@ -53,7 +53,7 @@ export default function RitvaaCTA() {
           {/* Background photo (single lifestyle banner — no collage asset for Ritvaa) */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={assetPath("/figma/rit-banner-2.jpg")}
+            src={assetPath("/figma/rit-looksreal.jpg")}
             alt=""
             aria-hidden="true"
             className="absolute inset-0 size-full object-cover"

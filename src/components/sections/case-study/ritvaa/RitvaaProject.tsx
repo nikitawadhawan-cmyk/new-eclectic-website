@@ -9,7 +9,7 @@ import Image from "@/components/Img";
  *   LEFT  — "● ABOUT THE PROJECT" eyebrow pill (gold dot) at the top, and a
  *           rounded photo card at the bottom. Unlike the amorada card (which
  *           had overlay copy baked into the export), this is a plain product
- *           photo: rit-mobile-utsav.jpg, the "Utsav by Ritvaa" jhumka close-up.
+ *           photo: rit-utsav.jpg, the "Utsav by Ritvaa" jhumka close-up (ritvaa.in original).
  *   RIGHT — big "The Project" heading, a hairline rule, then three
  *           paragraphs, each opening with a bold lead sentence (verbatim
  *           from the spec).
@@ -63,11 +63,11 @@ export default function RitvaaProject() {
 
             <div className="relative aspect-[524/376] w-full overflow-hidden rounded-[20px]">
               <Image
-                src="/figma/rit-mobile-utsav.jpg"
+                src="/figma/rit-utsav.jpg"
                 alt="Utsav by Ritvaa — bride wearing a gold jhumka earring with pearl drops"
                 fill
                 sizes="(min-width: 1024px) 480px, 100vw"
-                className="object-cover object-[center_58%]"
+                className="object-cover object-[center_62%]"
               />
             </div>
           </div>
