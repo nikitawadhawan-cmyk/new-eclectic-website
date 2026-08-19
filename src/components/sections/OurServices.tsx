@@ -134,6 +134,127 @@ function Badge() {
   );
 }
 
+/* ── Mobile (<640px): vertical timeline ─────────────────────────────────── */
+
+const TL_X = 14; // line centre x (px) inside the list
+const TL_DOT = 14; // node diameter
+const TL_ANCHOR = 0.36; // keep the active item around this fraction of the viewport height
+
+function TimelineItem({
+  index,
+  r,
+  itemRef,
+}: {
+  index: number;
+  r: MotionValue<number>;
+  itemRef: (el: HTMLLIElement | null) => void;
+}) {
+  const s = SERVICES[index];
+  const opacity = useTransform(r, [index + 0.05, index + 0.45], [0.18, 1]);
+  const x = useTransform(r, [index + 0.05, index + 0.45], [22, 0]);
+  // node: hollow → filled as the line reaches it; glows while it's the newest
+  const fill = useTransform(r, [index + 0.25, index + 0.4], ["#ffffff", "#2a315f"]);
+  const dotScale = useTransform(r, [index + 0.2, index + 0.45, index + 1.2, index + 1.5], [1, 1.45, 1.45, 1]);
+  const glow = useTransform(
+    r,
+    [index + 0.2, index + 0.45, index + 1.2, index + 1.5],
+    ["0 0 0px rgba(42,49,95,0)", "0 0 22px rgba(42,49,95,0.55)", "0 0 22px rgba(42,49,95,0.55)", "0 0 0px rgba(42,49,95,0)"],
+  );
+  return (
+    <li ref={itemRef} className="relative pb-9 pl-11 last:pb-0">
+      <motion.span
+        style={{ backgroundColor: fill, scale: dotScale, boxShadow: glow, left: TL_X - TL_DOT / 2, width: TL_DOT, height: TL_DOT }}
+        className="absolute top-[7px] rounded-full border-2 border-navy"
+      />
+      <motion.div style={{ opacity, x }}>
+        <h3 className="text-[22px] font-semibold leading-[1.15] tracking-[-0.3px] text-ink">{s.title}</h3>
+        <p className="mt-2 text-[15px] leading-[1.5] tracking-[-0.2px] text-muted">{s.desc}</p>
+      </motion.div>
+    </li>
+  );
+}
+
+function MobileTimeline({ progress, vh }: { progress: MotionValue<number>; vh: number }) {
+  const layerRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
+  const itemEls = useRef<(HTMLLIElement | null)[]>([]);
+  const [geom, setGeom] = useState<{ tops: number[]; listTop: number; listH: number; contentH: number }>({
+    tops: SERVICES.map((_, i) => i * 120),
+    listTop: 260,
+    listH: N * 120,
+    contentH: 260 + N * 120,
+  });
+  useEffect(() => {
+    const measure = () => {
+      const layer = layerRef.current;
+      const list = listRef.current;
+      if (!layer || !list) return;
+      const lr = layer.getBoundingClientRect();
+      const tops = itemEls.current.map((el) => (el ? el.getBoundingClientRect().top - list.getBoundingClientRect().top : 0));
+      setGeom({
+        tops,
+        listTop: list.getBoundingClientRect().top - lr.top,
+        listH: list.getBoundingClientRect().height,
+        contentH: layer.scrollHeight,
+      });
+    };
+    const id = requestAnimationFrame(measure);
+    const late = window.setTimeout(measure, 600); // after webfonts settle
+    window.addEventListener("resize", measure);
+    return () => {
+      cancelAnimationFrame(id);
+      window.clearTimeout(late);
+      window.removeEventListener("resize", measure);
+    };
+  }, [vh]);
+
+  // Reveal progress in item units (0..N); the tail of the scroll is a hold.
+  const r = useTransform(progress, [0.04, 0.9], [0.35, N], { clamp: true });
+  // Continuous y (within the list) of the newest node.
+  const nodeY = useTransform(r, (v) => {
+    const i = Math.min(N - 1, Math.max(0, Math.floor(v - 0.35)));
+    const f = Math.min(1, Math.max(0, v - 0.35 - i));
+    const a = geom.tops[i] ?? 0;
+    const b = geom.tops[Math.min(N - 1, i + 1)] ?? a;
+    return a + (b - a) * f + 14;
+  });
+  // The navy line grows down to just past the newest node.
+  const lineH = useTransform(nodeY, (y) => Math.min(geom.listH, y + 30));
+  // Pan the layer so the active node stays near TL_ANCHOR of the viewport,
+  // never panning past the end of the content.
+  const maxPan = Math.max(0, geom.contentH + 32 - vh); // contentH includes the pb-32 clearance for the floating pill
+  const layerY = useTransform(nodeY, (y) => -Math.min(maxPan, Math.max(0, geom.listTop + y - vh * TL_ANCHOR)));
+
+  return (
+    <motion.div ref={layerRef} style={{ y: layerY }} className="absolute inset-x-0 top-0 px-6 pb-32 pt-[88px]">
+      <div className="flex flex-col gap-5">
+        <Badge />
+        <h2 className="text-[32px] font-medium leading-[1.12] tracking-[-0.6px] text-ink">
+          From Design to Development, Our Services
+        </h2>
+      </div>
+      <ul ref={listRef} className="relative mt-10">
+        {/* rail + growing navy line */}
+        <div style={{ left: TL_X - 1 }} className="absolute top-2 bottom-2 w-[2px] rounded-full bg-[#e6e6e6]" />
+        <motion.div
+          style={{ left: TL_X - 2, height: lineH }}
+          className="absolute top-2 w-[4px] rounded-full bg-gradient-to-b from-navy-deep to-navy shadow-[0_0_26px_rgba(42,49,95,0.45)]"
+        />
+        {SERVICES.map((_, i) => (
+          <TimelineItem
+            key={i}
+            index={i}
+            r={r}
+            itemRef={(el) => {
+              itemEls.current[i] = el;
+            }}
+          />
+        ))}
+      </ul>
+    </motion.div>
+  );
+}
+
 export default function OurServices() {
   const sectionRef = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
@@ -150,8 +271,12 @@ export default function OurServices() {
   // Viewport width drives the responsive choreography params. Starts at a
   // desktop-ish value for SSR/prerender; corrected on mount.
   const [vw, setVw] = useState(1200);
+  const [vh, setVh] = useState(800);
   useEffect(() => {
-    const update = () => setVw(window.innerWidth);
+    const update = () => {
+      setVw(window.innerWidth);
+      setVh(window.innerHeight);
+    };
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
@@ -245,6 +370,20 @@ export default function OurServices() {
   );
 
   if (!enabled) return <StaticFallback />;
+
+  // Phones (<640px): vertical timeline (client request 2026-08-17) — the navy
+  // line runs DOWN the left edge and grows as you scroll; each service lights
+  // up at its node (title + description slide in from the right, the newest
+  // node glows) and the layer pans up to keep the active item in view.
+  if (narrow) {
+    return (
+      <section id="services" ref={sectionRef} className="relative h-[420vh] w-full scroll-mt-24 bg-white">
+        <div className="sticky top-0 h-screen overflow-hidden">
+          <MobileTimeline progress={progress} vh={vh} />
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section
