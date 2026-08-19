@@ -203,7 +203,7 @@ function MorphCard({
   );
 }
 
-function HeroCopy() {
+function HeroCopy({ hideCta = false }: { hideCta?: boolean }) {
   return (
     <div className="flex max-w-[470px] flex-col gap-6">
       <h1 className="font-medium tracking-[-1.4px] text-[44px] leading-[42px] sm:text-[56px] sm:leading-[54px] lg:text-[72px] lg:leading-[68.4px] lg:tracking-[-2.16px]">
@@ -218,6 +218,7 @@ function HeroCopy() {
           We create everything your brand needs to attract customers and turn them into sales.
         </span>
       </p>
+      {!hideCta && (
       <div>
         <a
           href={BOOKING_URL}
@@ -228,7 +229,109 @@ function HeroCopy() {
           <span className="text-[13.3px] font-semibold tracking-[-0.14px] text-white">Book a call with us</span>
         </a>
       </div>
+      )}
     </div>
+  );
+}
+
+/* ------------------------------------------------------------------------ */
+/* MOBILE (<640px): stacked deck that un-stacks into a list as you scroll.   */
+/* ------------------------------------------------------------------------ */
+
+/** Fan offsets for the stacked state — BVC (index 0) on top, the rest peek
+ *  out underneath in a loose, slightly rotated pile. */
+const DECK_FAN = [
+  { y: 0, x: 0, rot: 0, scale: 1 },
+  { y: 20, x: -8, rot: -3.5, scale: 0.96 },
+  { y: 40, x: 8, rot: 3.5, scale: 0.92 },
+  { y: 60, x: -5, rot: -2, scale: 0.88 },
+];
+const DECK_CAPTION_H = 56;
+const DECK_GAP = 28;
+/** Progress windows per card (card 0 never moves). Nothing moves before 0.1
+ *  so the "all four, BVC prominent" pile is the first thing seen. */
+const DECK_STEPS: [number, number][] = [
+  [0, 0],
+  [0.1, 0.3],
+  [0.3, 0.5],
+  [0.5, 0.7],
+];
+
+function DeckCard({
+  card,
+  index,
+  progress,
+  slot,
+}: {
+  card: Card;
+  index: number;
+  progress: MotionValue<number>;
+  /** vertical distance between list slots (card + caption + gap), px */
+  slot: number;
+}) {
+  const fan = DECK_FAN[index];
+  const [a, b] = DECK_STEPS[index];
+  const range: [number, number] = index === 0 ? [0, 1] : [a, b];
+  const y = useTransform(progress, range, [fan.y, index === 0 ? 0 : index * slot]);
+  const x = useTransform(progress, range, [fan.x, 0]);
+  const rotate = useTransform(progress, range, [fan.rot, 0]);
+  const scale = useTransform(progress, range, [fan.scale, 1]);
+  // Caption shows once the card below it has slid away (or, for the last
+  // card, once it has itself landed).
+  const revealEnd = index < 3 ? DECK_STEPS[index + 1][1] : b;
+  const revealStart = index < 3 ? DECK_STEPS[index + 1][0] + 0.08 : a + 0.08;
+  const captionOpacity = useTransform(progress, [revealStart, revealEnd], [0, 1]);
+  return (
+    <motion.a
+      href={assetPath(card.href)}
+      className="absolute left-0 top-0 block w-full"
+      style={{ x, y, rotate, scale, zIndex: 40 - index * 10, transformOrigin: "50% 0%" }}
+    >
+      <CardVisual card={card} />
+      <motion.div style={{ opacity: captionOpacity }}>
+        <CardCaption card={card} />
+      </motion.div>
+    </motion.a>
+  );
+}
+
+function MobileDeck({ progress, vw, vh }: { progress: MotionValue<number>; vw: number; vh: number }) {
+  const layerRef = useRef<HTMLDivElement>(null);
+  const deckRef = useRef<HTMLDivElement>(null);
+  const [deckTop, setDeckTop] = useState(420);
+  useEffect(() => {
+    const measure = () => {
+      if (layerRef.current && deckRef.current) {
+        setDeckTop(deckRef.current.getBoundingClientRect().top - layerRef.current.getBoundingClientRect().top);
+      }
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [vw, vh]);
+
+  const cardW = vw - 48; // px-6 each side
+  const cardH = cardW * (363 / 497);
+  const slot = cardH + DECK_CAPTION_H + DECK_GAP;
+  // Pan the whole layer up as each card is revealed so the newest card's
+  // caption is fully on screen (bottom padding 24px). Never pan back up.
+  const need = (k: number) => Math.max(0, deckTop + k * slot + cardH + DECK_CAPTION_H + 24 - vh);
+  const pans = [0, need(1), need(2), need(3)];
+  const layerY = useTransform(
+    progress,
+    [0, DECK_STEPS[1][0], DECK_STEPS[1][1], DECK_STEPS[2][1], DECK_STEPS[3][1], 1],
+    [0, 0, -pans[1], -pans[2], -pans[3], -pans[3] - 40],
+  );
+
+  return (
+    <motion.div ref={layerRef} style={{ y: layerY }} className="absolute inset-x-0 top-0 px-6 pt-[84px]">
+      <HeroCopy hideCta />
+      <div ref={deckRef} className="relative mt-8" style={{ height: 3 * slot + cardH + DECK_CAPTION_H }}>
+        {CARDS.map((card, i) => (
+          <DeckCard key={card.title} card={card} index={i} progress={progress} slot={slot} />
+        ))}
+      </div>
+    </motion.div>
   );
 }
 
@@ -351,6 +454,20 @@ export default function HeroShowcase() {
   const galleryY = useTransform(scrollYProgress, [0.8, 1], ["0vh", narrow ? "-10vh" : "-58vh"]);
 
   if (!enabled) return <StaticFallback />;
+
+  // Phones: stacked-deck choreography (client request 2026-08-17) — no
+  // "Book a call" CTA in the copy (the floating pill covers it), the four
+  // cards sit under the paragraph as a pile with BVC on top, and scrolling
+  // un-stacks them one by one into a list while the layer pans up.
+  if (narrow) {
+    return (
+      <section ref={sectionRef} className="relative h-[380vh] w-full">
+        <div className="sticky top-0 h-screen overflow-hidden">
+          <MobileDeck progress={scrollYProgress} vw={dims.w} vh={dims.h} />
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section ref={sectionRef} className="relative h-[300vh] w-full">
