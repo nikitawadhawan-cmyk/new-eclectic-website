@@ -100,15 +100,13 @@ function HelmetCard() {
 }
 
 /** Replaces the old "20+ Global Awards & Features" tile (client request
- *  2026-08-17 — a claim we can't substantiate). "10+ Websites Launched" is
- *  true today (ten case studies). Other defensible options offered to the
- *  client: "9 Industries Served", "24h Response Time", "100% Hand-Coded". */
+ *  2026-08-17). Client-supplied figure: "50+ Websites Launched". */
 function LaunchedCard() {
   return (
     <div className="flex items-center justify-between gap-4 rounded-2xl border border-black/10 bg-navy px-5 py-4 shadow-[0px_16px_40px_-16px_rgba(0,0,0,0.35)]">
       <div>
         <p className="text-[32px] font-semibold leading-[38px] tracking-[-1.8px] text-white">
-          10<span className="text-[#e8c700]">+</span>
+          50<span className="text-[#e8c700]">+</span>
         </p>
         <p className="mt-1 text-[13px] leading-[18px] text-white">Websites Launched</p>
       </div>
@@ -123,13 +121,13 @@ function TrustedCard() {
   return (
     <div className={`${cardBase} flex flex-col gap-6 px-6 py-6`}>
       <p className="text-[16px] font-medium leading-[22px] text-black">
-        <span className="text-navy">T</span>rusted by E-commerce and B2B brands from around the world
+        <span className="text-navy">E</span>-commerce and B2B brands we&apos;ve built for have generated
       </p>
       <div>
         <p className="text-[44px] font-semibold leading-[48px] tracking-[-1.8px] text-navy">
-          5K<span className="text-[#e8c700]">+</span>
+          ₹50Cr<span className="text-[#e8c700]">+</span>
         </p>
-        <p className="mt-1 text-[14px] leading-[20px] text-[#999]">Global Project</p>
+        <p className="mt-1 text-[14px] leading-[20px] text-[#999]">Revenue Generated</p>
       </div>
     </div>
   );
