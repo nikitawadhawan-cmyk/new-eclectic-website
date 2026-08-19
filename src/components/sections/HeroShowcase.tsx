@@ -238,24 +238,29 @@ function HeroCopy({ hideCta = false }: { hideCta?: boolean }) {
 /* MOBILE (<640px): stacked deck that un-stacks into a list as you scroll.   */
 /* ------------------------------------------------------------------------ */
 
-/** Fan offsets for the stacked state — BVC (index 0) on top, the rest peek
- *  out underneath in a loose, slightly rotated pile. */
-const DECK_FAN = [
-  { y: 0, x: 0, rot: 0, scale: 1 },
-  { y: 20, x: -8, rot: -3.5, scale: 0.96 },
-  { y: 40, x: 8, rot: 3.5, scale: 0.92 },
-  { y: 60, x: -5, rot: -2, scale: 0.88 },
-];
+/** Pile look: each card behind the pile's current leader sits `PILE_DY` px
+ *  lower, slightly smaller and alternately tilted. The pile TRAVELS as a
+ *  unit — at each step the leader of what's left slides down to its own
+ *  slot and the cards behind it ride along underneath, so nothing is ever
+ *  left peeking out under the card above (client feedback 2026-08-17). */
+const PILE_DY = 20;
+const PILE_DSCALE = 0.04;
+const PILE_ROT = [0, -3.5, 3.5, -2];
 const DECK_CAPTION_H = 56;
 const DECK_GAP = 28;
-/** Progress windows per card (card 0 never moves). Nothing moves before 0.1
- *  so the "all four, BVC prominent" pile is the first thing seen. */
+/** Progress windows per step k (card k and everything behind it move one
+ *  slot down). Nothing moves before 0.1 so the "all four, BVC on top" pile
+ *  is the first thing seen. */
 const DECK_STEPS: [number, number][] = [
   [0, 0],
   [0.1, 0.3],
   [0.3, 0.5],
   [0.5, 0.7],
 ];
+const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
+/** How many steps have completed (fractional) at progress p. */
+const stepsDone = (p: number) =>
+  DECK_STEPS.slice(1).reduce((acc, [a, b]) => acc + clamp01((p - a) / (b - a)), 0);
 
 function DeckCard({
   card,
@@ -269,23 +274,28 @@ function DeckCard({
   /** vertical distance between list slots (card + caption + gap), px */
   slot: number;
 }) {
-  const fan = DECK_FAN[index];
-  const [a, b] = DECK_STEPS[index];
-  const range: [number, number] = index === 0 ? [0, 1] : [a, b];
-  const y = useTransform(progress, range, [fan.y, index === 0 ? 0 : index * slot]);
-  const x = useTransform(progress, range, [fan.x, 0]);
-  const rotate = useTransform(progress, range, [fan.rot, 0]);
-  const scale = useTransform(progress, range, [fan.scale, 1]);
-  // Caption shows once the card below it has slid away (or, for the last
-  // card, once it has itself landed).
-  const revealEnd = index < 3 ? DECK_STEPS[index + 1][1] : b;
-  const revealStart = index < 3 ? DECK_STEPS[index + 1][0] + 0.08 : a + 0.08;
-  const captionOpacity = useTransform(progress, [revealStart, revealEnd], [0, 1]);
+  // rel = how far behind the current pile leader this card is (0 = it IS the
+  // leader / already parked in its slot). Shrinks continuously as steps run.
+  const rel = useTransform(progress, (p) => Math.max(0, index - stepsDone(p)));
+  // travel = slots moved so far: each completed step ≤ index moves this card
+  // one slot down (it rides with the pile until it becomes the leader).
+  const y = useTransform(progress, (p) => {
+    const s = stepsDone(p);
+    const moved = Math.min(index, s);
+    const r = Math.max(0, index - s);
+    return moved * slot + r * PILE_DY;
+  });
+  const scale = useTransform(rel, (r) => 1 - PILE_DSCALE * r);
+  const rotate = useTransform(rel, (r) => (index === 0 ? 0 : PILE_ROT[index] * (r / index)));
+  // Caption shows once the pile behind this card has slid away (or, for the
+  // last card, once it has itself landed).
+  const [a, b] = index < 3 ? DECK_STEPS[index + 1] : DECK_STEPS[index];
+  const captionOpacity = useTransform(progress, [a + 0.08, b], [0, 1]);
   return (
     <motion.a
       href={assetPath(card.href)}
       className="absolute left-0 top-0 block w-full"
-      style={{ x, y, rotate, scale, zIndex: 40 - index * 10, transformOrigin: "50% 0%" }}
+      style={{ y, rotate, scale, zIndex: 40 - index * 10, transformOrigin: "50% 0%" }}
     >
       <CardVisual card={card} />
       <motion.div style={{ opacity: captionOpacity }}>
