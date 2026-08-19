@@ -1,7 +1,6 @@
 import Header from "@/components/sections/Header";
 import HeroShowcase from "@/components/sections/HeroShowcase";
 import ClientLogos from "@/components/sections/ClientLogos";
-import ShowreelVideo from "@/components/sections/ShowreelVideo";
 import Innovate from "@/components/sections/Innovate";
 import OurServices from "@/components/sections/OurServices";
 import BigQuote from "@/components/sections/BigQuote";
@@ -23,9 +22,9 @@ export default function Home() {
         <Reveal>
           <ClientLogos />
         </Reveal>
-        <Reveal>
-          <ShowreelVideo />
-        </Reveal>
+        {/* ShowreelVideo hidden on all viewports (client request 2026-08-17) —
+            component kept in src/components/sections/ShowreelVideo.tsx; restore
+            by re-importing and wrapping it in <Reveal> here. */}
         <Innovate />
         {/* OurServices is pinned/scroll-driven — no Reveal wrapper (its
             transform would break position: sticky). */}
